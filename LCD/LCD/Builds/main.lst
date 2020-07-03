@@ -1,0 +1,2646 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+ 111               	.global	LCD_putchar
+ 113               	LCD_putchar:
+ 115               	.Ltext1:
+   1:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //#include <avr/io.h>
+   2:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //#include <avr/delay.h>
+   3:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** #define LCD_RS 0
+   4:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** #define LCD_RW 1
+   5:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** #define LCD_E 2
+   6:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** 
+   7:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //LCD_putchar writes a character to the LCD at the current address,
+   8:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //no busy flag check is done before or after
+   9:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //the character is written!
+  10:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //usage: LCD_putchar('A'); or LCD_putchar(0x55);
+  11:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** void LCD_putchar(char data)
+  12:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** {
+ 117               	.LM0:
+ 118               	.LFBB1:
+ 119               	/* prologue: function */
+ 120               	/* frame size = 0 */
+ 121               	/* stack size = 0 */
+ 122               	.L__stack_usage = 0
+  13:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //PortD is output
+  14:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     DDRD = 0xFF;
+ 124               	.LM1:
+ 125 0000 9FEF      		ldi r25,lo8(-1)
+ 126 0002 91BB      		out 0x11,r25
+  15:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //put data on bus
+  16:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTD = data;
+ 128               	.LM2:
+ 129 0004 82BB      		out 0x12,r24
+  17:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //RW low, E low
+  18:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+ 131               	.LM3:
+ 132 0006 85B3      		in r24,0x15
+ 133 0008 897F      		andi r24,lo8(-7)
+ 134 000a 85BB      		out 0x15,r24
+  19:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //RS high, strobe E
+  20:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC |= ((1<<LCD_RS)|(1<<LCD_E));
+ 136               	.LM4:
+ 137 000c 85B3      		in r24,0x15
+ 138 000e 8560      		ori r24,lo8(5)
+ 139 0010 85BB      		out 0x15,r24
+  21:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //the number of nops required varies with your clock frequency, try it out!
+  22:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 141               	.LM5:
+ 142               	/* #APP */
+ 143               	 ;  22 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 144 0012 0000      		nop
+ 145               	 ;  0 "" 2
+  23:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 147               	.LM6:
+ 148               	 ;  23 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 149 0014 0000      		nop
+ 150               	 ;  0 "" 2
+  24:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 152               	.LM7:
+ 153               	 ;  24 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 154 0016 0000      		nop
+ 155               	 ;  0 "" 2
+  25:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 157               	.LM8:
+ 158               	 ;  25 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 159 0018 0000      		nop
+ 160               	 ;  0 "" 2
+  26:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //RS low again, E low (belongs to strobe)
+  27:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC &= ~((1<<LCD_RS)|(1<<LCD_E));
+ 162               	.LM9:
+ 163               	/* #NOAPP */
+ 164 001a 85B3      		in r24,0x15
+ 165 001c 8A7F      		andi r24,lo8(-6)
+ 166 001e 85BB      		out 0x15,r24
+  28:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //release bus
+  29:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     DDRD = 0;
+ 168               	.LM10:
+ 169 0020 11BA      		out 0x11,__zero_reg__
+ 170 0022 0895      		ret
+ 172               	.Lscope1:
+ 174               	.global	LCD_getaddr
+ 176               	LCD_getaddr:
+  30:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** }
+  31:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** 
+  32:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //LCD_getaddress reads the address counter and busy flag. For the address only,
+  33:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //mask off bit7 of the return value.
+  34:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** char LCD_getaddr(void)
+  35:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** {
+ 178               	.LM11:
+ 179               	.LFBB2:
+ 180               	/* prologue: function */
+ 181               	/* frame size = 0 */
+ 182               	/* stack size = 0 */
+ 183               	.L__stack_usage = 0
+  36:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //make var for the return value
+  37:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     char address;
+  38:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //PortD is input
+  39:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     DDRD = 0;
+ 185               	.LM12:
+ 186 0024 11BA      		out 0x11,__zero_reg__
+  40:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //RW high, strobe enable
+  41:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC |= ((1<<LCD_RW)|(1<<LCD_E));
+ 188               	.LM13:
+ 189 0026 85B3      		in r24,0x15
+ 190 0028 8660      		ori r24,lo8(6)
+ 191 002a 85BB      		out 0x15,r24
+  42:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 193               	.LM14:
+ 194               	/* #APP */
+ 195               	 ;  42 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 196 002c 0000      		nop
+ 197               	 ;  0 "" 2
+  43:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 199               	.LM15:
+ 200               	 ;  43 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 201 002e 0000      		nop
+ 202               	 ;  0 "" 2
+  44:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //while E is high, get data from LCD
+  45:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     address = PIND;
+ 204               	.LM16:
+ 205               	/* #NOAPP */
+ 206 0030 80B3      		in r24,0x10
+  46:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //reset RW to low, E low (for strobe)
+  47:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+ 208               	.LM17:
+ 209 0032 95B3      		in r25,0x15
+ 210 0034 997F      		andi r25,lo8(-7)
+ 211 0036 95BB      		out 0x15,r25
+  48:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //return address and busy flag
+  49:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     return address;
+  50:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** }
+ 213               	.LM18:
+ 214 0038 0895      		ret
+ 219               	.Lscope2:
+ 221               	.global	LCD_wait
+ 223               	LCD_wait:
+  51:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** 
+  52:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //LCD_wait reads the address counter (which contains the busy flag) and loops until
+  53:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //the busy flag is cleared.
+  54:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** void LCD_wait(void)
+  55:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** {
+ 225               	.LM19:
+ 226               	.LFBB3:
+ 227               	/* prologue: function */
+ 228               	/* frame size = 0 */
+ 229               	/* stack size = 0 */
+ 230               	.L__stack_usage = 0
+ 231               	.L5:
+  56:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //get address and busy flag
+  57:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //and loop until busy flag cleared
+  58:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     while((LCD_getaddr() & 0x80) == 0x80);
+ 233               	.LM20:
+ 234 003a 0E94 0000 		call LCD_getaddr
+ 235 003e 87FD      		sbrc r24,7
+ 236 0040 00C0      		rjmp .L5
+ 237               	/* epilogue start */
+  59:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** }
+ 239               	.LM21:
+ 240 0042 0895      		ret
+ 242               	.Lscope3:
+ 245               	.global	LCD_command
+ 247               	LCD_command:
+  60:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** 
+  61:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //LCD_command works EXACTLY like LCD_putchar, but takes RS low for accessing the command reg
+  62:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //see LCD_putchar for details on the code
+  63:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** void LCD_command(char command)
+  64:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** {
+ 249               	.LM22:
+ 250               	.LFBB4:
+ 251               	/* prologue: function */
+ 252               	/* frame size = 0 */
+ 253               	/* stack size = 0 */
+ 254               	.L__stack_usage = 0
+  65:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     DDRD = 0xFF;
+ 256               	.LM23:
+ 257 0044 9FEF      		ldi r25,lo8(-1)
+ 258 0046 91BB      		out 0x11,r25
+  66:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTD = command;
+ 260               	.LM24:
+ 261 0048 82BB      		out 0x12,r24
+  67:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC &= ~((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+ 263               	.LM25:
+ 264 004a 85B3      		in r24,0x15
+ 265 004c 887F      		andi r24,lo8(-8)
+ 266 004e 85BB      		out 0x15,r24
+  68:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC |= (1<<LCD_E);
+ 268               	.LM26:
+ 269 0050 AA9A      		sbi 0x15,2
+  69:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 271               	.LM27:
+ 272               	/* #APP */
+ 273               	 ;  69 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 274 0052 0000      		nop
+ 275               	 ;  0 "" 2
+  70:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 277               	.LM28:
+ 278               	 ;  70 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 279 0054 0000      		nop
+ 280               	 ;  0 "" 2
+  71:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 282               	.LM29:
+ 283               	 ;  71 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 284 0056 0000      		nop
+ 285               	 ;  0 "" 2
+  72:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     asm volatile ("nop");
+ 287               	.LM30:
+ 288               	 ;  72 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h" 1
+ 289 0058 0000      		nop
+ 290               	 ;  0 "" 2
+  73:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC &= ~(1<<LCD_E);
+ 292               	.LM31:
+ 293               	/* #NOAPP */
+ 294 005a AA98      		cbi 0x15,2
+  74:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     DDRD = 0;
+ 296               	.LM32:
+ 297 005c 11BA      		out 0x11,__zero_reg__
+ 298 005e 0895      		ret
+ 300               	.Lscope4:
+ 302               	.global	LCD_init
+ 304               	LCD_init:
+  75:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** }
+  76:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** 
+  77:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** /*LCD_init initialises the LCD with the following paramters:
+  78:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****  8 bit mode, 5*7 font, 2 lines (also for 4 lines)
+  79:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****  auto-inc cursor after write and read
+  80:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****  cursor and didsplay on, cursor blinking.
+  81:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****  */
+  82:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** void LCD_init(void)
+  83:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** {
+ 306               	.LM33:
+ 307               	.LFBB5:
+ 308               	/* prologue: function */
+ 309               	/* frame size = 0 */
+ 310               	/* stack size = 0 */
+ 311               	.L__stack_usage = 0
+  84:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //setup the LCD control signals on PortC
+  85:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     DDRC |= ((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+ 313               	.LM34:
+ 314 0060 84B3      		in r24,0x14
+ 315 0062 8760      		ori r24,lo8(7)
+ 316 0064 84BB      		out 0x14,r24
+  86:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     PORTC = 0x00;
+ 318               	.LM35:
+ 319 0066 15BA      		out 0x15,__zero_reg__
+ 320               	.LBB20:
+ 321               	.LBB21:
+ 323               	.Ltext2:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    Copyright (c) 2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    All rights reserved.
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    Redistribution and use in source and binary forms, with or without
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    modification, are permitted provided that the following conditions are met:
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Redistributions of source code must retain the above copyright
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer.
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Redistributions in binary form must reproduce the above copyright
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer in
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      the documentation and/or other materials provided with the
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      distribution.
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Neither the name of the copyright holders nor the names of
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      contributors may be used to endorse or promote products derived
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      from this software without specific prior written permission.
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /* $Id$ */
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #ifndef _UTIL_DELAY_BASIC_H_
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #define _UTIL_DELAY_BASIC_H_ 1
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #include <inttypes.h>
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #if !defined(__DOXYGEN__)
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** static inline void _delay_loop_1(uint8_t __count) __attribute__((always_inline));
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** static inline void _delay_loop_2(uint16_t __count) __attribute__((always_inline));
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #endif
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \file */
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \defgroup util_delay_basic <util/delay_basic.h>: Basic busy-wait delay loops
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     \code
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     #include <util/delay_basic.h>
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     \endcode
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     The functions in this header file implement simple delay loops
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     that perform a busy-waiting.  They are typically used to
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     facilitate short delays in the program execution.  They are
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     implemented as count-down loops with a well-known CPU cycle
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     count per loop iteration.  As such, no other processing can
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     occur simultaneously.  It should be kept in mind that the
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     functions described here do not disable interrupts.
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     In general, for long delays, the use of hardware timers is
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     much preferrable, as they free the CPU, and allow for
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     concurrent processing of other events while the timer is
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     running.  However, in particular for very short delays, the
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     overhead of setting up a hardware timer is too much compared
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     to the overall delay time.
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Two inline functions are provided for the actual delay algorithms.
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** */
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Delay loop using an 8-bit counter \c __count, so up to 256
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     iterations are possible.  (The value 256 would have to be passed
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     as 0.)  The loop executes three CPU cycles per iteration, not
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     including the overhead the compiler needs to setup the counter
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     register.
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to 768 microseconds
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     can be achieved.
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** */
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** void
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** _delay_loop_1(uint8_t __count)
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** {
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	__asm__ volatile (
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		"1: dec %0" "\n\t"
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		"brne 1b"
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		: "=r" (__count)
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		: "0" (__count)
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	);
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** }
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Delay loop using a 16-bit counter \c __count, so up to 65536
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     iterations are possible.  (The value 65536 would have to be
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     passed as 0.)  The loop executes four CPU cycles per iteration,
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     not including the overhead the compiler requires to setup the
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     counter register pair.
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to about 262.1
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     milliseconds can be achieved.
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****  */
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** void
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** _delay_loop_2(uint16_t __count)
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** {
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	__asm__ volatile (
+ 325               	.LM36:
+ 326 0068 8FEF      		ldi r24,lo8(-1)
+ 327 006a 9FEF      		ldi r25,lo8(-1)
+ 328               	/* #APP */
+ 329               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 330 006c 0197      		1: sbiw r24,1
+ 331 006e 01F4      		brne 1b
+ 332               	 ;  0 "" 2
+ 333               	/* #NOAPP */
+ 334               	.LBE21:
+ 335               	.LBE20:
+ 337               	.Ltext3:
+  87:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //if called right after power-up, we'll have to wait a bit (fine-tune for faster execution)
+  88:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     _delay_loop_2(0xFFFF);
+  89:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //tell the LCD that it's used in 8-bit mode 3 times, each with a delay inbetween.
+  90:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_command(0x30);
+ 339               	.LM37:
+ 340 0070 80E3      		ldi r24,lo8(48)
+ 341 0072 0E94 0000 		call LCD_command
+ 342               	.LBB22:
+ 343               	.LBB23:
+ 345               	.Ltext4:
+ 347               	.LM38:
+ 348 0076 8FEF      		ldi r24,lo8(-1)
+ 349 0078 9FEF      		ldi r25,lo8(-1)
+ 350               	/* #APP */
+ 351               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 352 007a 0197      		1: sbiw r24,1
+ 353 007c 01F4      		brne 1b
+ 354               	 ;  0 "" 2
+ 355               	/* #NOAPP */
+ 356               	.LBE23:
+ 357               	.LBE22:
+ 359               	.Ltext5:
+  91:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     _delay_loop_2(0xFFFF);
+  92:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_command(0x30);
+ 361               	.LM39:
+ 362 007e 80E3      		ldi r24,lo8(48)
+ 363 0080 0E94 0000 		call LCD_command
+ 364               	.LBB24:
+ 365               	.LBB25:
+ 367               	.Ltext6:
+ 369               	.LM40:
+ 370 0084 8FEF      		ldi r24,lo8(-1)
+ 371 0086 9FEF      		ldi r25,lo8(-1)
+ 372               	/* #APP */
+ 373               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 374 0088 0197      		1: sbiw r24,1
+ 375 008a 01F4      		brne 1b
+ 376               	 ;  0 "" 2
+ 377               	/* #NOAPP */
+ 378               	.LBE25:
+ 379               	.LBE24:
+ 381               	.Ltext7:
+  93:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     _delay_loop_2(0xFFFF);
+  94:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_command(0x30);
+ 383               	.LM41:
+ 384 008c 80E3      		ldi r24,lo8(48)
+ 385 008e 0E94 0000 		call LCD_command
+ 386               	.LBB26:
+ 387               	.LBB27:
+ 389               	.Ltext8:
+ 391               	.LM42:
+ 392 0092 8FEF      		ldi r24,lo8(-1)
+ 393 0094 9FEF      		ldi r25,lo8(-1)
+ 394               	/* #APP */
+ 395               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 396 0096 0197      		1: sbiw r24,1
+ 397 0098 01F4      		brne 1b
+ 398               	 ;  0 "" 2
+ 399               	/* #NOAPP */
+ 400               	.LBE27:
+ 401               	.LBE26:
+ 403               	.Ltext9:
+  95:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     _delay_loop_2(0xFFFF);
+  96:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //now: 8 bit interface, 5*7 font, 2 lines.
+  97:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_command(0x38);
+ 405               	.LM43:
+ 406 009a 88E3      		ldi r24,lo8(56)
+ 407 009c 0E94 0000 		call LCD_command
+  98:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //wait until command finished
+  99:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_wait();
+ 409               	.LM44:
+ 410 00a0 0E94 0000 		call LCD_wait
+ 100:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //display on, cursor on (blinking)
+ 101:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_command(0x0F);
+ 412               	.LM45:
+ 413 00a4 8FE0      		ldi r24,lo8(15)
+ 414 00a6 0E94 0000 		call LCD_command
+ 102:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_wait();
+ 416               	.LM46:
+ 417 00aa 0E94 0000 		call LCD_wait
+ 103:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //now clear the display, cursor home
+ 104:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_command(0x01);
+ 419               	.LM47:
+ 420 00ae 81E0      		ldi r24,lo8(1)
+ 421 00b0 0E94 0000 		call LCD_command
+ 105:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_wait();
+ 423               	.LM48:
+ 424 00b4 0E94 0000 		call LCD_wait
+ 106:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //cursor auto-inc
+ 107:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     LCD_command(0x06);
+ 426               	.LM49:
+ 427 00b8 86E0      		ldi r24,lo8(6)
+ 428 00ba 0C94 0000 		jmp LCD_command
+ 430               	.Lscope5:
+ 433               	.global	LCD_write
+ 435               	LCD_write:
+ 108:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** }
+ 109:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** 
+ 110:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //now it's time for a simple function for showing strings on the LCD. It uses the low-level
+ 111:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** //functions above. usage example: LCD_write("Hello World!");
+ 112:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** void LCD_write(char* dstring)
+ 113:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** {
+ 437               	.LM50:
+ 438               	.LFBB6:
+ 439 00be 0F93      		push r16
+ 440 00c0 1F93      		push r17
+ 441 00c2 CF93      		push r28
+ 442 00c4 DF93      		push r29
+ 443               	/* prologue: function */
+ 444               	/* frame size = 0 */
+ 445               	/* stack size = 4 */
+ 446               	.L__stack_usage = 4
+ 447 00c6 EC01      		movw r28,r24
+ 448               	.L10:
+ 449 00c8 8E01      		movw r16,r28
+ 114:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     //is the character pointed at by dstring a zero? If not, write character to LCD
+ 115:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     while(*dstring)
+ 451               	.LM51:
+ 452 00ca 8881      		ld r24,Y
+ 453 00cc 8823      		tst r24
+ 454 00ce 01F0      		breq .L12
+ 116:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     {
+ 117:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****         //if the LCD is bus, let it finish the current operation
+ 118:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****         LCD_wait();
+ 456               	.LM52:
+ 457 00d0 0E94 0000 		call LCD_wait
+ 458 00d4 2196      		adiw r28,1
+ 119:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****         //the write the character from dstring to the LCD, then post-inc the dstring is pointing at
+ 120:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****         LCD_putchar(*dstring++);
+ 460               	.LM53:
+ 461 00d6 F801      		movw r30,r16
+ 462 00d8 8081      		ld r24,Z
+ 463 00da 0E94 0000 		call LCD_putchar
+ 464 00de 00C0      		rjmp .L10
+ 465               	.L12:
+ 466               	/* epilogue start */
+ 121:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h ****     }
+ 122:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/libLCD.h **** }...
+ 468               	.LM54:
+ 469 00e0 DF91      		pop r29
+ 470 00e2 CF91      		pop r28
+ 471 00e4 1F91      		pop r17
+ 472 00e6 0F91      		pop r16
+ 473 00e8 0895      		ret
+ 475               	.Lscope6:
+ 477               	.global	initIO
+ 479               	initIO:
+ 481               	.Ltext10:
+   1:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** #include <stdio.h>
+   2:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** #include <avr/io.h>
+   3:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** #include <avr/interrupt.h>
+   4:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** #include <util/delay.h>
+   5:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** #include "libLCD.h"
+   6:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** 
+   7:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** 
+   8:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** /*
+   9:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  
+  10:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  Created By:
+  11:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  
+  12:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  .------..------..------..------..------.
+  13:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  |M.--. ||A.--. ||G.--. ||I.--. ||C.--. |
+  14:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  | (\/) || (\/) || :/\: || (\/) || :/\: |
+  15:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  | :\/: || :\/: || :\/: || :\/: || :\/: |
+  16:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  | '--'M|| '--'A|| '--'G|| '--'I|| '--'C|
+  17:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  `------'`------'`------'`------'`------'
+  18:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** 
+  19:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  LCD_Data ---> DDRD
+  20:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  LCD_RS-RW-EN ---> Pin0-Pin1-Pin2, DDRC
+  21:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****  */
+  22:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** 
+  23:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** void initIO(void) {
+ 483               	.LM55:
+ 484               	.LFBB7:
+ 485               	/* prologue: function */
+ 486               	/* frame size = 0 */
+ 487               	/* stack size = 0 */
+ 488               	.L__stack_usage = 0
+ 489 00ea 0895      		ret
+ 491               	.Lscope7:
+ 492               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 493               	.LC0:
+ 494 0000 4372 6561 		.string	"Created by"
+ 494      7465 6420 
+ 494      6279 00
+ 495               	.LC1:
+ 496 000b 4D61 6769 		.string	"Magic"
+ 496      6300 
+ 497               	.LC2:
+ 498 0011 4469 6769 		.string	"Digite: "
+ 498      7465 3A20 
+ 498      00
+ 499               	.LC3:
+ 500 001a 2300      		.string	"#"
+ 501               	.LC4:
+ 502 001c 4000      		.string	"@"
+ 503               	.LC5:
+ 504 001e 2400      		.string	"$"
+ 505               	.LC6:
+ 506 0020 2000      		.string	" "
+ 507               	.LC7:
+ 508 0022 3900      		.string	"9"
+ 509               	.LC8:
+ 510 0024 4900      		.string	"I"
+ 511               	.LC9:
+ 512 0026 5100      		.string	"Q"
+ 513               	.LC10:
+ 514 0028 5A00      		.string	"Z"
+ 515               	.LC11:
+ 516 002a 3600      		.string	"6"
+ 517               	.LC12:
+ 518 002c 4600      		.string	"F"
+ 519               	.LC13:
+ 520 002e 454E 4E45 		.string	"ENNE"
+ 520      00
+ 521               	.LC14:
+ 522 0033 5700      		.string	"W"
+ 523               	.LC15:
+ 524 0035 3300      		.string	"3"
+ 525               	.LC16:
+ 526 0037 4300      		.string	"C"
+ 527               	.LC17:
+ 528 0039 4C00      		.string	"L"
+ 529               	.LC18:
+ 530 003b 5400      		.string	"T"
+ 531               	.LC19:
+ 532 003d 3000      		.string	"0"
+ 533               	.LC20:
+ 534 003f 3800      		.string	"8"
+ 535               	.LC21:
+ 536 0041 4800      		.string	"H"
+ 537               	.LC22:
+ 538 0043 5000      		.string	"P"
+ 539               	.LC23:
+ 540 0045 5900      		.string	"Y"
+ 541               	.LC24:
+ 542 0047 3500      		.string	"5"
+ 543               	.LC25:
+ 544 0049 4500      		.string	"E"
+ 545               	.LC26:
+ 546 004b 4E00      		.string	"N"
+ 547               	.LC27:
+ 548 004d 5600      		.string	"V"
+ 549               	.LC28:
+ 550 004f 3200      		.string	"2"
+ 551               	.LC29:
+ 552 0051 4200      		.string	"B"
+ 553               	.LC30:
+ 554 0053 4B00      		.string	"K"
+ 555               	.LC31:
+ 556 0055 5300      		.string	"S"
+ 557               	.LC32:
+ 558 0057 2A00      		.string	"*"
+ 559               	.LC33:
+ 560 0059 3700      		.string	"7"
+ 561               	.LC34:
+ 562 005b 4700      		.string	"G"
+ 563               	.LC35:
+ 564 005d 4F00      		.string	"O"
+ 565               	.LC36:
+ 566 005f 5800      		.string	"X"
+ 567               	.LC37:
+ 568 0061 3400      		.string	"4"
+ 569               	.LC38:
+ 570 0063 4400      		.string	"D"
+ 571               	.LC39:
+ 572 0065 4D00      		.string	"M"
+ 573               	.LC40:
+ 574 0067 5500      		.string	"U"
+ 575               	.LC41:
+ 576 0069 3100      		.string	"1"
+ 577               	.LC42:
+ 578 006b 4100      		.string	"A"
+ 579               	.LC43:
+ 580 006d 4A00      		.string	"J"
+ 581               	.LC44:
+ 582 006f 5200      		.string	"R"
+ 583               		.section	.text.startup,"ax",@progbits
+ 585               	.global	main
+ 587               	main:
+  24:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** 	
+  25:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** }
+  26:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** 
+  27:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** 
+  28:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** int main(void)
+  29:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c **** {
+ 589               	.LM56:
+ 590               	.LFBB8:
+ 591               	/* prologue: function */
+ 592               	/* frame size = 0 */
+ 593               	/* stack size = 0 */
+ 594               	.L__stack_usage = 0
+  30:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_init();
+ 596               	.LM57:
+ 597 0000 0E94 0000 		call LCD_init
+  31:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_wait();
+ 599               	.LM58:
+ 600 0004 0E94 0000 		call LCD_wait
+  32:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_write("Created by");
+ 602               	.LM59:
+ 603 0008 80E0      		ldi r24,lo8(.LC0)
+ 604 000a 90E0      		ldi r25,hi8(.LC0)
+ 605 000c 0E94 0000 		call LCD_write
+  33:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_wait();
+ 607               	.LM60:
+ 608 0010 0E94 0000 		call LCD_wait
+  34:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_command(0xC0);
+ 610               	.LM61:
+ 611 0014 80EC      		ldi r24,lo8(-64)
+ 612 0016 0E94 0000 		call LCD_command
+  35:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_wait();
+ 614               	.LM62:
+ 615 001a 0E94 0000 		call LCD_wait
+  36:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_write("Magic");
+ 617               	.LM63:
+ 618 001e 80E0      		ldi r24,lo8(.LC1)
+ 619 0020 90E0      		ldi r25,hi8(.LC1)
+ 620 0022 0E94 0000 		call LCD_write
+ 621               	.LBB28:
+ 622               	.LBB29:
+ 624               	.Ltext11:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* $Id$ */
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /** \file */
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \code
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \endcode
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     used.
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** */
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /**
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 107:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 109:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 112:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 114:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 120:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 125:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 129:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 132:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 140:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****  */
+ 141:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** void
+ 142:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** {
+ 144:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	double __tmp ; 
+ 145:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 146:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 147:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 148:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 149:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 150:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 151:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 152:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 153:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 154:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 155:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 156:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 157:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 158:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#else
+ 159:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		//round up by default
+ 160:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 161:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#endif
+ 162:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 163:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 626               	.LM64:
+ 627 0026 2FEF      		ldi r18,lo8(3199999)
+ 628 0028 83ED      		ldi r24,hi8(3199999)
+ 629 002a 90E3      		ldi r25,hlo8(3199999)
+ 630 002c 2150      		1: subi r18,1
+ 631 002e 8040      		sbci r24,0
+ 632 0030 9040      		sbci r25,0
+ 633 0032 01F4      		brne 1b
+ 634 0034 00C0      		rjmp .
+ 635 0036 0000      		nop
+ 636               	.LBE29:
+ 637               	.LBE28:
+ 639               	.Ltext12:
+  37:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     _delay_ms(1000);
+  38:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_command(0b00000001);
+ 641               	.LM65:
+ 642 0038 81E0      		ldi r24,lo8(1)
+ 643 003a 0E94 0000 		call LCD_command
+  39:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_wait();
+ 645               	.LM66:
+ 646 003e 0E94 0000 		call LCD_wait
+  40:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_write("Digite: ");
+ 648               	.LM67:
+ 649 0042 80E0      		ldi r24,lo8(.LC2)
+ 650 0044 90E0      		ldi r25,hi8(.LC2)
+ 651 0046 0E94 0000 		call LCD_write
+  41:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     LCD_wait();
+ 653               	.LM68:
+ 654 004a 0E94 0000 		call LCD_wait
+  42:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     
+  43:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     
+  44:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     DDRA = 0b11110000;
+ 656               	.LM69:
+ 657 004e 80EF      		ldi r24,lo8(-16)
+ 658 0050 8ABB      		out 0x1a,r24
+  45:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     int leer;
+  46:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     int indicador = 1;
+ 660               	.LM70:
+ 661 0052 C1E0      		ldi r28,lo8(1)
+ 662 0054 D0E0      		ldi r29,0
+  47:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     
+  48:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     while(1)
+  49:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****     {
+  50:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  51:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  52:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //Columna 1 Indicadores
+  53:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         PORTA = 0b10000000;
+ 664               	.LM71:
+ 665 0056 10E8      		ldi r17,lo8(-128)
+  54:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         _delay_us(10);
+  55:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         leer = PINA;
+  56:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  57:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b10001000)
+  58:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+  59:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             //LCD_write("D");
+  60:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             indicador = 4;
+  61:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             while (leer==0b10001000) {leer=PINA;}
+  62:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+  63:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  64:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b10000100)
+  65:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+  66:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             //LCD_write("C");
+  67:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             indicador = 3;
+  68:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             while (leer==0b10000100) {leer=PINA;}
+  69:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+  70:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  71:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b10000010)
+  72:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+  73:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             //LCD_write("B");
+  74:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             indicador = 2;
+  75:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             while (leer==0b10000010) {leer=PINA;}
+  76:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+  77:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  78:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b10000001)
+  79:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+  80:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             //LCD_write("A");
+  81:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             indicador = 1;
+  82:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             while (leer==0b10000001) {leer=PINA;}
+  83:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+  84:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  85:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  86:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  87:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  88:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //Columna 2
+  89:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         PORTA = 0b01000000;
+ 667               	.LM72:
+ 668 0058 00E4      		ldi r16,lo8(64)
+  90:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         _delay_us(10);
+  91:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         leer = PINA;
+  92:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+  93:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------#@$ --Fila1--
+  94:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01001000)
+  95:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+  96:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+  97:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+  98:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+  99:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 100:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("#");
+ 101:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01001000) {leer=PINA;}
+ 102:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 103:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 104:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 105:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 106:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 107:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("@");
+ 108:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01001000) {leer=PINA;}
+ 109:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 110:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 111:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 112:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 113:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 114:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("$");
+ 115:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01001000) {leer=PINA;}
+ 116:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 117:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 118:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 
+ 119:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 120:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 121:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write(" ");
+ 122:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01001000) {leer=PINA;}
+ 123:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 124:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 125:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 126:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 127:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 128:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 129:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------ZQI9--Fila2--
+ 130:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000100)
+ 131:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 132:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 133:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 134:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 135:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 136:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("9");
+ 137:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000100) {leer=PINA;}
+ 138:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 139:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 140:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 141:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 142:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 143:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("I");
+ 144:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000100) {leer=PINA;}
+ 145:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 146:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 147:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 148:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 149:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 150:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("Q");
+ 151:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000100) {leer=PINA;}
+ 152:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 153:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 154:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 155:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 156:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 157:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("Z");
+ 158:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000100) {leer=PINA;}
+ 159:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 160:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 161:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 162:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 163:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 164:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 165:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------WÑF6--Fila3--
+ 166:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000010)
+ 167:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 168:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 169:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 170:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 171:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 172:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("6");
+ 173:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000010) {leer=PINA;}
+ 174:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 175:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 176:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 177:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 178:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 179:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("F");
+ 180:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000010) {leer=PINA;}
+ 181:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 182:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 183:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 184:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 185:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 186:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("ENNE");
+ 187:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000010) {leer=PINA;}
+ 188:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 189:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 190:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 191:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 192:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 193:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("W");
+ 194:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000010) {leer=PINA;}
+ 195:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 196:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 197:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 198:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 199:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 200:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------TLC3--Fila4--
+ 201:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000001)
+ 202:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 203:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 204:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 205:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 206:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 207:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("3");
+ 208:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000001) {leer=PINA;}
+ 209:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 210:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 211:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 212:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 213:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 214:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("C");
+ 215:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000001) {leer=PINA;}
+ 216:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 217:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 218:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 219:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 220:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 221:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("L");
+ 222:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000001) {leer=PINA;}
+ 223:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 224:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 225:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 226:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 227:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 228:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("T");
+ 229:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000001) {leer=PINA;}
+ 230:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 231:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 232:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 233:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 234:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 235:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 236:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 237:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 238:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //Columna 3
+ 239:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         PORTA = 0b00100000;
+ 670               	.LM73:
+ 671 005a 80E2      		ldi r24,lo8(32)
+ 672 005c F82E      		mov r15,r24
+ 240:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         _delay_us(10);
+ 241:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         leer = PINA;
+ 242:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 243:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------0   --Fila1--
+ 244:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00101000)
+ 245:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 246:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 247:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 248:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 249:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 250:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("0");
+ 251:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00101000) {leer=PINA;}
+ 252:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 253:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 254:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 255:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 256:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 257:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write(" ");
+ 258:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00101000) {leer=PINA;}
+ 259:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 260:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 261:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 262:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 263:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 264:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write(" ");
+ 265:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00101000) {leer=PINA;}
+ 266:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 267:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 268:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 269:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 270:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 271:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write(" ");
+ 272:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00101000) {leer=PINA;}
+ 273:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 274:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 275:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 276:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 277:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 278:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 279:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------YPH8--Fila2--
+ 280:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100100)
+ 281:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 282:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 283:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 284:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 285:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 286:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("8");
+ 287:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100100) {leer=PINA;}
+ 288:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 289:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 290:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 291:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 292:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 293:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("H");
+ 294:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100100) {leer=PINA;}
+ 295:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 296:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 297:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 298:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 299:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 300:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("P");
+ 301:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100100) {leer=PINA;}
+ 302:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 303:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 304:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 305:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 306:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 307:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("Y");
+ 308:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100100) {leer=PINA;}
+ 309:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 310:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 311:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 312:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 313:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 314:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 315:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------VNE5--Fila3--
+ 316:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100010)
+ 317:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 318:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 319:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 320:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 321:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 322:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("5");
+ 323:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100010) {leer=PINA;}
+ 324:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 325:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 326:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 327:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 328:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 329:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("E");
+ 330:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100010) {leer=PINA;}
+ 331:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 332:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 333:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 334:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 335:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 336:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("N");
+ 337:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100010) {leer=PINA;}
+ 338:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 339:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 340:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 341:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 342:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 343:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("V");
+ 344:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100010) {leer=PINA;}
+ 345:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 346:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 347:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 348:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 349:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 350:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------SKB2--Fila4--
+ 351:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100001)
+ 352:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 353:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 354:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 355:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 356:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 357:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("2");
+ 358:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100001) {leer=PINA;}
+ 359:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 360:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 361:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 362:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 363:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 364:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("B");
+ 365:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100001) {leer=PINA;}
+ 366:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 367:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 368:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 369:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 370:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 371:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("K");
+ 372:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100001) {leer=PINA;}
+ 373:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 374:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 375:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 376:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 377:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 378:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("S");
+ 379:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100001) {leer=PINA;}
+ 380:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 381:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 382:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 383:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 384:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 385:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 386:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //Columna 4
+ 387:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         PORTA = 0b00010000;
+ 674               	.LM74:
+ 675 005e 90E1      		ldi r25,lo8(16)
+ 676 0060 E92E      		mov r14,r25
+ 677               	.L15:
+  53:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         PORTA = 0b10000000;
+ 679               	.LM75:
+ 680 0062 1BBB      		out 0x1b,r17
+ 681               	.LBB30:
+ 682               	.LBB31:
+ 684               	.Ltext13:
+ 164:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 165:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #else
+ 166:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	uint16_t __ticks;
+ 167:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 4e3) * __ms;
+ 168:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	if (__tmp < 1.0)
+ 169:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks = 1;
+ 170:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	else if (__tmp > 65535)
+ 171:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	{
+ 172:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 173:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 174:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		while(__ticks)
+ 175:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		{
+ 176:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 			// wait 1/10 ms
+ 177:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 178:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 			__ticks --;
+ 179:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		}
+ 180:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		return;
+ 181:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	}
+ 182:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	else
+ 183:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks = (uint16_t)__tmp;
+ 184:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	_delay_loop_2(__ticks);
+ 185:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+ 186:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** }
+ 187:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 188:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /**
+ 189:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    \ingroup util_delay
+ 190:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 191:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Perform a delay of \c __us microseconds, using _delay_loop_1().
+ 192:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 193:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 194:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 195:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 196:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The maximal possible delay is 768 us / F_CPU in MHz.
+ 197:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 198:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    If the user requests a delay greater than the maximal possible one,
+ 199:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    _delay_us() will automatically call _delay_ms() instead.  The user
+ 200:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    will not be informed about this case.
+ 201:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 202:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 203:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 us/ F_CPU in MHz. For
+ 204:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflow results in
+ 205:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    no delay i.e., 0us.
+ 206:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   
+ 207:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 208:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 209:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 210:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 211:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 212:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 213:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****  
+ 214:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Note: The new implementation of _delay_us(double __us) with 
+ 215:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible.
+ 216:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 217:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Also, the backward compatible
+ 218:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 219:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 220:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 221:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 222:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****  */
+ 223:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** void
+ 224:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** _delay_us(double __us)
+ 225:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** {
+ 226:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	double __tmp ; 
+ 227:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 228:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 229:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 230:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 231:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 232:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e6) * __us;
+ 233:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 234:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 235:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 236:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 237:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 238:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 239:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 240:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#else
+ 241:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		//round up by default
+ 242:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 243:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#endif
+ 244:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 245:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 686               	.LM76:
+ 687 0064 25E3      		ldi r18,lo8(53)
+ 688 0066 2A95      		1: dec r18
+ 689 0068 01F4      		brne 1b
+ 690 006a 0000      		nop
+ 691               	.LBE31:
+ 692               	.LBE30:
+ 694               	.Ltext14:
+  55:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         leer = PINA;
+ 696               	.LM77:
+ 697 006c 89B3      		in r24,0x19
+ 698 006e 90E0      		ldi r25,0
+  57:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b10001000)
+ 700               	.LM78:
+ 701 0070 8838      		cpi r24,-120
+ 702 0072 9105      		cpc r25,__zero_reg__
+ 703 0074 01F4      		brne .L16
+ 704               	.L17:
+  61:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             while (leer==0b10001000) {leer=PINA;}
+ 706               	.LM79:
+ 707 0076 89B3      		in r24,0x19
+ 708 0078 90E0      		ldi r25,0
+ 709 007a 8838      		cpi r24,-120
+ 710 007c 9105      		cpc r25,__zero_reg__
+ 711 007e 01F0      		breq .L17
+  60:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             indicador = 4;
+ 713               	.LM80:
+ 714 0080 C4E0      		ldi r28,lo8(4)
+ 715 0082 D0E0      		ldi r29,0
+ 716               	.L16:
+  64:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b10000100)
+ 718               	.LM81:
+ 719 0084 8438      		cpi r24,-124
+ 720 0086 9105      		cpc r25,__zero_reg__
+ 721 0088 01F4      		brne .L18
+ 722               	.L19:
+  68:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             while (leer==0b10000100) {leer=PINA;}
+ 724               	.LM82:
+ 725 008a 89B3      		in r24,0x19
+ 726 008c 90E0      		ldi r25,0
+ 727 008e 8438      		cpi r24,-124
+ 728 0090 9105      		cpc r25,__zero_reg__
+ 729 0092 01F0      		breq .L19
+  67:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             indicador = 3;
+ 731               	.LM83:
+ 732 0094 C3E0      		ldi r28,lo8(3)
+ 733 0096 D0E0      		ldi r29,0
+ 734               	.L18:
+  71:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b10000010)
+ 736               	.LM84:
+ 737 0098 8238      		cpi r24,-126
+ 738 009a 9105      		cpc r25,__zero_reg__
+ 739 009c 01F4      		brne .L20
+ 740               	.L21:
+  75:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             while (leer==0b10000010) {leer=PINA;}
+ 742               	.LM85:
+ 743 009e 89B3      		in r24,0x19
+ 744 00a0 90E0      		ldi r25,0
+ 745 00a2 8238      		cpi r24,-126
+ 746 00a4 9105      		cpc r25,__zero_reg__
+ 747 00a6 01F0      		breq .L21
+  74:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             indicador = 2;
+ 749               	.LM86:
+ 750 00a8 C2E0      		ldi r28,lo8(2)
+ 751 00aa D0E0      		ldi r29,0
+ 752               	.L20:
+  78:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b10000001)
+ 754               	.LM87:
+ 755 00ac 8138      		cpi r24,-127
+ 756 00ae 9105      		cpc r25,__zero_reg__
+ 757 00b0 01F4      		brne .L22
+ 758               	.L23:
+  82:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             while (leer==0b10000001) {leer=PINA;}
+ 760               	.LM88:
+ 761 00b2 89B3      		in r24,0x19
+ 762 00b4 8138      		cpi r24,lo8(-127)
+ 763 00b6 01F0      		breq .L23
+  81:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             indicador = 1;
+ 765               	.LM89:
+ 766 00b8 C1E0      		ldi r28,lo8(1)
+ 767 00ba D0E0      		ldi r29,0
+ 768               	.L22:
+  89:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         PORTA = 0b01000000;
+ 770               	.LM90:
+ 771 00bc 0BBB      		out 0x1b,r16
+ 772               	.LBB32:
+ 773               	.LBB33:
+ 775               	.Ltext15:
+ 777               	.LM91:
+ 778 00be 85E3      		ldi r24,lo8(53)
+ 779 00c0 8A95      		1: dec r24
+ 780 00c2 01F4      		brne 1b
+ 781 00c4 0000      		nop
+ 782               	.LBE33:
+ 783               	.LBE32:
+ 785               	.Ltext16:
+  91:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         leer = PINA;
+ 787               	.LM92:
+ 788 00c6 89B3      		in r24,0x19
+ 789 00c8 90E0      		ldi r25,0
+  94:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01001000)
+ 791               	.LM93:
+ 792 00ca 8834      		cpi r24,72
+ 793 00cc 9105      		cpc r25,__zero_reg__
+ 794 00ce 01F4      		brne .L24
+  96:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 796               	.LM94:
+ 797 00d0 C330      		cpi r28,3
+ 798 00d2 D105      		cpc r29,__zero_reg__
+ 799 00d4 01F0      		breq .L26
+ 800 00d6 C430      		cpi r28,4
+ 801 00d8 D105      		cpc r29,__zero_reg__
+ 802 00da 01F0      		breq .L27
+ 803 00dc C230      		cpi r28,2
+ 804 00de D105      		cpc r29,__zero_reg__
+ 805 00e0 01F0      		breq .L28
+ 100:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("#");
+ 807               	.LM95:
+ 808 00e2 80E0      		ldi r24,lo8(.LC3)
+ 809 00e4 90E0      		ldi r25,hi8(.LC3)
+ 810 00e6 0E94 0000 		call LCD_write
+ 811               	.L29:
+ 101:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01001000) {leer=PINA;}
+ 813               	.LM96:
+ 814 00ea 89B3      		in r24,0x19
+ 815 00ec 90E0      		ldi r25,0
+ 816 00ee 8834      		cpi r24,72
+ 817 00f0 9105      		cpc r25,__zero_reg__
+ 818 00f2 01F0      		breq .L29
+ 819 00f4 00C0      		rjmp .L24
+ 820               	.L28:
+ 107:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("@");
+ 822               	.LM97:
+ 823 00f6 80E0      		ldi r24,lo8(.LC4)
+ 824 00f8 90E0      		ldi r25,hi8(.LC4)
+ 825 00fa 0E94 0000 		call LCD_write
+ 826               	.L31:
+ 108:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01001000) {leer=PINA;}
+ 828               	.LM98:
+ 829 00fe 89B3      		in r24,0x19
+ 830 0100 90E0      		ldi r25,0
+ 831 0102 8834      		cpi r24,72
+ 832 0104 9105      		cpc r25,__zero_reg__
+ 833 0106 01F0      		breq .L31
+ 834 0108 00C0      		rjmp .L387
+ 835               	.L26:
+ 114:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("$");
+ 837               	.LM99:
+ 838 010a 80E0      		ldi r24,lo8(.LC5)
+ 839 010c 90E0      		ldi r25,hi8(.LC5)
+ 840 010e 0E94 0000 		call LCD_write
+ 841               	.L33:
+ 115:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01001000) {leer=PINA;}
+ 843               	.LM100:
+ 844 0112 89B3      		in r24,0x19
+ 845 0114 90E0      		ldi r25,0
+ 846 0116 8834      		cpi r24,72
+ 847 0118 9105      		cpc r25,__zero_reg__
+ 848 011a 01F0      		breq .L33
+ 849 011c 00C0      		rjmp .L388
+ 850               	.L27:
+ 121:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write(" ");
+ 852               	.LM101:
+ 853 011e 80E0      		ldi r24,lo8(.LC6)
+ 854 0120 90E0      		ldi r25,hi8(.LC6)
+ 855 0122 0E94 0000 		call LCD_write
+ 856               	.L35:
+ 122:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01001000) {leer=PINA;}
+ 858               	.LM102:
+ 859 0126 89B3      		in r24,0x19
+ 860 0128 90E0      		ldi r25,0
+ 861 012a 8834      		cpi r24,72
+ 862 012c 9105      		cpc r25,__zero_reg__
+ 863 012e 01F0      		breq .L35
+ 864 0130 00C0      		rjmp .L389
+ 865               	.L24:
+ 130:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000100)
+ 867               	.LM103:
+ 868 0132 8434      		cpi r24,68
+ 869 0134 9105      		cpc r25,__zero_reg__
+ 870 0136 01F4      		brne .L36
+ 132:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 872               	.LM104:
+ 873 0138 C330      		cpi r28,3
+ 874 013a D105      		cpc r29,__zero_reg__
+ 875 013c 01F0      		breq .L38
+ 876 013e C430      		cpi r28,4
+ 877 0140 D105      		cpc r29,__zero_reg__
+ 878 0142 01F0      		breq .L39
+ 879 0144 C230      		cpi r28,2
+ 880 0146 D105      		cpc r29,__zero_reg__
+ 881 0148 01F0      		breq .L40
+ 136:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("9");
+ 883               	.LM105:
+ 884 014a 80E0      		ldi r24,lo8(.LC7)
+ 885 014c 90E0      		ldi r25,hi8(.LC7)
+ 886 014e 0E94 0000 		call LCD_write
+ 887               	.L41:
+ 137:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000100) {leer=PINA;}
+ 889               	.LM106:
+ 890 0152 89B3      		in r24,0x19
+ 891 0154 90E0      		ldi r25,0
+ 892 0156 8434      		cpi r24,68
+ 893 0158 9105      		cpc r25,__zero_reg__
+ 894 015a 01F0      		breq .L41
+ 895 015c 00C0      		rjmp .L36
+ 896               	.L387:
+ 130:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000100)
+ 898               	.LM107:
+ 899 015e 8434      		cpi r24,68
+ 900 0160 9105      		cpc r25,__zero_reg__
+ 901 0162 01F4      		brne .L371
+ 902               	.L40:
+ 143:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("I");
+ 904               	.LM108:
+ 905 0164 80E0      		ldi r24,lo8(.LC8)
+ 906 0166 90E0      		ldi r25,hi8(.LC8)
+ 907 0168 0E94 0000 		call LCD_write
+ 908               	.L43:
+ 144:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000100) {leer=PINA;}
+ 910               	.LM109:
+ 911 016c 89B3      		in r24,0x19
+ 912 016e 90E0      		ldi r25,0
+ 913 0170 8434      		cpi r24,68
+ 914 0172 9105      		cpc r25,__zero_reg__
+ 915 0174 01F0      		breq .L43
+ 916 0176 00C0      		rjmp .L371
+ 917               	.L388:
+ 130:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000100)
+ 919               	.LM110:
+ 920 0178 8434      		cpi r24,68
+ 921 017a 9105      		cpc r25,__zero_reg__
+ 922 017c 01F4      		brne .L369
+ 923               	.L38:
+ 150:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("Q");
+ 925               	.LM111:
+ 926 017e 80E0      		ldi r24,lo8(.LC9)
+ 927 0180 90E0      		ldi r25,hi8(.LC9)
+ 928 0182 0E94 0000 		call LCD_write
+ 929               	.L45:
+ 151:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000100) {leer=PINA;}
+ 931               	.LM112:
+ 932 0186 89B3      		in r24,0x19
+ 933 0188 90E0      		ldi r25,0
+ 934 018a 8434      		cpi r24,68
+ 935 018c 9105      		cpc r25,__zero_reg__
+ 936 018e 01F0      		breq .L45
+ 937 0190 00C0      		rjmp .L369
+ 938               	.L389:
+ 130:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000100)
+ 940               	.LM113:
+ 941 0192 8434      		cpi r24,68
+ 942 0194 9105      		cpc r25,__zero_reg__
+ 943 0196 01F4      		brne .L370
+ 944               	.L39:
+ 157:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("Z");
+ 946               	.LM114:
+ 947 0198 80E0      		ldi r24,lo8(.LC10)
+ 948 019a 90E0      		ldi r25,hi8(.LC10)
+ 949 019c 0E94 0000 		call LCD_write
+ 950               	.L47:
+ 158:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000100) {leer=PINA;}
+ 952               	.LM115:
+ 953 01a0 89B3      		in r24,0x19
+ 954 01a2 90E0      		ldi r25,0
+ 955 01a4 8434      		cpi r24,68
+ 956 01a6 9105      		cpc r25,__zero_reg__
+ 957 01a8 01F0      		breq .L47
+ 958 01aa 00C0      		rjmp .L370
+ 959               	.L36:
+ 166:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000010)
+ 961               	.LM116:
+ 962 01ac 8234      		cpi r24,66
+ 963 01ae 9105      		cpc r25,__zero_reg__
+ 964 01b0 01F4      		brne .L48
+ 168:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 966               	.LM117:
+ 967 01b2 C330      		cpi r28,3
+ 968 01b4 D105      		cpc r29,__zero_reg__
+ 969 01b6 01F0      		breq .L50
+ 970 01b8 C430      		cpi r28,4
+ 971 01ba D105      		cpc r29,__zero_reg__
+ 972 01bc 01F0      		breq .L51
+ 973 01be C230      		cpi r28,2
+ 974 01c0 D105      		cpc r29,__zero_reg__
+ 975 01c2 01F0      		breq .L52
+ 172:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("6");
+ 977               	.LM118:
+ 978 01c4 80E0      		ldi r24,lo8(.LC11)
+ 979 01c6 90E0      		ldi r25,hi8(.LC11)
+ 980 01c8 0E94 0000 		call LCD_write
+ 981               	.L53:
+ 173:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000010) {leer=PINA;}
+ 983               	.LM119:
+ 984 01cc 89B3      		in r24,0x19
+ 985 01ce 90E0      		ldi r25,0
+ 986 01d0 8234      		cpi r24,66
+ 987 01d2 9105      		cpc r25,__zero_reg__
+ 988 01d4 01F0      		breq .L53
+ 989 01d6 00C0      		rjmp .L48
+ 990               	.L371:
+ 166:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000010)
+ 992               	.LM120:
+ 993 01d8 8234      		cpi r24,66
+ 994 01da 9105      		cpc r25,__zero_reg__
+ 995 01dc 01F4      		brne .L48
+ 996               	.L52:
+ 179:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("F");
+ 998               	.LM121:
+ 999 01de 80E0      		ldi r24,lo8(.LC12)
+ 1000 01e0 90E0      		ldi r25,hi8(.LC12)
+ 1001 01e2 0E94 0000 		call LCD_write
+ 1002               	.L55:
+ 180:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000010) {leer=PINA;}
+ 1004               	.LM122:
+ 1005 01e6 89B3      		in r24,0x19
+ 1006 01e8 90E0      		ldi r25,0
+ 1007 01ea 8234      		cpi r24,66
+ 1008 01ec 9105      		cpc r25,__zero_reg__
+ 1009 01ee 01F0      		breq .L55
+ 1010 01f0 00C0      		rjmp .L390
+ 1011               	.L369:
+ 166:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000010)
+ 1013               	.LM123:
+ 1014 01f2 8234      		cpi r24,66
+ 1015 01f4 9105      		cpc r25,__zero_reg__
+ 1016 01f6 01F4      		brne .L48
+ 1017               	.L50:
+ 186:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("ENNE");
+ 1019               	.LM124:
+ 1020 01f8 80E0      		ldi r24,lo8(.LC13)
+ 1021 01fa 90E0      		ldi r25,hi8(.LC13)
+ 1022 01fc 0E94 0000 		call LCD_write
+ 1023               	.L57:
+ 187:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000010) {leer=PINA;}
+ 1025               	.LM125:
+ 1026 0200 89B3      		in r24,0x19
+ 1027 0202 90E0      		ldi r25,0
+ 1028 0204 8234      		cpi r24,66
+ 1029 0206 9105      		cpc r25,__zero_reg__
+ 1030 0208 01F0      		breq .L57
+ 1031 020a 00C0      		rjmp .L391
+ 1032               	.L370:
+ 166:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000010)
+ 1034               	.LM126:
+ 1035 020c 8234      		cpi r24,66
+ 1036 020e 9105      		cpc r25,__zero_reg__
+ 1037 0210 01F4      		brne .L48
+ 1038               	.L51:
+ 193:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("W");
+ 1040               	.LM127:
+ 1041 0212 80E0      		ldi r24,lo8(.LC14)
+ 1042 0214 90E0      		ldi r25,hi8(.LC14)
+ 1043 0216 0E94 0000 		call LCD_write
+ 1044               	.L59:
+ 194:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000010) {leer=PINA;}
+ 1046               	.LM128:
+ 1047 021a 89B3      		in r24,0x19
+ 1048 021c 90E0      		ldi r25,0
+ 1049 021e 8234      		cpi r24,66
+ 1050 0220 9105      		cpc r25,__zero_reg__
+ 1051 0222 01F0      		breq .L59
+ 1052 0224 00C0      		rjmp .L392
+ 1053               	.L48:
+ 201:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000001)
+ 1055               	.LM129:
+ 1056 0226 8134      		cpi r24,65
+ 1057 0228 9105      		cpc r25,__zero_reg__
+ 1058 022a 01F0      		breq .L60
+ 1059               	.L67:
+ 239:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         PORTA = 0b00100000;
+ 1061               	.LM130:
+ 1062 022c FBBA      		out 0x1b,r15
+ 1063               	.LBB34:
+ 1064               	.LBB35:
+ 1066               	.Ltext17:
+ 1068               	.LM131:
+ 1069 022e 95E3      		ldi r25,lo8(53)
+ 1070 0230 9A95      		1: dec r25
+ 1071 0232 01F4      		brne 1b
+ 1072 0234 0000      		nop
+ 1073               	.LBE35:
+ 1074               	.LBE34:
+ 1076               	.Ltext18:
+ 241:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         leer = PINA;
+ 1078               	.LM132:
+ 1079 0236 89B3      		in r24,0x19
+ 1080 0238 90E0      		ldi r25,0
+ 244:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00101000)
+ 1082               	.LM133:
+ 1083 023a 8832      		cpi r24,40
+ 1084 023c 9105      		cpc r25,__zero_reg__
+ 1085 023e 01F0      		breq .+2
+ 1086 0240 00C0      		rjmp .L62
+ 1087 0242 00C0      		rjmp .L393
+ 1088               	.L60:
+ 203:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1090               	.LM134:
+ 1091 0244 C330      		cpi r28,3
+ 1092 0246 D105      		cpc r29,__zero_reg__
+ 1093 0248 01F0      		breq .L64
+ 1094 024a C430      		cpi r28,4
+ 1095 024c D105      		cpc r29,__zero_reg__
+ 1096 024e 01F0      		breq .L65
+ 1097 0250 C230      		cpi r28,2
+ 1098 0252 D105      		cpc r29,__zero_reg__
+ 1099 0254 01F0      		breq .L66
+ 207:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("3");
+ 1101               	.LM135:
+ 1102 0256 80E0      		ldi r24,lo8(.LC15)
+ 1103 0258 90E0      		ldi r25,hi8(.LC15)
+ 1104 025a 0E94 0000 		call LCD_write
+ 1105               	.L68:
+ 208:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000001) {leer=PINA;}
+ 1107               	.LM136:
+ 1108 025e 89B3      		in r24,0x19
+ 1109 0260 8134      		cpi r24,lo8(65)
+ 1110 0262 01F0      		breq .L68
+ 1111 0264 00C0      		rjmp .L67
+ 1112               	.L390:
+ 201:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000001)
+ 1114               	.LM137:
+ 1115 0266 8134      		cpi r24,65
+ 1116 0268 9105      		cpc r25,__zero_reg__
+ 1117 026a 01F4      		brne .L67
+ 1118               	.L66:
+ 214:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("C");
+ 1120               	.LM138:
+ 1121 026c 80E0      		ldi r24,lo8(.LC16)
+ 1122 026e 90E0      		ldi r25,hi8(.LC16)
+ 1123 0270 0E94 0000 		call LCD_write
+ 1124               	.L69:
+ 215:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000001) {leer=PINA;}
+ 1126               	.LM139:
+ 1127 0274 89B3      		in r24,0x19
+ 1128 0276 8134      		cpi r24,lo8(65)
+ 1129 0278 01F0      		breq .L69
+ 1130 027a 00C0      		rjmp .L67
+ 1131               	.L391:
+ 201:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000001)
+ 1133               	.LM140:
+ 1134 027c 8134      		cpi r24,65
+ 1135 027e 9105      		cpc r25,__zero_reg__
+ 1136 0280 01F4      		brne .L67
+ 1137               	.L64:
+ 221:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("L");
+ 1139               	.LM141:
+ 1140 0282 80E0      		ldi r24,lo8(.LC17)
+ 1141 0284 90E0      		ldi r25,hi8(.LC17)
+ 1142 0286 0E94 0000 		call LCD_write
+ 1143               	.L70:
+ 222:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000001) {leer=PINA;}
+ 1145               	.LM142:
+ 1146 028a 89B3      		in r24,0x19
+ 1147 028c 8134      		cpi r24,lo8(65)
+ 1148 028e 01F0      		breq .L70
+ 1149 0290 00C0      		rjmp .L67
+ 1150               	.L392:
+ 201:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b01000001)
+ 1152               	.LM143:
+ 1153 0292 8134      		cpi r24,65
+ 1154 0294 9105      		cpc r25,__zero_reg__
+ 1155 0296 01F4      		brne .L67
+ 1156               	.L65:
+ 228:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("T");
+ 1158               	.LM144:
+ 1159 0298 80E0      		ldi r24,lo8(.LC18)
+ 1160 029a 90E0      		ldi r25,hi8(.LC18)
+ 1161 029c 0E94 0000 		call LCD_write
+ 1162               	.L71:
+ 229:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b01000001) {leer=PINA;}
+ 1164               	.LM145:
+ 1165 02a0 89B3      		in r24,0x19
+ 1166 02a2 8134      		cpi r24,lo8(65)
+ 1167 02a4 01F0      		breq .L71
+ 1168 02a6 00C0      		rjmp .L67
+ 1169               	.L393:
+ 246:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1171               	.LM146:
+ 1172 02a8 C330      		cpi r28,3
+ 1173 02aa D105      		cpc r29,__zero_reg__
+ 1174 02ac 01F0      		breq .L73
+ 1175 02ae C430      		cpi r28,4
+ 1176 02b0 D105      		cpc r29,__zero_reg__
+ 1177 02b2 01F0      		breq .L74
+ 1178 02b4 C230      		cpi r28,2
+ 1179 02b6 D105      		cpc r29,__zero_reg__
+ 1180 02b8 01F0      		breq .L75
+ 250:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("0");
+ 1182               	.LM147:
+ 1183 02ba 80E0      		ldi r24,lo8(.LC19)
+ 1184 02bc 90E0      		ldi r25,hi8(.LC19)
+ 1185 02be 0E94 0000 		call LCD_write
+ 1186               	.L76:
+ 251:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00101000) {leer=PINA;}
+ 1188               	.LM148:
+ 1189 02c2 89B3      		in r24,0x19
+ 1190 02c4 90E0      		ldi r25,0
+ 1191 02c6 8832      		cpi r24,40
+ 1192 02c8 9105      		cpc r25,__zero_reg__
+ 1193 02ca 01F0      		breq .L76
+ 1194 02cc 00C0      		rjmp .L62
+ 1195               	.L75:
+ 257:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write(" ");
+ 1197               	.LM149:
+ 1198 02ce 80E0      		ldi r24,lo8(.LC6)
+ 1199 02d0 90E0      		ldi r25,hi8(.LC6)
+ 1200 02d2 0E94 0000 		call LCD_write
+ 1201               	.L78:
+ 258:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00101000) {leer=PINA;}
+ 1203               	.LM150:
+ 1204 02d6 89B3      		in r24,0x19
+ 1205 02d8 90E0      		ldi r25,0
+ 1206 02da 8832      		cpi r24,40
+ 1207 02dc 9105      		cpc r25,__zero_reg__
+ 1208 02de 01F0      		breq .L78
+ 1209 02e0 00C0      		rjmp .L394
+ 1210               	.L73:
+ 264:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write(" ");
+ 1212               	.LM151:
+ 1213 02e2 80E0      		ldi r24,lo8(.LC6)
+ 1214 02e4 90E0      		ldi r25,hi8(.LC6)
+ 1215 02e6 0E94 0000 		call LCD_write
+ 1216               	.L80:
+ 265:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00101000) {leer=PINA;}
+ 1218               	.LM152:
+ 1219 02ea 89B3      		in r24,0x19
+ 1220 02ec 90E0      		ldi r25,0
+ 1221 02ee 8832      		cpi r24,40
+ 1222 02f0 9105      		cpc r25,__zero_reg__
+ 1223 02f2 01F0      		breq .L80
+ 1224 02f4 00C0      		rjmp .L395
+ 1225               	.L74:
+ 271:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write(" ");
+ 1227               	.LM153:
+ 1228 02f6 80E0      		ldi r24,lo8(.LC6)
+ 1229 02f8 90E0      		ldi r25,hi8(.LC6)
+ 1230 02fa 0E94 0000 		call LCD_write
+ 1231               	.L82:
+ 272:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00101000) {leer=PINA;}
+ 1233               	.LM154:
+ 1234 02fe 89B3      		in r24,0x19
+ 1235 0300 90E0      		ldi r25,0
+ 1236 0302 8832      		cpi r24,40
+ 1237 0304 9105      		cpc r25,__zero_reg__
+ 1238 0306 01F0      		breq .L82
+ 1239 0308 00C0      		rjmp .L396
+ 1240               	.L62:
+ 280:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100100)
+ 1242               	.LM155:
+ 1243 030a 8432      		cpi r24,36
+ 1244 030c 9105      		cpc r25,__zero_reg__
+ 1245 030e 01F4      		brne .L83
+ 282:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1247               	.LM156:
+ 1248 0310 C330      		cpi r28,3
+ 1249 0312 D105      		cpc r29,__zero_reg__
+ 1250 0314 01F0      		breq .L85
+ 1251 0316 C430      		cpi r28,4
+ 1252 0318 D105      		cpc r29,__zero_reg__
+ 1253 031a 01F0      		breq .L86
+ 1254 031c C230      		cpi r28,2
+ 1255 031e D105      		cpc r29,__zero_reg__
+ 1256 0320 01F0      		breq .L87
+ 286:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("8");
+ 1258               	.LM157:
+ 1259 0322 80E0      		ldi r24,lo8(.LC20)
+ 1260 0324 90E0      		ldi r25,hi8(.LC20)
+ 1261 0326 0E94 0000 		call LCD_write
+ 1262               	.L88:
+ 287:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100100) {leer=PINA;}
+ 1264               	.LM158:
+ 1265 032a 89B3      		in r24,0x19
+ 1266 032c 90E0      		ldi r25,0
+ 1267 032e 8432      		cpi r24,36
+ 1268 0330 9105      		cpc r25,__zero_reg__
+ 1269 0332 01F0      		breq .L88
+ 1270 0334 00C0      		rjmp .L83
+ 1271               	.L394:
+ 280:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100100)
+ 1273               	.LM159:
+ 1274 0336 8432      		cpi r24,36
+ 1275 0338 9105      		cpc r25,__zero_reg__
+ 1276 033a 01F4      		brne .L373
+ 1277               	.L87:
+ 293:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("H");
+ 1279               	.LM160:
+ 1280 033c 80E0      		ldi r24,lo8(.LC21)
+ 1281 033e 90E0      		ldi r25,hi8(.LC21)
+ 1282 0340 0E94 0000 		call LCD_write
+ 1283               	.L90:
+ 294:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100100) {leer=PINA;}
+ 1285               	.LM161:
+ 1286 0344 89B3      		in r24,0x19
+ 1287 0346 90E0      		ldi r25,0
+ 1288 0348 8432      		cpi r24,36
+ 1289 034a 9105      		cpc r25,__zero_reg__
+ 1290 034c 01F0      		breq .L90
+ 1291 034e 00C0      		rjmp .L373
+ 1292               	.L395:
+ 280:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100100)
+ 1294               	.LM162:
+ 1295 0350 8432      		cpi r24,36
+ 1296 0352 9105      		cpc r25,__zero_reg__
+ 1297 0354 01F4      		brne .L374
+ 1298               	.L85:
+ 300:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("P");
+ 1300               	.LM163:
+ 1301 0356 80E0      		ldi r24,lo8(.LC22)
+ 1302 0358 90E0      		ldi r25,hi8(.LC22)
+ 1303 035a 0E94 0000 		call LCD_write
+ 1304               	.L92:
+ 301:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100100) {leer=PINA;}
+ 1306               	.LM164:
+ 1307 035e 89B3      		in r24,0x19
+ 1308 0360 90E0      		ldi r25,0
+ 1309 0362 8432      		cpi r24,36
+ 1310 0364 9105      		cpc r25,__zero_reg__
+ 1311 0366 01F0      		breq .L92
+ 1312 0368 00C0      		rjmp .L374
+ 1313               	.L396:
+ 280:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100100)
+ 1315               	.LM165:
+ 1316 036a 8432      		cpi r24,36
+ 1317 036c 9105      		cpc r25,__zero_reg__
+ 1318 036e 01F4      		brne .L372
+ 1319               	.L86:
+ 307:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("Y");
+ 1321               	.LM166:
+ 1322 0370 80E0      		ldi r24,lo8(.LC23)
+ 1323 0372 90E0      		ldi r25,hi8(.LC23)
+ 1324 0374 0E94 0000 		call LCD_write
+ 1325               	.L94:
+ 308:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100100) {leer=PINA;}
+ 1327               	.LM167:
+ 1328 0378 89B3      		in r24,0x19
+ 1329 037a 90E0      		ldi r25,0
+ 1330 037c 8432      		cpi r24,36
+ 1331 037e 9105      		cpc r25,__zero_reg__
+ 1332 0380 01F0      		breq .L94
+ 1333 0382 00C0      		rjmp .L372
+ 1334               	.L83:
+ 316:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100010)
+ 1336               	.LM168:
+ 1337 0384 8232      		cpi r24,34
+ 1338 0386 9105      		cpc r25,__zero_reg__
+ 1339 0388 01F4      		brne .L95
+ 318:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1341               	.LM169:
+ 1342 038a C330      		cpi r28,3
+ 1343 038c D105      		cpc r29,__zero_reg__
+ 1344 038e 01F0      		breq .L97
+ 1345 0390 C430      		cpi r28,4
+ 1346 0392 D105      		cpc r29,__zero_reg__
+ 1347 0394 01F0      		breq .L98
+ 1348 0396 C230      		cpi r28,2
+ 1349 0398 D105      		cpc r29,__zero_reg__
+ 1350 039a 01F0      		breq .L99
+ 322:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("5");
+ 1352               	.LM170:
+ 1353 039c 80E0      		ldi r24,lo8(.LC24)
+ 1354 039e 90E0      		ldi r25,hi8(.LC24)
+ 1355 03a0 0E94 0000 		call LCD_write
+ 1356               	.L100:
+ 323:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100010) {leer=PINA;}
+ 1358               	.LM171:
+ 1359 03a4 89B3      		in r24,0x19
+ 1360 03a6 90E0      		ldi r25,0
+ 1361 03a8 8232      		cpi r24,34
+ 1362 03aa 9105      		cpc r25,__zero_reg__
+ 1363 03ac 01F0      		breq .L100
+ 1364 03ae 00C0      		rjmp .L95
+ 1365               	.L373:
+ 316:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100010)
+ 1367               	.LM172:
+ 1368 03b0 8232      		cpi r24,34
+ 1369 03b2 9105      		cpc r25,__zero_reg__
+ 1370 03b4 01F4      		brne .L95
+ 1371               	.L99:
+ 329:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("E");
+ 1373               	.LM173:
+ 1374 03b6 80E0      		ldi r24,lo8(.LC25)
+ 1375 03b8 90E0      		ldi r25,hi8(.LC25)
+ 1376 03ba 0E94 0000 		call LCD_write
+ 1377               	.L102:
+ 330:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100010) {leer=PINA;}
+ 1379               	.LM174:
+ 1380 03be 89B3      		in r24,0x19
+ 1381 03c0 90E0      		ldi r25,0
+ 1382 03c2 8232      		cpi r24,34
+ 1383 03c4 9105      		cpc r25,__zero_reg__
+ 1384 03c6 01F0      		breq .L102
+ 1385 03c8 00C0      		rjmp .L397
+ 1386               	.L374:
+ 316:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100010)
+ 1388               	.LM175:
+ 1389 03ca 8232      		cpi r24,34
+ 1390 03cc 9105      		cpc r25,__zero_reg__
+ 1391 03ce 01F4      		brne .L95
+ 1392               	.L97:
+ 336:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("N");
+ 1394               	.LM176:
+ 1395 03d0 80E0      		ldi r24,lo8(.LC26)
+ 1396 03d2 90E0      		ldi r25,hi8(.LC26)
+ 1397 03d4 0E94 0000 		call LCD_write
+ 1398               	.L104:
+ 337:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100010) {leer=PINA;}
+ 1400               	.LM177:
+ 1401 03d8 89B3      		in r24,0x19
+ 1402 03da 90E0      		ldi r25,0
+ 1403 03dc 8232      		cpi r24,34
+ 1404 03de 9105      		cpc r25,__zero_reg__
+ 1405 03e0 01F0      		breq .L104
+ 1406 03e2 00C0      		rjmp .L398
+ 1407               	.L372:
+ 316:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100010)
+ 1409               	.LM178:
+ 1410 03e4 8232      		cpi r24,34
+ 1411 03e6 9105      		cpc r25,__zero_reg__
+ 1412 03e8 01F4      		brne .L95
+ 1413               	.L98:
+ 343:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("V");
+ 1415               	.LM179:
+ 1416 03ea 80E0      		ldi r24,lo8(.LC27)
+ 1417 03ec 90E0      		ldi r25,hi8(.LC27)
+ 1418 03ee 0E94 0000 		call LCD_write
+ 1419               	.L106:
+ 344:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100010) {leer=PINA;}
+ 1421               	.LM180:
+ 1422 03f2 89B3      		in r24,0x19
+ 1423 03f4 90E0      		ldi r25,0
+ 1424 03f6 8232      		cpi r24,34
+ 1425 03f8 9105      		cpc r25,__zero_reg__
+ 1426 03fa 01F0      		breq .L106
+ 1427 03fc 00C0      		rjmp .L399
+ 1428               	.L95:
+ 351:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100001)
+ 1430               	.LM181:
+ 1431 03fe 8197      		sbiw r24,33
+ 1432 0400 01F0      		breq .L107
+ 1433               	.L114:
+ 1435               	.LM182:
+ 1436 0402 EBBA      		out 0x1b,r14
+ 1437               	.LBB36:
+ 1438               	.LBB37:
+ 1440               	.Ltext19:
+ 1442               	.LM183:
+ 1443 0404 25E3      		ldi r18,lo8(53)
+ 1444 0406 2A95      		1: dec r18
+ 1445 0408 01F4      		brne 1b
+ 1446 040a 0000      		nop
+ 1447               	.LBE37:
+ 1448               	.LBE36:
+ 1450               	.Ltext20:
+ 388:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         _delay_us(10);
+ 389:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         leer = PINA;
+ 1452               	.LM184:
+ 1453 040c 89B3      		in r24,0x19
+ 1454 040e 90E0      		ldi r25,0
+ 390:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 391:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------CLC---Fila1--
+ 392:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00011000)
+ 1456               	.LM185:
+ 1457 0410 8831      		cpi r24,24
+ 1458 0412 9105      		cpc r25,__zero_reg__
+ 1459 0414 01F0      		breq .+2
+ 1460 0416 00C0      		rjmp .L109
+ 1461 0418 00C0      		rjmp .L400
+ 1462               	.L107:
+ 353:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1464               	.LM186:
+ 1465 041a C330      		cpi r28,3
+ 1466 041c D105      		cpc r29,__zero_reg__
+ 1467 041e 01F0      		breq .L111
+ 1468 0420 C430      		cpi r28,4
+ 1469 0422 D105      		cpc r29,__zero_reg__
+ 1470 0424 01F0      		breq .L112
+ 1471 0426 C230      		cpi r28,2
+ 1472 0428 D105      		cpc r29,__zero_reg__
+ 1473 042a 01F0      		breq .L113
+ 357:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("2");
+ 1475               	.LM187:
+ 1476 042c 80E0      		ldi r24,lo8(.LC28)
+ 1477 042e 90E0      		ldi r25,hi8(.LC28)
+ 1478 0430 0E94 0000 		call LCD_write
+ 1479               	.L115:
+ 358:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100001) {leer=PINA;}
+ 1481               	.LM188:
+ 1482 0434 89B3      		in r24,0x19
+ 1483 0436 8132      		cpi r24,lo8(33)
+ 1484 0438 01F0      		breq .L115
+ 1485 043a 00C0      		rjmp .L114
+ 1486               	.L397:
+ 351:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100001)
+ 1488               	.LM189:
+ 1489 043c 8197      		sbiw r24,33
+ 1490 043e 01F4      		brne .L114
+ 1491               	.L113:
+ 364:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("B");
+ 1493               	.LM190:
+ 1494 0440 80E0      		ldi r24,lo8(.LC29)
+ 1495 0442 90E0      		ldi r25,hi8(.LC29)
+ 1496 0444 0E94 0000 		call LCD_write
+ 1497               	.L116:
+ 365:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100001) {leer=PINA;}
+ 1499               	.LM191:
+ 1500 0448 89B3      		in r24,0x19
+ 1501 044a 8132      		cpi r24,lo8(33)
+ 1502 044c 01F0      		breq .L116
+ 1503 044e 00C0      		rjmp .L114
+ 1504               	.L398:
+ 351:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100001)
+ 1506               	.LM192:
+ 1507 0450 8197      		sbiw r24,33
+ 1508 0452 01F4      		brne .L114
+ 1509               	.L111:
+ 371:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("K");
+ 1511               	.LM193:
+ 1512 0454 80E0      		ldi r24,lo8(.LC30)
+ 1513 0456 90E0      		ldi r25,hi8(.LC30)
+ 1514 0458 0E94 0000 		call LCD_write
+ 1515               	.L117:
+ 372:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100001) {leer=PINA;}
+ 1517               	.LM194:
+ 1518 045c 89B3      		in r24,0x19
+ 1519 045e 8132      		cpi r24,lo8(33)
+ 1520 0460 01F0      		breq .L117
+ 1521 0462 00C0      		rjmp .L114
+ 1522               	.L399:
+ 351:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00100001)
+ 1524               	.LM195:
+ 1525 0464 8197      		sbiw r24,33
+ 1526 0466 01F4      		brne .L114
+ 1527               	.L112:
+ 378:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("S");
+ 1529               	.LM196:
+ 1530 0468 80E0      		ldi r24,lo8(.LC31)
+ 1531 046a 90E0      		ldi r25,hi8(.LC31)
+ 1532 046c 0E94 0000 		call LCD_write
+ 1533               	.L118:
+ 379:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00100001) {leer=PINA;}
+ 1535               	.LM197:
+ 1536 0470 89B3      		in r24,0x19
+ 1537 0472 8132      		cpi r24,lo8(33)
+ 1538 0474 01F0      		breq .L118
+ 1539 0476 00C0      		rjmp .L114
+ 1540               	.L400:
+ 393:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 394:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1542               	.LM198:
+ 1543 0478 C330      		cpi r28,3
+ 1544 047a D105      		cpc r29,__zero_reg__
+ 1545 047c 01F0      		breq .L120
+ 1546 047e C430      		cpi r28,4
+ 1547 0480 D105      		cpc r29,__zero_reg__
+ 1548 0482 01F0      		breq .L121
+ 1549 0484 C230      		cpi r28,2
+ 1550 0486 D105      		cpc r29,__zero_reg__
+ 1551 0488 01F0      		breq .L122
+ 395:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 396:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 397:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 398:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("*");
+ 1553               	.LM199:
+ 1554 048a 80E0      		ldi r24,lo8(.LC32)
+ 1555 048c 90E0      		ldi r25,hi8(.LC32)
+ 1556 048e 0E94 0000 		call LCD_write
+ 1557               	.L123:
+ 399:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00011000) {leer=PINA;}
+ 1559               	.LM200:
+ 1560 0492 89B3      		in r24,0x19
+ 1561 0494 90E0      		ldi r25,0
+ 1562 0496 8831      		cpi r24,24
+ 1563 0498 9105      		cpc r25,__zero_reg__
+ 1564 049a 01F0      		breq .L123
+ 1565 049c 00C0      		rjmp .L109
+ 1566               	.L122:
+ 400:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 401:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 402:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 403:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 404:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 405:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_command(0b00000001);
+ 1568               	.LM201:
+ 1569 049e 81E0      		ldi r24,lo8(1)
+ 1570 04a0 0E94 0000 		call LCD_command
+ 1571               	.L125:
+ 406:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00011000) {leer=PINA;}
+ 1573               	.LM202:
+ 1574 04a4 89B3      		in r24,0x19
+ 1575 04a6 90E0      		ldi r25,0
+ 1576 04a8 8831      		cpi r24,24
+ 1577 04aa 9105      		cpc r25,__zero_reg__
+ 1578 04ac 01F0      		breq .L125
+ 1579 04ae 00C0      		rjmp .L401
+ 1580               	.L120:
+ 407:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 408:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 409:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 410:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 411:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 412:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_command(0b00000001);
+ 1582               	.LM203:
+ 1583 04b0 81E0      		ldi r24,lo8(1)
+ 1584 04b2 0E94 0000 		call LCD_command
+ 1585               	.L127:
+ 413:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00011000) {leer=PINA;}
+ 1587               	.LM204:
+ 1588 04b6 89B3      		in r24,0x19
+ 1589 04b8 90E0      		ldi r25,0
+ 1590 04ba 8831      		cpi r24,24
+ 1591 04bc 9105      		cpc r25,__zero_reg__
+ 1592 04be 01F0      		breq .L127
+ 1593 04c0 00C0      		rjmp .L402
+ 1594               	.L121:
+ 414:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 415:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 416:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 417:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 418:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 419:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_command(0b00000001);
+ 1596               	.LM205:
+ 1597 04c2 81E0      		ldi r24,lo8(1)
+ 1598 04c4 0E94 0000 		call LCD_command
+ 1599               	.L129:
+ 420:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00011000) {leer=PINA;}
+ 1601               	.LM206:
+ 1602 04c8 89B3      		in r24,0x19
+ 1603 04ca 90E0      		ldi r25,0
+ 1604 04cc 8831      		cpi r24,24
+ 1605 04ce 9105      		cpc r25,__zero_reg__
+ 1606 04d0 01F0      		breq .L129
+ 1607 04d2 00C0      		rjmp .L403
+ 1608               	.L109:
+ 421:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 422:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 423:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 424:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 425:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 426:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 427:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------XOG7--Fila2--
+ 428:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010100)
+ 1610               	.LM207:
+ 1611 04d4 8431      		cpi r24,20
+ 1612 04d6 9105      		cpc r25,__zero_reg__
+ 1613 04d8 01F4      		brne .L130
+ 429:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 430:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1615               	.LM208:
+ 1616 04da C330      		cpi r28,3
+ 1617 04dc D105      		cpc r29,__zero_reg__
+ 1618 04de 01F0      		breq .L132
+ 1619 04e0 C430      		cpi r28,4
+ 1620 04e2 D105      		cpc r29,__zero_reg__
+ 1621 04e4 01F0      		breq .L133
+ 1622 04e6 C230      		cpi r28,2
+ 1623 04e8 D105      		cpc r29,__zero_reg__
+ 1624 04ea 01F0      		breq .L134
+ 431:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 432:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 433:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 434:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("7");
+ 1626               	.LM209:
+ 1627 04ec 80E0      		ldi r24,lo8(.LC33)
+ 1628 04ee 90E0      		ldi r25,hi8(.LC33)
+ 1629 04f0 0E94 0000 		call LCD_write
+ 1630               	.L135:
+ 435:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010100) {leer=PINA;}
+ 1632               	.LM210:
+ 1633 04f4 89B3      		in r24,0x19
+ 1634 04f6 90E0      		ldi r25,0
+ 1635 04f8 8431      		cpi r24,20
+ 1636 04fa 9105      		cpc r25,__zero_reg__
+ 1637 04fc 01F0      		breq .L135
+ 1638 04fe 00C0      		rjmp .L130
+ 1639               	.L401:
+ 428:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010100)
+ 1641               	.LM211:
+ 1642 0500 8431      		cpi r24,20
+ 1643 0502 9105      		cpc r25,__zero_reg__
+ 1644 0504 01F4      		brne .L375
+ 1645               	.L134:
+ 436:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 437:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 438:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 439:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 440:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 441:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("G");
+ 1647               	.LM212:
+ 1648 0506 80E0      		ldi r24,lo8(.LC34)
+ 1649 0508 90E0      		ldi r25,hi8(.LC34)
+ 1650 050a 0E94 0000 		call LCD_write
+ 1651               	.L137:
+ 442:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010100) {leer=PINA;}
+ 1653               	.LM213:
+ 1654 050e 89B3      		in r24,0x19
+ 1655 0510 90E0      		ldi r25,0
+ 1656 0512 8431      		cpi r24,20
+ 1657 0514 9105      		cpc r25,__zero_reg__
+ 1658 0516 01F0      		breq .L137
+ 1659 0518 00C0      		rjmp .L375
+ 1660               	.L402:
+ 428:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010100)
+ 1662               	.LM214:
+ 1663 051a 8431      		cpi r24,20
+ 1664 051c 9105      		cpc r25,__zero_reg__
+ 1665 051e 01F4      		brne .L376
+ 1666               	.L132:
+ 443:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 444:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 445:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 446:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 447:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 448:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("O");
+ 1668               	.LM215:
+ 1669 0520 80E0      		ldi r24,lo8(.LC35)
+ 1670 0522 90E0      		ldi r25,hi8(.LC35)
+ 1671 0524 0E94 0000 		call LCD_write
+ 1672               	.L139:
+ 449:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010100) {leer=PINA;}
+ 1674               	.LM216:
+ 1675 0528 89B3      		in r24,0x19
+ 1676 052a 90E0      		ldi r25,0
+ 1677 052c 8431      		cpi r24,20
+ 1678 052e 9105      		cpc r25,__zero_reg__
+ 1679 0530 01F0      		breq .L139
+ 1680 0532 00C0      		rjmp .L376
+ 1681               	.L403:
+ 428:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010100)
+ 1683               	.LM217:
+ 1684 0534 8431      		cpi r24,20
+ 1685 0536 9105      		cpc r25,__zero_reg__
+ 1686 0538 01F4      		brne .L377
+ 1687               	.L133:
+ 450:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 451:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 452:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 453:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 454:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 455:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("X");
+ 1689               	.LM218:
+ 1690 053a 80E0      		ldi r24,lo8(.LC36)
+ 1691 053c 90E0      		ldi r25,hi8(.LC36)
+ 1692 053e 0E94 0000 		call LCD_write
+ 1693               	.L141:
+ 456:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010100) {leer=PINA;}
+ 1695               	.LM219:
+ 1696 0542 89B3      		in r24,0x19
+ 1697 0544 90E0      		ldi r25,0
+ 1698 0546 8431      		cpi r24,20
+ 1699 0548 9105      		cpc r25,__zero_reg__
+ 1700 054a 01F0      		breq .L141
+ 1701 054c 00C0      		rjmp .L377
+ 1702               	.L130:
+ 457:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 458:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 459:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 460:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 461:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 462:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 463:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------UMD4--Fila3--
+ 464:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010010)
+ 1704               	.LM220:
+ 1705 054e 8231      		cpi r24,18
+ 1706 0550 9105      		cpc r25,__zero_reg__
+ 1707 0552 01F4      		brne .L142
+ 465:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 466:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1709               	.LM221:
+ 1710 0554 C330      		cpi r28,3
+ 1711 0556 D105      		cpc r29,__zero_reg__
+ 1712 0558 01F0      		breq .L144
+ 1713 055a C430      		cpi r28,4
+ 1714 055c D105      		cpc r29,__zero_reg__
+ 1715 055e 01F0      		breq .L145
+ 1716 0560 C230      		cpi r28,2
+ 1717 0562 D105      		cpc r29,__zero_reg__
+ 1718 0564 01F0      		breq .L146
+ 467:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 468:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 469:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 470:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("4");
+ 1720               	.LM222:
+ 1721 0566 80E0      		ldi r24,lo8(.LC37)
+ 1722 0568 90E0      		ldi r25,hi8(.LC37)
+ 1723 056a 0E94 0000 		call LCD_write
+ 1724               	.L147:
+ 471:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010010) {leer=PINA;}
+ 1726               	.LM223:
+ 1727 056e 89B3      		in r24,0x19
+ 1728 0570 90E0      		ldi r25,0
+ 1729 0572 8231      		cpi r24,18
+ 1730 0574 9105      		cpc r25,__zero_reg__
+ 1731 0576 01F0      		breq .L147
+ 1732 0578 00C0      		rjmp .L142
+ 1733               	.L375:
+ 464:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010010)
+ 1735               	.LM224:
+ 1736 057a 8231      		cpi r24,18
+ 1737 057c 9105      		cpc r25,__zero_reg__
+ 1738 057e 01F4      		brne .L142
+ 1739               	.L146:
+ 472:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 473:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 474:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 475:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 476:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 477:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("D");
+ 1741               	.LM225:
+ 1742 0580 80E0      		ldi r24,lo8(.LC38)
+ 1743 0582 90E0      		ldi r25,hi8(.LC38)
+ 1744 0584 0E94 0000 		call LCD_write
+ 1745               	.L149:
+ 478:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010010) {leer=PINA;}
+ 1747               	.LM226:
+ 1748 0588 89B3      		in r24,0x19
+ 1749 058a 90E0      		ldi r25,0
+ 1750 058c 8231      		cpi r24,18
+ 1751 058e 9105      		cpc r25,__zero_reg__
+ 1752 0590 01F0      		breq .L149
+ 1753 0592 00C0      		rjmp .L404
+ 1754               	.L376:
+ 464:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010010)
+ 1756               	.LM227:
+ 1757 0594 8231      		cpi r24,18
+ 1758 0596 9105      		cpc r25,__zero_reg__
+ 1759 0598 01F4      		brne .L142
+ 1760               	.L144:
+ 479:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 480:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 481:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 482:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 483:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 484:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("M");
+ 1762               	.LM228:
+ 1763 059a 80E0      		ldi r24,lo8(.LC39)
+ 1764 059c 90E0      		ldi r25,hi8(.LC39)
+ 1765 059e 0E94 0000 		call LCD_write
+ 1766               	.L151:
+ 485:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010010) {leer=PINA;}
+ 1768               	.LM229:
+ 1769 05a2 89B3      		in r24,0x19
+ 1770 05a4 90E0      		ldi r25,0
+ 1771 05a6 8231      		cpi r24,18
+ 1772 05a8 9105      		cpc r25,__zero_reg__
+ 1773 05aa 01F0      		breq .L151
+ 1774 05ac 00C0      		rjmp .L405
+ 1775               	.L377:
+ 464:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010010)
+ 1777               	.LM230:
+ 1778 05ae 8231      		cpi r24,18
+ 1779 05b0 9105      		cpc r25,__zero_reg__
+ 1780 05b2 01F4      		brne .L142
+ 1781               	.L145:
+ 486:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 487:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 488:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 489:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 490:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 491:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("U");
+ 1783               	.LM231:
+ 1784 05b4 80E0      		ldi r24,lo8(.LC40)
+ 1785 05b6 90E0      		ldi r25,hi8(.LC40)
+ 1786 05b8 0E94 0000 		call LCD_write
+ 1787               	.L153:
+ 492:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010010) {leer=PINA;}
+ 1789               	.LM232:
+ 1790 05bc 89B3      		in r24,0x19
+ 1791 05be 90E0      		ldi r25,0
+ 1792 05c0 8231      		cpi r24,18
+ 1793 05c2 9105      		cpc r25,__zero_reg__
+ 1794 05c4 01F0      		breq .L153
+ 1795 05c6 00C0      		rjmp .L406
+ 1796               	.L142:
+ 493:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 494:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 495:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             }
+ 496:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         }
+ 497:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         
+ 498:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         //--------RJA1--Fila4--
+ 499:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010001)
+ 1798               	.LM233:
+ 1799 05c8 4197      		sbiw r24,17
+ 1800 05ca 01F0      		breq .+2
+ 1801 05cc 00C0      		rjmp .L15
+ 500:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         {
+ 501:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             switch (indicador)
+ 1803               	.LM234:
+ 1804 05ce C330      		cpi r28,3
+ 1805 05d0 D105      		cpc r29,__zero_reg__
+ 1806 05d2 01F0      		breq .L156
+ 1807 05d4 C430      		cpi r28,4
+ 1808 05d6 D105      		cpc r29,__zero_reg__
+ 1809 05d8 01F0      		breq .L157
+ 1810 05da 2297      		sbiw r28,2
+ 1811 05dc 01F0      		breq .L158
+ 502:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****             {
+ 503:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 1:
+ 504:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 505:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("1");
+ 1813               	.LM235:
+ 1814 05de 80E0      		ldi r24,lo8(.LC41)
+ 1815 05e0 90E0      		ldi r25,hi8(.LC41)
+ 1816 05e2 0E94 0000 		call LCD_write
+ 1817               	.L159:
+ 506:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010001) {leer=PINA;}
+ 1819               	.LM236:
+ 1820 05e6 89B3      		in r24,0x19
+ 1821 05e8 8131      		cpi r24,lo8(17)
+ 1822 05ea 01F0      		breq .L159
+ 1823 05ec C1E0      		ldi r28,lo8(1)
+ 1824 05ee D0E0      		ldi r29,0
+ 1825 05f0 00C0      		rjmp .L15
+ 1826               	.L404:
+ 499:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010001)
+ 1828               	.LM237:
+ 1829 05f2 4197      		sbiw r24,17
+ 1830 05f4 01F0      		breq .+2
+ 1831 05f6 00C0      		rjmp .L15
+ 1832               	.L158:
+ 507:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 508:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 509:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 510:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 2:
+ 511:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 512:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("A");
+ 1834               	.LM238:
+ 1835 05f8 80E0      		ldi r24,lo8(.LC42)
+ 1836 05fa 90E0      		ldi r25,hi8(.LC42)
+ 1837 05fc 0E94 0000 		call LCD_write
+ 1838               	.L160:
+ 513:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010001) {leer=PINA;}
+ 1840               	.LM239:
+ 1841 0600 89B3      		in r24,0x19
+ 1842 0602 8131      		cpi r24,lo8(17)
+ 1843 0604 01F0      		breq .L160
+ 1844 0606 C2E0      		ldi r28,lo8(2)
+ 1845 0608 D0E0      		ldi r29,0
+ 1846 060a 00C0      		rjmp .L15
+ 1847               	.L405:
+ 499:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010001)
+ 1849               	.LM240:
+ 1850 060c 4197      		sbiw r24,17
+ 1851 060e 01F0      		breq .+2
+ 1852 0610 00C0      		rjmp .L15
+ 1853               	.L156:
+ 514:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 515:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 516:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 517:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 3:
+ 518:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 519:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("J");
+ 1855               	.LM241:
+ 1856 0612 80E0      		ldi r24,lo8(.LC43)
+ 1857 0614 90E0      		ldi r25,hi8(.LC43)
+ 1858 0616 0E94 0000 		call LCD_write
+ 1859               	.L161:
+ 520:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010001) {leer=PINA;}
+ 1861               	.LM242:
+ 1862 061a 89B3      		in r24,0x19
+ 1863 061c 8131      		cpi r24,lo8(17)
+ 1864 061e 01F0      		breq .L161
+ 1865 0620 C3E0      		ldi r28,lo8(3)
+ 1866 0622 D0E0      		ldi r29,0
+ 1867 0624 00C0      		rjmp .L15
+ 1868               	.L406:
+ 499:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****         if (leer == 0b00010001)
+ 1870               	.LM243:
+ 1871 0626 4197      		sbiw r24,17
+ 1872 0628 01F0      		breq .+2
+ 1873 062a 00C0      		rjmp .L15
+ 1874               	.L157:
+ 521:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     break;
+ 522:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 }
+ 523:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     
+ 524:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 case 4:
+ 525:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                 {
+ 526:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     LCD_write("R");
+ 1876               	.LM244:
+ 1877 062c 80E0      		ldi r24,lo8(.LC44)
+ 1878 062e 90E0      		ldi r25,hi8(.LC44)
+ 1879 0630 0E94 0000 		call LCD_write
+ 1880               	.L162:
+ 527:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/LCD/LCD/main.c ****                     while (leer==0b00010001) {leer=PINA;}
+ 1882               	.LM245:
+ 1883 0634 89B3      		in r24,0x19
+ 1884 0636 8131      		cpi r24,lo8(17)
+ 1885 0638 01F0      		breq .L162
+ 1886 063a C4E0      		ldi r28,lo8(4)
+ 1887 063c D0E0      		ldi r29,0
+ 1888 063e 00C0      		rjmp .L15
+ 1893               	.Lscope8:
+ 1894               		.text
+ 1896               	.Letext0:
+ 1897               		.ident	"GCC: (GNU) 4.8.1"
+ 1898               	.global __do_copy_data
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:2      *ABS*:0000003e __SP_H__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:3      *ABS*:0000003d __SP_L__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:4      *ABS*:0000003f __SREG__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:113    .text:00000000 LCD_putchar
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:176    .text:00000024 LCD_getaddr
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:223    .text:0000003a LCD_wait
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:247    .text:00000044 LCD_command
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:304    .text:00000060 LCD_init
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:435    .text:000000be LCD_write
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:479    .text:000000ea initIO
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccTmvBhh.s:587    .text.startup:00000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data

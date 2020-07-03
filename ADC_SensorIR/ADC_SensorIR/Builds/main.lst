@@ -1,0 +1,1510 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+ 111               	.global	LCD_putchar
+ 113               	LCD_putchar:
+ 115               	.Ltext1:
+   1:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //#include <avr/io.h>
+   2:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //#include <avr/delay.h>
+   3:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** #define LCD_RS 0
+   4:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** #define LCD_RW 1
+   5:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** #define LCD_E 2
+   6:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 
+   7:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //LCD_putchar writes a character to the LCD at the current address,
+   8:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //no busy flag check is done before or after
+   9:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //the character is written!
+  10:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //usage: LCD_putchar('A'); or LCD_putchar(0x55);
+  11:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** void LCD_putchar(char data)
+  12:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** {
+ 117               	.LM0:
+ 118               	.LFBB1:
+ 119               	/* prologue: function */
+ 120               	/* frame size = 0 */
+ 121               	/* stack size = 0 */
+ 122               	.L__stack_usage = 0
+  13:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//PortD is output
+  14:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	DDRD = 0xFF;
+ 124               	.LM1:
+ 125 0000 9FEF      		ldi r25,lo8(-1)
+ 126 0002 91BB      		out 0x11,r25
+  15:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//put data on bus
+  16:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTD = data;
+ 128               	.LM2:
+ 129 0004 82BB      		out 0x12,r24
+  17:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//RW low, E low
+  18:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+ 131               	.LM3:
+ 132 0006 85B3      		in r24,0x15
+ 133 0008 897F      		andi r24,lo8(-7)
+ 134 000a 85BB      		out 0x15,r24
+  19:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//RS high, strobe E
+  20:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC |= ((1<<LCD_RS)|(1<<LCD_E));
+ 136               	.LM4:
+ 137 000c 85B3      		in r24,0x15
+ 138 000e 8560      		ori r24,lo8(5)
+ 139 0010 85BB      		out 0x15,r24
+  21:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//the number of nops required varies with your clock frequency, try it out!
+  22:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 141               	.LM5:
+ 142               	/* #APP */
+ 143               	 ;  22 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 144 0012 0000      		nop
+ 145               	 ;  0 "" 2
+  23:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 147               	.LM6:
+ 148               	 ;  23 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 149 0014 0000      		nop
+ 150               	 ;  0 "" 2
+  24:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 152               	.LM7:
+ 153               	 ;  24 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 154 0016 0000      		nop
+ 155               	 ;  0 "" 2
+  25:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 157               	.LM8:
+ 158               	 ;  25 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 159 0018 0000      		nop
+ 160               	 ;  0 "" 2
+  26:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//RS low again, E low (belongs to strobe)
+  27:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC &= ~((1<<LCD_RS)|(1<<LCD_E));
+ 162               	.LM9:
+ 163               	/* #NOAPP */
+ 164 001a 85B3      		in r24,0x15
+ 165 001c 8A7F      		andi r24,lo8(-6)
+ 166 001e 85BB      		out 0x15,r24
+  28:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//release bus
+  29:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	DDRD = 0;
+ 168               	.LM10:
+ 169 0020 11BA      		out 0x11,__zero_reg__
+ 170 0022 0895      		ret
+ 172               	.Lscope1:
+ 174               	.global	LCD_getaddr
+ 176               	LCD_getaddr:
+  30:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** }
+  31:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 
+  32:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //LCD_getaddress reads the address counter and busy flag. For the address only,
+  33:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //mask off bit7 of the return value.
+  34:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** char LCD_getaddr(void)
+  35:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** {
+ 178               	.LM11:
+ 179               	.LFBB2:
+ 180               	/* prologue: function */
+ 181               	/* frame size = 0 */
+ 182               	/* stack size = 0 */
+ 183               	.L__stack_usage = 0
+  36:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//make var for the return value
+  37:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	char address;
+  38:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//PortD is input
+  39:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	DDRD = 0;
+ 185               	.LM12:
+ 186 0024 11BA      		out 0x11,__zero_reg__
+  40:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//RW high, strobe enable
+  41:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC |= ((1<<LCD_RW)|(1<<LCD_E));
+ 188               	.LM13:
+ 189 0026 85B3      		in r24,0x15
+ 190 0028 8660      		ori r24,lo8(6)
+ 191 002a 85BB      		out 0x15,r24
+  42:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 193               	.LM14:
+ 194               	/* #APP */
+ 195               	 ;  42 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 196 002c 0000      		nop
+ 197               	 ;  0 "" 2
+  43:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 199               	.LM15:
+ 200               	 ;  43 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 201 002e 0000      		nop
+ 202               	 ;  0 "" 2
+  44:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//while E is high, get data from LCD
+  45:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	address = PIND;
+ 204               	.LM16:
+ 205               	/* #NOAPP */
+ 206 0030 80B3      		in r24,0x10
+  46:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//reset RW to low, E low (for strobe)
+  47:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+ 208               	.LM17:
+ 209 0032 95B3      		in r25,0x15
+ 210 0034 997F      		andi r25,lo8(-7)
+ 211 0036 95BB      		out 0x15,r25
+  48:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//return address and busy flag
+  49:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	return address;
+  50:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** }
+ 213               	.LM18:
+ 214 0038 0895      		ret
+ 219               	.Lscope2:
+ 221               	.global	LCD_wait
+ 223               	LCD_wait:
+  51:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 
+  52:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //LCD_wait reads the address counter (which contains the busy flag) and loops until
+  53:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //the busy flag is cleared.
+  54:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** void LCD_wait(void)
+  55:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** {
+ 225               	.LM19:
+ 226               	.LFBB3:
+ 227               	/* prologue: function */
+ 228               	/* frame size = 0 */
+ 229               	/* stack size = 0 */
+ 230               	.L__stack_usage = 0
+ 231               	.L5:
+  56:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//get address and busy flag
+  57:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//and loop until busy flag cleared
+  58:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h ****     while((LCD_getaddr() & 0x80) == 0x80);
+ 233               	.LM20:
+ 234 003a 0E94 0000 		call LCD_getaddr
+ 235 003e 87FD      		sbrc r24,7
+ 236 0040 00C0      		rjmp .L5
+ 237               	/* epilogue start */
+  59:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** }
+ 239               	.LM21:
+ 240 0042 0895      		ret
+ 242               	.Lscope3:
+ 245               	.global	LCD_command
+ 247               	LCD_command:
+  60:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 
+  61:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //LCD_command works EXACTLY like LCD_putchar, but takes RS low for accessing the command reg
+  62:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //see LCD_putchar for details on the code
+  63:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** void LCD_command(char command)
+  64:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** {
+ 249               	.LM22:
+ 250               	.LFBB4:
+ 251               	/* prologue: function */
+ 252               	/* frame size = 0 */
+ 253               	/* stack size = 0 */
+ 254               	.L__stack_usage = 0
+  65:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	DDRD = 0xFF;
+ 256               	.LM23:
+ 257 0044 9FEF      		ldi r25,lo8(-1)
+ 258 0046 91BB      		out 0x11,r25
+  66:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTD = command;
+ 260               	.LM24:
+ 261 0048 82BB      		out 0x12,r24
+  67:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC &= ~((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+ 263               	.LM25:
+ 264 004a 85B3      		in r24,0x15
+ 265 004c 887F      		andi r24,lo8(-8)
+ 266 004e 85BB      		out 0x15,r24
+  68:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC |= (1<<LCD_E);
+ 268               	.LM26:
+ 269 0050 AA9A      		sbi 0x15,2
+  69:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 271               	.LM27:
+ 272               	/* #APP */
+ 273               	 ;  69 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 274 0052 0000      		nop
+ 275               	 ;  0 "" 2
+  70:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 277               	.LM28:
+ 278               	 ;  70 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 279 0054 0000      		nop
+ 280               	 ;  0 "" 2
+  71:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 282               	.LM29:
+ 283               	 ;  71 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 284 0056 0000      		nop
+ 285               	 ;  0 "" 2
+  72:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	asm volatile ("nop");
+ 287               	.LM30:
+ 288               	 ;  72 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h" 1
+ 289 0058 0000      		nop
+ 290               	 ;  0 "" 2
+  73:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC &= ~(1<<LCD_E);
+ 292               	.LM31:
+ 293               	/* #NOAPP */
+ 294 005a AA98      		cbi 0x15,2
+  74:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	DDRD = 0;
+ 296               	.LM32:
+ 297 005c 11BA      		out 0x11,__zero_reg__
+ 298 005e 0895      		ret
+ 300               	.Lscope4:
+ 302               	.global	LCD_init
+ 304               	LCD_init:
+  75:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** }
+  76:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 
+  77:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** /*LCD_init initialises the LCD with the following paramters:
+  78:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 8 bit mode, 5*7 font, 2 lines (also for 4 lines)
+  79:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** auto-inc cursor after write and read
+  80:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** cursor and didsplay on, cursor blinking.
+  81:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** */
+  82:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** void LCD_init(void)
+  83:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** {
+ 306               	.LM33:
+ 307               	.LFBB5:
+ 308               	/* prologue: function */
+ 309               	/* frame size = 0 */
+ 310               	/* stack size = 0 */
+ 311               	.L__stack_usage = 0
+  84:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//setup the LCD control signals on PortC
+  85:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	DDRC |= ((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+ 313               	.LM34:
+ 314 0060 84B3      		in r24,0x14
+ 315 0062 8760      		ori r24,lo8(7)
+ 316 0064 84BB      		out 0x14,r24
+  86:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	PORTC = 0x00;
+ 318               	.LM35:
+ 319 0066 15BA      		out 0x15,__zero_reg__
+ 320               	.LBB19:
+ 321               	.LBB20:
+ 323               	.Ltext2:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    Copyright (c) 2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    All rights reserved.
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    Redistribution and use in source and binary forms, with or without
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    modification, are permitted provided that the following conditions are met:
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Redistributions of source code must retain the above copyright
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer.
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Redistributions in binary form must reproduce the above copyright
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer in
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      the documentation and/or other materials provided with the
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      distribution.
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Neither the name of the copyright holders nor the names of
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      contributors may be used to endorse or promote products derived
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      from this software without specific prior written permission.
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /* $Id$ */
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #ifndef _UTIL_DELAY_BASIC_H_
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #define _UTIL_DELAY_BASIC_H_ 1
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #include <inttypes.h>
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #if !defined(__DOXYGEN__)
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** static inline void _delay_loop_1(uint8_t __count) __attribute__((always_inline));
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** static inline void _delay_loop_2(uint16_t __count) __attribute__((always_inline));
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #endif
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \file */
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \defgroup util_delay_basic <util/delay_basic.h>: Basic busy-wait delay loops
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     \code
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     #include <util/delay_basic.h>
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     \endcode
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     The functions in this header file implement simple delay loops
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     that perform a busy-waiting.  They are typically used to
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     facilitate short delays in the program execution.  They are
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     implemented as count-down loops with a well-known CPU cycle
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     count per loop iteration.  As such, no other processing can
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     occur simultaneously.  It should be kept in mind that the
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     functions described here do not disable interrupts.
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     In general, for long delays, the use of hardware timers is
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     much preferrable, as they free the CPU, and allow for
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     concurrent processing of other events while the timer is
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     running.  However, in particular for very short delays, the
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     overhead of setting up a hardware timer is too much compared
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     to the overall delay time.
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Two inline functions are provided for the actual delay algorithms.
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** */
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Delay loop using an 8-bit counter \c __count, so up to 256
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     iterations are possible.  (The value 256 would have to be passed
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     as 0.)  The loop executes three CPU cycles per iteration, not
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     including the overhead the compiler needs to setup the counter
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     register.
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to 768 microseconds
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     can be achieved.
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** */
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** void
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** _delay_loop_1(uint8_t __count)
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** {
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	__asm__ volatile (
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		"1: dec %0" "\n\t"
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		"brne 1b"
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		: "=r" (__count)
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		: "0" (__count)
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	);
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** }
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Delay loop using a 16-bit counter \c __count, so up to 65536
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     iterations are possible.  (The value 65536 would have to be
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     passed as 0.)  The loop executes four CPU cycles per iteration,
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     not including the overhead the compiler requires to setup the
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     counter register pair.
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to about 262.1
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     milliseconds can be achieved.
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****  */
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** void
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** _delay_loop_2(uint16_t __count)
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** {
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	__asm__ volatile (
+ 325               	.LM36:
+ 326 0068 8FEF      		ldi r24,lo8(-1)
+ 327 006a 9FEF      		ldi r25,lo8(-1)
+ 328               	/* #APP */
+ 329               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 330 006c 0197      		1: sbiw r24,1
+ 331 006e 01F4      		brne 1b
+ 332               	 ;  0 "" 2
+ 333               	/* #NOAPP */
+ 334               	.LBE20:
+ 335               	.LBE19:
+ 337               	.Ltext3:
+  87:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//if called right after power-up, we'll have to wait a bit (fine-tune for faster execution)
+  88:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  89:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//tell the LCD that it's used in 8-bit mode 3 times, each with a delay inbetween.
+  90:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_command(0x30);
+ 339               	.LM37:
+ 340 0070 80E3      		ldi r24,lo8(48)
+ 341 0072 0E94 0000 		call LCD_command
+ 342               	.LBB21:
+ 343               	.LBB22:
+ 345               	.Ltext4:
+ 347               	.LM38:
+ 348 0076 8FEF      		ldi r24,lo8(-1)
+ 349 0078 9FEF      		ldi r25,lo8(-1)
+ 350               	/* #APP */
+ 351               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 352 007a 0197      		1: sbiw r24,1
+ 353 007c 01F4      		brne 1b
+ 354               	 ;  0 "" 2
+ 355               	/* #NOAPP */
+ 356               	.LBE22:
+ 357               	.LBE21:
+ 359               	.Ltext5:
+  91:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  92:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_command(0x30);
+ 361               	.LM39:
+ 362 007e 80E3      		ldi r24,lo8(48)
+ 363 0080 0E94 0000 		call LCD_command
+ 364               	.LBB23:
+ 365               	.LBB24:
+ 367               	.Ltext6:
+ 369               	.LM40:
+ 370 0084 8FEF      		ldi r24,lo8(-1)
+ 371 0086 9FEF      		ldi r25,lo8(-1)
+ 372               	/* #APP */
+ 373               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 374 0088 0197      		1: sbiw r24,1
+ 375 008a 01F4      		brne 1b
+ 376               	 ;  0 "" 2
+ 377               	/* #NOAPP */
+ 378               	.LBE24:
+ 379               	.LBE23:
+ 381               	.Ltext7:
+  93:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  94:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_command(0x30);
+ 383               	.LM41:
+ 384 008c 80E3      		ldi r24,lo8(48)
+ 385 008e 0E94 0000 		call LCD_command
+ 386               	.LBB25:
+ 387               	.LBB26:
+ 389               	.Ltext8:
+ 391               	.LM42:
+ 392 0092 8FEF      		ldi r24,lo8(-1)
+ 393 0094 9FEF      		ldi r25,lo8(-1)
+ 394               	/* #APP */
+ 395               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 396 0096 0197      		1: sbiw r24,1
+ 397 0098 01F4      		brne 1b
+ 398               	 ;  0 "" 2
+ 399               	/* #NOAPP */
+ 400               	.LBE26:
+ 401               	.LBE25:
+ 403               	.Ltext9:
+  95:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  96:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//now: 8 bit interface, 5*7 font, 2 lines.
+  97:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_command(0x38);
+ 405               	.LM43:
+ 406 009a 88E3      		ldi r24,lo8(56)
+ 407 009c 0E94 0000 		call LCD_command
+  98:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//wait until command finished
+  99:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_wait();
+ 409               	.LM44:
+ 410 00a0 0E94 0000 		call LCD_wait
+ 100:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//display on, cursor on (blinking)
+ 101:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_command(0x0F);
+ 412               	.LM45:
+ 413 00a4 8FE0      		ldi r24,lo8(15)
+ 414 00a6 0E94 0000 		call LCD_command
+ 102:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_wait();
+ 416               	.LM46:
+ 417 00aa 0E94 0000 		call LCD_wait
+ 103:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//now clear the display, cursor home
+ 104:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_command(0x01);
+ 419               	.LM47:
+ 420 00ae 81E0      		ldi r24,lo8(1)
+ 421 00b0 0E94 0000 		call LCD_command
+ 105:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_wait();
+ 423               	.LM48:
+ 424 00b4 0E94 0000 		call LCD_wait
+ 106:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//cursor auto-inc
+ 107:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	LCD_command(0x06);
+ 426               	.LM49:
+ 427 00b8 86E0      		ldi r24,lo8(6)
+ 428 00ba 0C94 0000 		jmp LCD_command
+ 430               	.Lscope5:
+ 433               	.global	LCD_write
+ 435               	LCD_write:
+ 108:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** }
+ 109:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 
+ 110:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //now it's time for a simple function for showing strings on the LCD. It uses the low-level
+ 111:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //functions above. usage example: LCD_write("Hello World!");
+ 112:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** void LCD_write(char* dstring)
+ 113:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** {
+ 437               	.LM50:
+ 438               	.LFBB6:
+ 439 00be 0F93      		push r16
+ 440 00c0 1F93      		push r17
+ 441 00c2 CF93      		push r28
+ 442 00c4 DF93      		push r29
+ 443               	/* prologue: function */
+ 444               	/* frame size = 0 */
+ 445               	/* stack size = 4 */
+ 446               	.L__stack_usage = 4
+ 447 00c6 EC01      		movw r28,r24
+ 448               	.L10:
+ 449 00c8 8E01      		movw r16,r28
+ 114:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	//is the character pointed at by dstring a zero? If not, write character to LCD
+ 115:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	while(*dstring)
+ 451               	.LM51:
+ 452 00ca 8881      		ld r24,Y
+ 453 00cc 8823      		tst r24
+ 454 00ce 01F0      		breq .L12
+ 116:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	{
+ 117:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 		//if the LCD is bus, let it finish the current operation
+ 118:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 		LCD_wait();
+ 456               	.LM52:
+ 457 00d0 0E94 0000 		call LCD_wait
+ 458 00d4 2196      		adiw r28,1
+ 119:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 		//the write the character from dstring to the LCD, then post-inc the dstring is pointing at.
+ 120:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 		LCD_putchar(*dstring++);
+ 460               	.LM53:
+ 461 00d6 F801      		movw r30,r16
+ 462 00d8 8081      		ld r24,Z
+ 463 00da 0E94 0000 		call LCD_putchar
+ 464 00de 00C0      		rjmp .L10
+ 465               	.L12:
+ 466               	/* epilogue start */
+ 121:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 	}
+ 122:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** }
+ 468               	.LM54:
+ 469 00e0 DF91      		pop r29
+ 470 00e2 CF91      		pop r28
+ 471 00e4 1F91      		pop r17
+ 472 00e6 0F91      		pop r16
+ 473 00e8 0895      		ret
+ 475               	.Lscope6:
+ 479               	.global	LCD_goTo
+ 481               	LCD_goTo:
+ 123:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** 
+ 124:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** //LCD goTo defined position on screen
+ 125:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** char firstColumnPositionsForLCD[4] = {0, 64, 20, 84};
+ 126:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** void LCD_goTo(uint8_t x, uint8_t y)
+ 127:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h **** {
+ 483               	.LM55:
+ 484               	.LFBB7:
+ 485               	/* prologue: function */
+ 486               	/* frame size = 0 */
+ 487               	/* stack size = 0 */
+ 488               	.L__stack_usage = 0
+ 128:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/libLCD.h ****     LCD_command(0x80 + firstColumnPositionsForLCD[y-1] + (x-1));
+ 490               	.LM56:
+ 491 00ea 8158      		subi r24,lo8(-(127))
+ 492 00ec E62F      		mov r30,r22
+ 493 00ee F0E0      		ldi r31,0
+ 494 00f0 E050      		subi r30,lo8(-(firstColumnPositionsForLCD-1))
+ 495 00f2 F040      		sbci r31,hi8(-(firstColumnPositionsForLCD-1))
+ 496 00f4 9081      		ld r25,Z
+ 497 00f6 890F      		add r24,r25
+ 498 00f8 0C94 0000 		jmp LCD_command
+ 500               	.Lscope7:
+ 502               	.global	initIO
+ 504               	initIO:
+ 506               	.Ltext10:
+   1:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** #include <stdio.h>
+   2:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** #include <avr/io.h>
+   3:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** #include <avr/interrupt.h>
+   4:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** #include <util/delay.h>
+   5:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** #include "libLCD.h"
+   6:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+   7:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** /*
+   8:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****  
+   9:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                             Created By:
+  10:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+  11:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                 .------..------..------..------..------.
+  12:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                 |M.--. ||A.--. ||G.--. ||I.--. ||C.--. |
+  13:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                 | (\/) || (\/) || :/\: || (\/) || :/\: |
+  14:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                 | :\/: || :\/: || :\/: || :\/: || :\/: |
+  15:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                 | '--'M|| '--'A|| '--'G|| '--'I|| '--'C|
+  16:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                 `------'`------'`------'`------'`------'
+  17:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+  18:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****  
+  19:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                           ADC Sensor IR
+  20:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                         Calibracion Manual
+  21:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                 Datos Calibracion y Curva .xls en la
+  22:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****                                      carpeta de este archivo
+  23:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****  
+  24:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****  LCD_Data ---> DDRD
+  25:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****  LCD_RS-RW-EN ---> Pin0-Pin1-Pin2, DDRC
+  26:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****  ADC_SensorIR ---> Pin0, DDRA
+  27:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****  Resolucion ADC = 8bits
+  28:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** */
+  29:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+  30:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** void initIO(void) {
+ 508               	.LM57:
+ 509               	.LFBB8:
+ 510               	/* prologue: function */
+ 511               	/* frame size = 0 */
+ 512               	/* stack size = 0 */
+ 513               	.L__stack_usage = 0
+ 514 00fc 0895      		ret
+ 516               	.Lscope8:
+ 517               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 518               	.LC0:
+ 519 0000 4372 6561 		.string	"Created by"
+ 519      7465 6420 
+ 519      6279 00
+ 520               	.LC1:
+ 521 000b 4D61 6769 		.string	"Magic"
+ 521      6300 
+ 522               	.LC2:
+ 523 0011 4361 7267 		.string	"Cargando Sensor"
+ 523      616E 646F 
+ 523      2053 656E 
+ 523      736F 7200 
+ 524               	.LC3:
+ 525 0021 2D00      		.string	"-"
+ 526               	.LC4:
+ 527 0023 4361 7267 		.string	"Carga Completa"
+ 527      6120 436F 
+ 527      6D70 6C65 
+ 527      7461 00
+ 528               	.LC5:
+ 529 0032 4C65 7965 		.string	"Leyendo:"
+ 529      6E64 6F3A 
+ 529      00
+ 530               		.section	.text.startup,"ax",@progbits
+ 532               	.global	main
+ 534               	main:
+  31:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  32:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** }
+  33:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+  34:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** int main(void)
+  35:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** {
+ 536               	.LM58:
+ 537               	.LFBB9:
+ 538               	/* prologue: function */
+ 539               	/* frame size = 0 */
+ 540               	/* stack size = 0 */
+ 541               	.L__stack_usage = 0
+  36:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_init();
+ 543               	.LM59:
+ 544 0000 0E94 0000 		call LCD_init
+  37:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_wait();
+ 546               	.LM60:
+ 547 0004 0E94 0000 		call LCD_wait
+  38:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_write("Created by");
+ 549               	.LM61:
+ 550 0008 80E0      		ldi r24,lo8(.LC0)
+ 551 000a 90E0      		ldi r25,hi8(.LC0)
+ 552 000c 0E94 0000 		call LCD_write
+  39:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_wait();
+ 554               	.LM62:
+ 555 0010 0E94 0000 		call LCD_wait
+  40:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_command(0xC0);
+ 557               	.LM63:
+ 558 0014 80EC      		ldi r24,lo8(-64)
+ 559 0016 0E94 0000 		call LCD_command
+  41:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_wait();
+ 561               	.LM64:
+ 562 001a 0E94 0000 		call LCD_wait
+  42:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_write("Magic");
+ 564               	.LM65:
+ 565 001e 80E0      		ldi r24,lo8(.LC1)
+ 566 0020 90E0      		ldi r25,hi8(.LC1)
+ 567 0022 0E94 0000 		call LCD_write
+ 568               	.LBB27:
+ 569               	.LBB28:
+ 571               	.Ltext11:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* $Id$ */
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /** \file */
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \code
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \endcode
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     used.
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** */
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /**
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 107:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 109:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 112:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 114:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 120:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 125:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 129:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 132:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 140:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****  */
+ 141:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** void
+ 142:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** {
+ 144:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	double __tmp ; 
+ 145:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 146:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 147:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 148:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 149:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 150:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 151:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 152:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 153:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 154:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 155:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 156:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 157:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 158:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#else
+ 159:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		//round up by default
+ 160:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 161:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#endif
+ 162:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 163:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 573               	.LM66:
+ 574 0026 2FEF      		ldi r18,lo8(3199999)
+ 575 0028 83ED      		ldi r24,hi8(3199999)
+ 576 002a 90E3      		ldi r25,hlo8(3199999)
+ 577 002c 2150      		1: subi r18,1
+ 578 002e 8040      		sbci r24,0
+ 579 0030 9040      		sbci r25,0
+ 580 0032 01F4      		brne 1b
+ 581 0034 00C0      		rjmp .
+ 582 0036 0000      		nop
+ 583               	.LBE28:
+ 584               	.LBE27:
+ 586               	.Ltext12:
+  43:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     _delay_ms(1000);
+  44:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_command(0b00000001);
+ 588               	.LM67:
+ 589 0038 81E0      		ldi r24,lo8(1)
+ 590 003a 0E94 0000 		call LCD_command
+  45:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_wait();
+ 592               	.LM68:
+ 593 003e 0E94 0000 		call LCD_wait
+  46:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_write("Cargando Sensor");
+ 595               	.LM69:
+ 596 0042 80E0      		ldi r24,lo8(.LC2)
+ 597 0044 90E0      		ldi r25,hi8(.LC2)
+ 598 0046 0E94 0000 		call LCD_write
+  47:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_wait();
+ 600               	.LM70:
+ 601 004a 0E94 0000 		call LCD_wait
+  48:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_command(0xC0);
+ 603               	.LM71:
+ 604 004e 80EC      		ldi r24,lo8(-64)
+ 605 0050 0E94 0000 		call LCD_command
+  49:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_wait();
+ 607               	.LM72:
+ 608 0054 0E94 0000 		call LCD_wait
+ 609               	.LBB29:
+  50:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     for (int load=1; load<=16; load++)
+ 611               	.LM73:
+ 612 0058 C1E0      		ldi r28,lo8(1)
+ 613 005a D0E0      		ldi r29,0
+ 614               	.L18:
+  51:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     {
+  52:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         LCD_write("-");
+ 616               	.LM74:
+ 617 005c 80E0      		ldi r24,lo8(.LC3)
+ 618 005e 90E0      		ldi r25,hi8(.LC3)
+ 619 0060 0E94 0000 		call LCD_write
+ 620               	.LBB30:
+ 621               	.LBB31:
+ 623               	.Ltext13:
+ 625               	.LM75:
+ 626 0064 2FEF      		ldi r18,lo8(319999)
+ 627 0066 81EE      		ldi r24,hi8(319999)
+ 628 0068 94E0      		ldi r25,hlo8(319999)
+ 629 006a 2150      		1: subi r18,1
+ 630 006c 8040      		sbci r24,0
+ 631 006e 9040      		sbci r25,0
+ 632 0070 01F4      		brne 1b
+ 633 0072 00C0      		rjmp .
+ 634 0074 0000      		nop
+ 635               	.LBE31:
+ 636               	.LBE30:
+ 638               	.Ltext14:
+  53:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         _delay_ms(100);
+  54:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         if (load==16)
+ 640               	.LM76:
+ 641 0076 C031      		cpi r28,16
+ 642 0078 D105      		cpc r29,__zero_reg__
+ 643 007a 01F4      		brne .L16
+  55:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         {
+  56:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_command(0b00000001);
+ 645               	.LM77:
+ 646 007c 81E0      		ldi r24,lo8(1)
+ 647 007e 0E94 0000 		call LCD_command
+  57:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("Carga Completa");
+ 649               	.LM78:
+ 650 0082 80E0      		ldi r24,lo8(.LC4)
+ 651 0084 90E0      		ldi r25,hi8(.LC4)
+ 652 0086 0E94 0000 		call LCD_write
+ 653               	.LBB32:
+ 654               	.LBB33:
+ 656               	.Ltext15:
+ 658               	.LM79:
+ 659 008a 2FEF      		ldi r18,lo8(3199999)
+ 660 008c 83ED      		ldi r24,hi8(3199999)
+ 661 008e 90E3      		ldi r25,hlo8(3199999)
+ 662 0090 2150      		1: subi r18,1
+ 663 0092 8040      		sbci r24,0
+ 664 0094 9040      		sbci r25,0
+ 665 0096 01F4      		brne 1b
+ 666 0098 00C0      		rjmp .
+ 667 009a 0000      		nop
+ 668               	.LBE33:
+ 669               	.LBE32:
+ 671               	.Ltext16:
+  58:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             _delay_ms(1000);
+  59:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_command(0b00000001);
+ 673               	.LM80:
+ 674 009c 81E0      		ldi r24,lo8(1)
+ 675 009e 0E94 0000 		call LCD_command
+  60:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_wait();
+ 677               	.LM81:
+ 678 00a2 0E94 0000 		call LCD_wait
+ 679               	.L16:
+  50:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     for (int load=1; load<=16; load++)
+ 681               	.LM82:
+ 682 00a6 2196      		adiw r28,1
+ 683 00a8 C131      		cpi r28,17
+ 684 00aa D105      		cpc r29,__zero_reg__
+ 685 00ac 01F4      		brne .L18
+ 686               	.LBE29:
+  61:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         }
+  62:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     }
+  63:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_write("Leyendo:");
+ 688               	.LM83:
+ 689 00ae 80E0      		ldi r24,lo8(.LC5)
+ 690 00b0 90E0      		ldi r25,hi8(.LC5)
+ 691 00b2 0E94 0000 		call LCD_write
+  64:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_wait();
+ 693               	.LM84:
+ 694 00b6 0E94 0000 		call LCD_wait
+  65:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  66:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  67:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     //Configure the ADC
+  68:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     ADCSRA |= 1 <<ADPS2;
+ 696               	.LM85:
+ 697 00ba 329A      		sbi 0x6,2
+  69:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     ADMUX |= 1 <<ADLAR;
+ 699               	.LM86:
+ 700 00bc 3D9A      		sbi 0x7,5
+  70:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     ADMUX |= 1 <<REFS0;
+ 702               	.LM87:
+ 703 00be 3E9A      		sbi 0x7,6
+  71:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     ADCSRA |= 1 <<ADIE;
+ 705               	.LM88:
+ 706 00c0 339A      		sbi 0x6,3
+  72:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     ADCSRA |= 1 <<ADEN;
+ 708               	.LM89:
+ 709 00c2 379A      		sbi 0x6,7
+  73:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  74:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     sei();
+ 711               	.LM90:
+ 712               	/* #APP */
+ 713               	 ;  74 "/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c" 1
+ 714 00c4 7894      		sei
+ 715               	 ;  0 "" 2
+ 716               	/* #NOAPP */
+ 717               	.L19:
+  75:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  76:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     while (1)
+  77:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     {
+  78:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         ADCSRA |= 1 <<ADSC;
+ 719               	.LM91:
+ 720 00c6 369A      		sbi 0x6,6
+ 721 00c8 00C0      		rjmp .L19
+ 726               	.Lscope9:
+ 727               		.section	.rodata.str1.1
+ 728               	.LC6:
+ 729 003b 4144 4348 		.string	"ADCH "
+ 729      2000 
+ 730               	.LC7:
+ 731 0041 2020 2000 		.string	"   "
+ 732               		.text
+ 734               	.global	__vector_14
+ 736               	__vector_14:
+  79:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     }
+  80:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  81:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  82:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** }
+  83:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+  84:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+  85:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** //int e = 2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382
+  86:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+  87:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** 
+  88:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** ISR(ADC_vect)
+  89:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** {
+ 738               	.LM92:
+ 739               	.LFBB10:
+ 740 00fe 1F92      		push r1
+ 741 0100 0F92      		push r0
+ 742 0102 0FB6      		in r0,__SREG__
+ 743 0104 0F92      		push r0
+ 744 0106 1124      		clr __zero_reg__
+ 745 0108 2F93      		push r18
+ 746 010a 3F93      		push r19
+ 747 010c 4F93      		push r20
+ 748 010e 5F93      		push r21
+ 749 0110 6F93      		push r22
+ 750 0112 7F93      		push r23
+ 751 0114 8F93      		push r24
+ 752 0116 9F93      		push r25
+ 753 0118 AF93      		push r26
+ 754 011a BF93      		push r27
+ 755 011c EF93      		push r30
+ 756 011e FF93      		push r31
+ 757 0120 CF93      		push r28
+ 758 0122 DF93      		push r29
+ 759 0124 00D0      		rcall .
+ 760 0126 00D0      		rcall .
+ 761 0128 CDB7      		in r28,__SP_L__
+ 762 012a DEB7      		in r29,__SP_H__
+ 763               	/* prologue: Signal */
+ 764               	/* frame size = 4 */
+ 765               	/* stack size = 21 */
+ 766               	.L__stack_usage = 21
+ 767               	.LBB34:
+ 768               	.LBB35:
+ 770               	.Ltext17:
+ 772               	.LM93:
+ 773 012c 2FEF      		ldi r18,lo8(319999)
+ 774 012e 81EE      		ldi r24,hi8(319999)
+ 775 0130 94E0      		ldi r25,hlo8(319999)
+ 776 0132 2150      		1: subi r18,1
+ 777 0134 8040      		sbci r24,0
+ 778 0136 9040      		sbci r25,0
+ 779 0138 01F4      		brne 1b
+ 780 013a 00C0      		rjmp .
+ 781 013c 0000      		nop
+ 782               	.LBE35:
+ 783               	.LBE34:
+ 785               	.Ltext18:
+  90:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     _delay_ms(100);
+  91:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     //int sensor1 = (128000-sqrt(10)*sqrt(1560980213-3570200*sensor))/178510;//(sensor-3)/128; //e^
+  92:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     char adcResult[4];
+  93:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     itoa(ADCH, adcResult, 10);
+ 787               	.LM94:
+ 788 013e 85B1      		in r24,0x5
+ 789 0140 4AE0      		ldi r20,lo8(10)
+ 790 0142 50E0      		ldi r21,0
+ 791 0144 BE01      		movw r22,r28
+ 792 0146 6F5F      		subi r22,-1
+ 793 0148 7F4F      		sbci r23,-1
+ 794 014a 90E0      		ldi r25,0
+ 795 014c 0E94 0000 		call itoa
+  94:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  95:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     /*
+  96:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+  97:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     switch (ADCH)
+  98:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     {
+  99:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 144:
+ 100:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 101:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("5");
+ 102:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 103:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 104:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 105:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 106:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 107:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 108:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 143:
+ 109:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 110:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("6");
+ 111:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 112:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 113:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 114:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 115:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 116:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 117:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 133 ... 142:
+ 118:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 119:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("7");
+ 120:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 121:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 122:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 123:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 124:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 125:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 126:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 125 ... 132:
+ 127:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 128:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("8");
+ 129:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 130:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 131:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 132:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 133:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 134:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 135:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 110 ... 124:
+ 136:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 137:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("9");
+ 138:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 139:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 140:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 141:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 142:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 143:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 144:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 95 ... 109:
+ 145:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 146:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("10");
+ 147:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 148:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 149:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 150:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 151:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 152:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 153:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 85 ... 94:
+ 154:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 155:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("11");
+ 156:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 157:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 158:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 159:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 160:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 161:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 162:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 78 ... 84:
+ 163:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 164:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("12");
+ 165:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 166:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 167:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 168:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 169:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 170:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 171:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 70 ... 77:
+ 172:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 173:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("13");
+ 174:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 175:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 176:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 177:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 178:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 179:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 180:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 62 ... 69:
+ 181:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 182:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("14");
+ 183:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 184:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 185:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 186:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 187:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 188:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 189:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 57 ... 61:
+ 190:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 191:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("15");
+ 192:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 193:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 194:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 195:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 196:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 197:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 198:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 50 ... 56:
+ 199:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 200:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("16");
+ 201:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 202:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 203:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 204:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 205:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 206:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 207:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 46 ... 49:
+ 208:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 209:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("17");
+ 210:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 211:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 212:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 213:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 214:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 215:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 216:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 43 ... 45:
+ 217:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 218:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("18");
+ 219:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 220:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 221:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 222:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 223:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 224:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 225:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 40 ... 42:
+ 226:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 227:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("19");
+ 228:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 229:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 230:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 231:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 232:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 233:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 234:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 38 ... 39:
+ 235:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 236:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("20");
+ 237:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 238:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 239:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 240:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 241:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 242:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 243:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 34 ... 37:
+ 244:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 245:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("21");
+ 246:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 247:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 248:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 249:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 250:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 251:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 252:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 32 ... 33:
+ 253:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 254:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("22");
+ 255:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 256:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 257:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 258:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 259:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 260:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 261:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 29 ... 31:
+ 262:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 263:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("23");
+ 264:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 265:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 266:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 267:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 268:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 269:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 270:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 27 ... 28:
+ 271:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 272:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("24");
+ 273:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 274:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 275:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 276:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 277:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 278:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 279:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 24 ... 26:
+ 280:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 281:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("25");
+ 282:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 283:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 284:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 285:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 286:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 287:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 288:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 22 ... 23:
+ 289:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 290:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("26");
+ 291:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 292:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 293:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 294:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 295:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 296:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 297:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 20 ... 21:
+ 298:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 299:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("27");
+ 300:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 301:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 302:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 303:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 304:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 305:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 306:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 18 ... 19:
+ 307:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 308:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("28");
+ 309:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 310:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 311:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 312:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 313:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 314:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 315:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 16 ... 17:
+ 316:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 317:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("29");
+ 318:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 319:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 320:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 321:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 322:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 323:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 324:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 15:
+ 325:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 326:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("30");
+ 327:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 328:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 329:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 330:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 331:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 332:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 333:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 14:
+ 334:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 335:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("32");
+ 336:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 337:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 338:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 339:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 340:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 341:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 342:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 13:
+ 343:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 344:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("35");
+ 345:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 346:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 347:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 348:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 349:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 350:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 351:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 12:
+ 352:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 353:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("37");
+ 354:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 355:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 356:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 357:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 358:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 359:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 360:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 11:
+ 361:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 362:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("38");
+ 363:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 364:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 365:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 366:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 367:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 368:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 369:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 10:
+ 370:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 371:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("40");
+ 372:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 373:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 374:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 375:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 376:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 377:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 378:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 9:
+ 379:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 380:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("42");
+ 381:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 382:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 383:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 384:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 385:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 386:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 387:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 8:
+ 388:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 389:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("45");
+ 390:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 391:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 392:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 393:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 394:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 395:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 396:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 7:
+ 397:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 398:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("46");
+ 399:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 400:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 401:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 402:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 403:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 404:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 405:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 6:
+ 406:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 407:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("48");
+ 408:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 409:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 410:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 411:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 412:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 413:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 414:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 5:
+ 415:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 416:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("50");
+ 417:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 418:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 419:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 420:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 421:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 422:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 423:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 4:
+ 424:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 425:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("53");
+ 426:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 427:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 428:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 429:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 430:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 431:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 432:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 3:
+ 433:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 434:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("55");
+ 435:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 436:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 437:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 438:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 439:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 440:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 441:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 2:
+ 442:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 443:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("57");
+ 444:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 445:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 446:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 447:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 448:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 449:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 450:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         case 1:
+ 451:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 452:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("58");
+ 453:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 454:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("cm");
+ 455:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 456:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 457:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 458:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 459:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             
+ 460:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****         default:
+ 461:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 462:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("Fuera de Rango");
+ 463:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_goTo(1, 2);
+ 464:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             LCD_write("   ");
+ 465:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****             break;
+ 466:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     }
+ 467:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+ 468:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****      */
+ 469:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_goTo(1, 2);
+ 797               	.LM95:
+ 798 0150 62E0      		ldi r22,lo8(2)
+ 799 0152 81E0      		ldi r24,lo8(1)
+ 800 0154 0E94 0000 		call LCD_goTo
+ 470:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_write("ADCH ");
+ 802               	.LM96:
+ 803 0158 80E0      		ldi r24,lo8(.LC6)
+ 804 015a 90E0      		ldi r25,hi8(.LC6)
+ 805 015c 0E94 0000 		call LCD_write
+ 471:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_goTo(1, 2);
+ 807               	.LM97:
+ 808 0160 62E0      		ldi r22,lo8(2)
+ 809 0162 81E0      		ldi r24,lo8(1)
+ 810 0164 0E94 0000 		call LCD_goTo
+ 472:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_write(adcResult);
+ 812               	.LM98:
+ 813 0168 CE01      		movw r24,r28
+ 814 016a 0196      		adiw r24,1
+ 815 016c 0E94 0000 		call LCD_write
+ 473:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_goTo(1, 2);
+ 817               	.LM99:
+ 818 0170 62E0      		ldi r22,lo8(2)
+ 819 0172 81E0      		ldi r24,lo8(1)
+ 820 0174 0E94 0000 		call LCD_goTo
+ 474:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     LCD_write("   ");
+ 822               	.LM100:
+ 823 0178 80E0      		ldi r24,lo8(.LC7)
+ 824 017a 90E0      		ldi r25,hi8(.LC7)
+ 825 017c 0E94 0000 		call LCD_write
+ 826               	/* epilogue start */
+ 475:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c ****     
+ 476:/Users/Didi/Dropbox/Trabajos/5 Semestre/Micros/ADC_SensorIR/ADC_SensorIR/main.c **** }
+ 828               	.LM101:
+ 829 0180 0F90      		pop __tmp_reg__
+ 830 0182 0F90      		pop __tmp_reg__
+ 831 0184 0F90      		pop __tmp_reg__
+ 832 0186 0F90      		pop __tmp_reg__
+ 833 0188 DF91      		pop r29
+ 834 018a CF91      		pop r28
+ 835 018c FF91      		pop r31
+ 836 018e EF91      		pop r30
+ 837 0190 BF91      		pop r27
+ 838 0192 AF91      		pop r26
+ 839 0194 9F91      		pop r25
+ 840 0196 8F91      		pop r24
+ 841 0198 7F91      		pop r23
+ 842 019a 6F91      		pop r22
+ 843 019c 5F91      		pop r21
+ 844 019e 4F91      		pop r20
+ 845 01a0 3F91      		pop r19
+ 846 01a2 2F91      		pop r18
+ 847 01a4 0F90      		pop r0
+ 848 01a6 0FBE      		out __SREG__,r0
+ 849 01a8 0F90      		pop r0
+ 850 01aa 1F90      		pop r1
+ 851 01ac 1895      		reti
+ 856               	.Lscope10:
+ 857               	.global	firstColumnPositionsForLCD
+ 858               		.data
+ 861               	firstColumnPositionsForLCD:
+ 862 0000 00        		.byte	0
+ 863 0001 40        		.byte	64
+ 864 0002 14        		.byte	20
+ 865 0003 54        		.byte	84
+ 867               		.text
+ 869               	.Letext0:
+ 870               		.ident	"GCC: (GNU) 4.8.1"
+ 871               	.global __do_copy_data
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:2      *ABS*:0000003e __SP_H__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:3      *ABS*:0000003d __SP_L__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:4      *ABS*:0000003f __SREG__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:113    .text:00000000 LCD_putchar
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:176    .text:00000024 LCD_getaddr
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:223    .text:0000003a LCD_wait
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:247    .text:00000044 LCD_command
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:304    .text:00000060 LCD_init
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:435    .text:000000be LCD_write
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:481    .text:000000ea LCD_goTo
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:861    .data:00000000 firstColumnPositionsForLCD
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:504    .text:000000fc initIO
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:534    .text.startup:00000000 main
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccN5IrpL.s:736    .text:000000fe __vector_14
+
+UNDEFINED SYMBOLS
+itoa
+__do_copy_data

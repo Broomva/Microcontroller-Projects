@@ -1,0 +1,1770 @@
+
+Builds/main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000007b2  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         0000006e  00800060  000007b2  00000826  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .stab         0000120c  00000000  00000000  00000894  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      00000ef1  00000000  00000000  00001aa0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .comment      00000011  00000000  00000000  00002991  2**0
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000040  00000000  00000000  000029a8  2**3
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   0000017c  00000000  00000000  000029e8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 00000028  00000000  00000000  00002b64  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   000000b9  00000000  00000000  00002b8c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   8:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  10:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  14:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  18:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  1c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  20:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  24:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  28:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  2c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  30:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  34:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  38:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  3c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  40:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  44:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  48:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  4c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  50:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e2 eb       	ldi	r30, 0xB2	; 178
+  68:	f7 e0       	ldi	r31, 0x07	; 7
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	ae 3c       	cpi	r26, 0xCE	; 206
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+  76:	0e 94 b7 00 	call	0x16e	; 0x16e <main>
+  7a:	0c 94 d7 03 	jmp	0x7ae	; 0x7ae <_exit>
+
+0000007e <__bad_interrupt>:
+  7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000082 <LCD_putchar>:
+//the character is written!
+//usage: LCD_putchar('A'); or LCD_putchar(0x55);
+void LCD_putchar(char data)
+{
+    //PortD is output
+    DDRD = 0xFF;
+  82:	9f ef       	ldi	r25, 0xFF	; 255
+  84:	91 bb       	out	0x11, r25	; 17
+    //put data on bus
+    PORTD = data;
+  86:	82 bb       	out	0x12, r24	; 18
+    //RW low, E low
+    PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+  88:	85 b3       	in	r24, 0x15	; 21
+  8a:	89 7f       	andi	r24, 0xF9	; 249
+  8c:	85 bb       	out	0x15, r24	; 21
+    //RS high, strobe E
+    PORTC |= ((1<<LCD_RS)|(1<<LCD_E));
+  8e:	85 b3       	in	r24, 0x15	; 21
+  90:	85 60       	ori	r24, 0x05	; 5
+  92:	85 bb       	out	0x15, r24	; 21
+	...
+    asm volatile ("nop");
+    asm volatile ("nop");
+    asm volatile ("nop");
+    asm volatile ("nop");
+    //RS low again, E low (belongs to strobe)
+    PORTC &= ~((1<<LCD_RS)|(1<<LCD_E));
+  9c:	85 b3       	in	r24, 0x15	; 21
+  9e:	8a 7f       	andi	r24, 0xFA	; 250
+  a0:	85 bb       	out	0x15, r24	; 21
+    //release bus
+    DDRD = 0;
+  a2:	11 ba       	out	0x11, r1	; 17
+  a4:	08 95       	ret
+
+000000a6 <LCD_getaddr>:
+char LCD_getaddr(void)
+{
+    //make var for the return value
+    char address;
+    //PortD is input
+    DDRD = 0;
+  a6:	11 ba       	out	0x11, r1	; 17
+    //RW high, strobe enable
+    PORTC |= ((1<<LCD_RW)|(1<<LCD_E));
+  a8:	85 b3       	in	r24, 0x15	; 21
+  aa:	86 60       	ori	r24, 0x06	; 6
+  ac:	85 bb       	out	0x15, r24	; 21
+    asm volatile ("nop");
+  ae:	00 00       	nop
+    asm volatile ("nop");
+  b0:	00 00       	nop
+    //while E is high, get data from LCD
+    address = PIND;
+  b2:	80 b3       	in	r24, 0x10	; 16
+    //reset RW to low, E low (for strobe)
+    PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+  b4:	95 b3       	in	r25, 0x15	; 21
+  b6:	99 7f       	andi	r25, 0xF9	; 249
+  b8:	95 bb       	out	0x15, r25	; 21
+    //return address and busy flag
+    return address;
+}
+  ba:	08 95       	ret
+
+000000bc <LCD_wait>:
+//the busy flag is cleared.
+void LCD_wait(void)
+{
+    //get address and busy flag
+    //and loop until busy flag cleared
+    while((LCD_getaddr() & 0x80) == 0x80);
+  bc:	0e 94 53 00 	call	0xa6	; 0xa6 <LCD_getaddr>
+  c0:	87 fd       	sbrc	r24, 7
+  c2:	fc cf       	rjmp	.-8      	; 0xbc <LCD_wait>
+}
+  c4:	08 95       	ret
+
+000000c6 <LCD_command>:
+
+//LCD_command works EXACTLY like LCD_putchar, but takes RS low for accessing the command reg
+//see LCD_putchar for details on the code
+void LCD_command(char command)
+{
+    DDRD = 0xFF;
+  c6:	9f ef       	ldi	r25, 0xFF	; 255
+  c8:	91 bb       	out	0x11, r25	; 17
+    PORTD = command;
+  ca:	82 bb       	out	0x12, r24	; 18
+    PORTC &= ~((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+  cc:	85 b3       	in	r24, 0x15	; 21
+  ce:	88 7f       	andi	r24, 0xF8	; 248
+  d0:	85 bb       	out	0x15, r24	; 21
+    PORTC |= (1<<LCD_E);
+  d2:	aa 9a       	sbi	0x15, 2	; 21
+	...
+    asm volatile ("nop");
+    asm volatile ("nop");
+    asm volatile ("nop");
+    asm volatile ("nop");
+    PORTC &= ~(1<<LCD_E);
+  dc:	aa 98       	cbi	0x15, 2	; 21
+    DDRD = 0;
+  de:	11 ba       	out	0x11, r1	; 17
+  e0:	08 95       	ret
+
+000000e2 <LCD_init>:
+ cursor and didsplay on, cursor blinking.
+ */
+void LCD_init(void)
+{
+    //setup the LCD control signals on PortC
+    DDRC |= ((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+  e2:	84 b3       	in	r24, 0x14	; 20
+  e4:	87 60       	ori	r24, 0x07	; 7
+  e6:	84 bb       	out	0x14, r24	; 20
+    PORTC = 0x00;
+  e8:	15 ba       	out	0x15, r1	; 21
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  ea:	8f ef       	ldi	r24, 0xFF	; 255
+  ec:	9f ef       	ldi	r25, 0xFF	; 255
+  ee:	01 97       	sbiw	r24, 0x01	; 1
+  f0:	f1 f7       	brne	.-4      	; 0xee <LCD_init+0xc>
+    //if called right after power-up, we'll have to wait a bit (fine-tune for faster execution)
+    _delay_loop_2(0xFFFF);
+    //tell the LCD that it's used in 8-bit mode 3 times, each with a delay inbetween.
+    LCD_command(0x30);
+  f2:	80 e3       	ldi	r24, 0x30	; 48
+  f4:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+  f8:	8f ef       	ldi	r24, 0xFF	; 255
+  fa:	9f ef       	ldi	r25, 0xFF	; 255
+  fc:	01 97       	sbiw	r24, 0x01	; 1
+  fe:	f1 f7       	brne	.-4      	; 0xfc <LCD_init+0x1a>
+    _delay_loop_2(0xFFFF);
+    LCD_command(0x30);
+ 100:	80 e3       	ldi	r24, 0x30	; 48
+ 102:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+ 106:	8f ef       	ldi	r24, 0xFF	; 255
+ 108:	9f ef       	ldi	r25, 0xFF	; 255
+ 10a:	01 97       	sbiw	r24, 0x01	; 1
+ 10c:	f1 f7       	brne	.-4      	; 0x10a <LCD_init+0x28>
+    _delay_loop_2(0xFFFF);
+    LCD_command(0x30);
+ 10e:	80 e3       	ldi	r24, 0x30	; 48
+ 110:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+ 114:	8f ef       	ldi	r24, 0xFF	; 255
+ 116:	9f ef       	ldi	r25, 0xFF	; 255
+ 118:	01 97       	sbiw	r24, 0x01	; 1
+ 11a:	f1 f7       	brne	.-4      	; 0x118 <LCD_init+0x36>
+    _delay_loop_2(0xFFFF);
+    //now: 8 bit interface, 5*7 font, 2 lines.
+    LCD_command(0x38);
+ 11c:	88 e3       	ldi	r24, 0x38	; 56
+ 11e:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+    //wait until command finished
+    LCD_wait();
+ 122:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+    //display on, cursor on (blinking)
+    LCD_command(0x0F);
+ 126:	8f e0       	ldi	r24, 0x0F	; 15
+ 128:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+    LCD_wait();
+ 12c:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+    //now clear the display, cursor home
+    LCD_command(0x01);
+ 130:	81 e0       	ldi	r24, 0x01	; 1
+ 132:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+    LCD_wait();
+ 136:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+    //cursor auto-inc
+    LCD_command(0x06);
+ 13a:	86 e0       	ldi	r24, 0x06	; 6
+ 13c:	0c 94 63 00 	jmp	0xc6	; 0xc6 <LCD_command>
+
+00000140 <LCD_write>:
+}
+
+//now it's time for a simple function for showing strings on the LCD. It uses the low-level
+//functions above. usage example: LCD_write("Hello World!");
+void LCD_write(char* dstring)
+{
+ 140:	0f 93       	push	r16
+ 142:	1f 93       	push	r17
+ 144:	cf 93       	push	r28
+ 146:	df 93       	push	r29
+ 148:	ec 01       	movw	r28, r24
+ 14a:	8e 01       	movw	r16, r28
+    //is the character pointed at by dstring a zero? If not, write character to LCD
+    while(*dstring)
+ 14c:	88 81       	ld	r24, Y
+ 14e:	88 23       	and	r24, r24
+ 150:	41 f0       	breq	.+16     	; 0x162 <LCD_write+0x22>
+    {
+        //if the LCD is bus, let it finish the current operation
+        LCD_wait();
+ 152:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+ 156:	21 96       	adiw	r28, 0x01	; 1
+        //the write the character from dstring to the LCD, then post-inc the dstring is pointing at.
+        LCD_putchar(*dstring++);
+ 158:	f8 01       	movw	r30, r16
+ 15a:	80 81       	ld	r24, Z
+ 15c:	0e 94 41 00 	call	0x82	; 0x82 <LCD_putchar>
+ 160:	f4 cf       	rjmp	.-24     	; 0x14a <LCD_write+0xa>
+    }
+ 162:	df 91       	pop	r29
+ 164:	cf 91       	pop	r28
+ 166:	1f 91       	pop	r17
+ 168:	0f 91       	pop	r16
+ 16a:	08 95       	ret
+
+0000016c <initIO>:
+
+ LCD_Data ---> DDRD
+ LCD_RS-RW-EN ---> Pin0-Pin1-Pin2, DDRC
+ */
+
+void initIO(void) {
+ 16c:	08 95       	ret
+
+0000016e <main>:
+}
+
+
+int main(void)
+{
+    LCD_init();
+ 16e:	0e 94 71 00 	call	0xe2	; 0xe2 <LCD_init>
+    LCD_wait();
+ 172:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+    LCD_write("Created by");
+ 176:	80 e6       	ldi	r24, 0x60	; 96
+ 178:	90 e0       	ldi	r25, 0x00	; 0
+ 17a:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+    LCD_wait();
+ 17e:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+    LCD_command(0xC0);
+ 182:	80 ec       	ldi	r24, 0xC0	; 192
+ 184:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+    LCD_wait();
+ 188:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+    LCD_write("Magic");
+ 18c:	8b e6       	ldi	r24, 0x6B	; 107
+ 18e:	90 e0       	ldi	r25, 0x00	; 0
+ 190:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 194:	2f ef       	ldi	r18, 0xFF	; 255
+ 196:	83 ed       	ldi	r24, 0xD3	; 211
+ 198:	90 e3       	ldi	r25, 0x30	; 48
+ 19a:	21 50       	subi	r18, 0x01	; 1
+ 19c:	80 40       	sbci	r24, 0x00	; 0
+ 19e:	90 40       	sbci	r25, 0x00	; 0
+ 1a0:	e1 f7       	brne	.-8      	; 0x19a <main+0x2c>
+ 1a2:	00 c0       	rjmp	.+0      	; 0x1a4 <main+0x36>
+ 1a4:	00 00       	nop
+    _delay_ms(1000);
+    LCD_command(0b00000001);
+ 1a6:	81 e0       	ldi	r24, 0x01	; 1
+ 1a8:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+    LCD_wait();
+ 1ac:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+    LCD_write("Digite: ");
+ 1b0:	81 e7       	ldi	r24, 0x71	; 113
+ 1b2:	90 e0       	ldi	r25, 0x00	; 0
+ 1b4:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+    LCD_wait();
+ 1b8:	0e 94 5e 00 	call	0xbc	; 0xbc <LCD_wait>
+    
+    
+    DDRA = 0b11110000;
+ 1bc:	80 ef       	ldi	r24, 0xF0	; 240
+ 1be:	8a bb       	out	0x1a, r24	; 26
+    int leer;
+    int indicador = 1;
+ 1c0:	c1 e0       	ldi	r28, 0x01	; 1
+ 1c2:	d0 e0       	ldi	r29, 0x00	; 0
+    while(1)
+    {
+        
+        
+        //Columna 1 Indicadores
+        PORTA = 0b10000000;
+ 1c4:	10 e8       	ldi	r17, 0x80	; 128
+        
+        
+        
+        
+        //Columna 2
+        PORTA = 0b01000000;
+ 1c6:	00 e4       	ldi	r16, 0x40	; 64
+        
+        
+        
+        
+        //Columna 3
+        PORTA = 0b00100000;
+ 1c8:	80 e2       	ldi	r24, 0x20	; 32
+ 1ca:	f8 2e       	mov	r15, r24
+            }
+        }
+        
+        
+        //Columna 4
+        PORTA = 0b00010000;
+ 1cc:	90 e1       	ldi	r25, 0x10	; 16
+ 1ce:	e9 2e       	mov	r14, r25
+    while(1)
+    {
+        
+        
+        //Columna 1 Indicadores
+        PORTA = 0b10000000;
+ 1d0:	1b bb       	out	0x1b, r17	; 27
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 1d2:	25 e3       	ldi	r18, 0x35	; 53
+ 1d4:	2a 95       	dec	r18
+ 1d6:	f1 f7       	brne	.-4      	; 0x1d4 <main+0x66>
+ 1d8:	00 00       	nop
+        _delay_us(10);
+        leer = PINA;
+ 1da:	89 b3       	in	r24, 0x19	; 25
+ 1dc:	90 e0       	ldi	r25, 0x00	; 0
+        
+        if (leer == 0b10001000)
+ 1de:	88 38       	cpi	r24, 0x88	; 136
+ 1e0:	91 05       	cpc	r25, r1
+ 1e2:	39 f4       	brne	.+14     	; 0x1f2 <main+0x84>
+        {
+            //LCD_write("D");
+            indicador = 4;
+            while (leer==0b10001000) {leer=PINA;}
+ 1e4:	89 b3       	in	r24, 0x19	; 25
+ 1e6:	90 e0       	ldi	r25, 0x00	; 0
+ 1e8:	88 38       	cpi	r24, 0x88	; 136
+ 1ea:	91 05       	cpc	r25, r1
+ 1ec:	d9 f3       	breq	.-10     	; 0x1e4 <main+0x76>
+        leer = PINA;
+        
+        if (leer == 0b10001000)
+        {
+            //LCD_write("D");
+            indicador = 4;
+ 1ee:	c4 e0       	ldi	r28, 0x04	; 4
+ 1f0:	d0 e0       	ldi	r29, 0x00	; 0
+            while (leer==0b10001000) {leer=PINA;}
+        }
+        
+        if (leer == 0b10000100)
+ 1f2:	84 38       	cpi	r24, 0x84	; 132
+ 1f4:	91 05       	cpc	r25, r1
+ 1f6:	39 f4       	brne	.+14     	; 0x206 <main+0x98>
+        {
+            //LCD_write("C");
+            indicador = 3;
+            while (leer==0b10000100) {leer=PINA;}
+ 1f8:	89 b3       	in	r24, 0x19	; 25
+ 1fa:	90 e0       	ldi	r25, 0x00	; 0
+ 1fc:	84 38       	cpi	r24, 0x84	; 132
+ 1fe:	91 05       	cpc	r25, r1
+ 200:	d9 f3       	breq	.-10     	; 0x1f8 <main+0x8a>
+        }
+        
+        if (leer == 0b10000100)
+        {
+            //LCD_write("C");
+            indicador = 3;
+ 202:	c3 e0       	ldi	r28, 0x03	; 3
+ 204:	d0 e0       	ldi	r29, 0x00	; 0
+            while (leer==0b10000100) {leer=PINA;}
+        }
+        
+        if (leer == 0b10000010)
+ 206:	82 38       	cpi	r24, 0x82	; 130
+ 208:	91 05       	cpc	r25, r1
+ 20a:	39 f4       	brne	.+14     	; 0x21a <main+0xac>
+        {
+            //LCD_write("B");
+            indicador = 2;
+            while (leer==0b10000010) {leer=PINA;}
+ 20c:	89 b3       	in	r24, 0x19	; 25
+ 20e:	90 e0       	ldi	r25, 0x00	; 0
+ 210:	82 38       	cpi	r24, 0x82	; 130
+ 212:	91 05       	cpc	r25, r1
+ 214:	d9 f3       	breq	.-10     	; 0x20c <main+0x9e>
+        }
+        
+        if (leer == 0b10000010)
+        {
+            //LCD_write("B");
+            indicador = 2;
+ 216:	c2 e0       	ldi	r28, 0x02	; 2
+ 218:	d0 e0       	ldi	r29, 0x00	; 0
+            while (leer==0b10000010) {leer=PINA;}
+        }
+        
+        if (leer == 0b10000001)
+ 21a:	81 38       	cpi	r24, 0x81	; 129
+ 21c:	91 05       	cpc	r25, r1
+ 21e:	29 f4       	brne	.+10     	; 0x22a <main+0xbc>
+        {
+            //LCD_write("A");
+            indicador = 1;
+            while (leer==0b10000001) {leer=PINA;}
+ 220:	89 b3       	in	r24, 0x19	; 25
+ 222:	81 38       	cpi	r24, 0x81	; 129
+ 224:	e9 f3       	breq	.-6      	; 0x220 <main+0xb2>
+        }
+        
+        if (leer == 0b10000001)
+        {
+            //LCD_write("A");
+            indicador = 1;
+ 226:	c1 e0       	ldi	r28, 0x01	; 1
+ 228:	d0 e0       	ldi	r29, 0x00	; 0
+        
+        
+        
+        
+        //Columna 2
+        PORTA = 0b01000000;
+ 22a:	0b bb       	out	0x1b, r16	; 27
+ 22c:	85 e3       	ldi	r24, 0x35	; 53
+ 22e:	8a 95       	dec	r24
+ 230:	f1 f7       	brne	.-4      	; 0x22e <main+0xc0>
+ 232:	00 00       	nop
+        _delay_us(10);
+        leer = PINA;
+ 234:	89 b3       	in	r24, 0x19	; 25
+ 236:	90 e0       	ldi	r25, 0x00	; 0
+        
+        //--------#@$ --Fila1--
+        if (leer == 0b01001000)
+ 238:	88 34       	cpi	r24, 0x48	; 72
+ 23a:	91 05       	cpc	r25, r1
+ 23c:	89 f5       	brne	.+98     	; 0x2a0 <main+0x132>
+        {
+            switch (indicador)
+ 23e:	c3 30       	cpi	r28, 0x03	; 3
+ 240:	d1 05       	cpc	r29, r1
+ 242:	d1 f0       	breq	.+52     	; 0x278 <main+0x10a>
+ 244:	c4 30       	cpi	r28, 0x04	; 4
+ 246:	d1 05       	cpc	r29, r1
+ 248:	09 f1       	breq	.+66     	; 0x28c <main+0x11e>
+ 24a:	c2 30       	cpi	r28, 0x02	; 2
+ 24c:	d1 05       	cpc	r29, r1
+ 24e:	51 f0       	breq	.+20     	; 0x264 <main+0xf6>
+            {
+                case 1:
+                {
+                    LCD_write("#");
+ 250:	8a e7       	ldi	r24, 0x7A	; 122
+ 252:	90 e0       	ldi	r25, 0x00	; 0
+ 254:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01001000) {leer=PINA;}
+ 258:	89 b3       	in	r24, 0x19	; 25
+ 25a:	90 e0       	ldi	r25, 0x00	; 0
+ 25c:	88 34       	cpi	r24, 0x48	; 72
+ 25e:	91 05       	cpc	r25, r1
+ 260:	d9 f3       	breq	.-10     	; 0x258 <main+0xea>
+ 262:	1e c0       	rjmp	.+60     	; 0x2a0 <main+0x132>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("@");
+ 264:	8c e7       	ldi	r24, 0x7C	; 124
+ 266:	90 e0       	ldi	r25, 0x00	; 0
+ 268:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01001000) {leer=PINA;}
+ 26c:	89 b3       	in	r24, 0x19	; 25
+ 26e:	90 e0       	ldi	r25, 0x00	; 0
+ 270:	88 34       	cpi	r24, 0x48	; 72
+ 272:	91 05       	cpc	r25, r1
+ 274:	d9 f3       	breq	.-10     	; 0x26c <main+0xfe>
+ 276:	2a c0       	rjmp	.+84     	; 0x2cc <main+0x15e>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("$");
+ 278:	8e e7       	ldi	r24, 0x7E	; 126
+ 27a:	90 e0       	ldi	r25, 0x00	; 0
+ 27c:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01001000) {leer=PINA;}
+ 280:	89 b3       	in	r24, 0x19	; 25
+ 282:	90 e0       	ldi	r25, 0x00	; 0
+ 284:	88 34       	cpi	r24, 0x48	; 72
+ 286:	91 05       	cpc	r25, r1
+ 288:	d9 f3       	breq	.-10     	; 0x280 <main+0x112>
+ 28a:	2d c0       	rjmp	.+90     	; 0x2e6 <main+0x178>
+                    break;
+                }
+                
+                case 4:
+                {
+                    LCD_write(" ");
+ 28c:	88 e7       	ldi	r24, 0x78	; 120
+ 28e:	90 e0       	ldi	r25, 0x00	; 0
+ 290:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01001000) {leer=PINA;}
+ 294:	89 b3       	in	r24, 0x19	; 25
+ 296:	90 e0       	ldi	r25, 0x00	; 0
+ 298:	88 34       	cpi	r24, 0x48	; 72
+ 29a:	91 05       	cpc	r25, r1
+ 29c:	d9 f3       	breq	.-10     	; 0x294 <main+0x126>
+ 29e:	30 c0       	rjmp	.+96     	; 0x300 <main+0x192>
+            }
+        }
+        
+        
+        //--------ZQI9--Fila2--
+        if (leer == 0b01000100)
+ 2a0:	84 34       	cpi	r24, 0x44	; 68
+ 2a2:	91 05       	cpc	r25, r1
+ 2a4:	d1 f5       	brne	.+116    	; 0x31a <main+0x1ac>
+        {
+            switch (indicador)
+ 2a6:	c3 30       	cpi	r28, 0x03	; 3
+ 2a8:	d1 05       	cpc	r29, r1
+ 2aa:	01 f1       	breq	.+64     	; 0x2ec <main+0x17e>
+ 2ac:	c4 30       	cpi	r28, 0x04	; 4
+ 2ae:	d1 05       	cpc	r29, r1
+ 2b0:	51 f1       	breq	.+84     	; 0x306 <main+0x198>
+ 2b2:	c2 30       	cpi	r28, 0x02	; 2
+ 2b4:	d1 05       	cpc	r29, r1
+ 2b6:	69 f0       	breq	.+26     	; 0x2d2 <main+0x164>
+            {
+                case 1:
+                {
+                    LCD_write("9");
+ 2b8:	80 e8       	ldi	r24, 0x80	; 128
+ 2ba:	90 e0       	ldi	r25, 0x00	; 0
+ 2bc:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000100) {leer=PINA;}
+ 2c0:	89 b3       	in	r24, 0x19	; 25
+ 2c2:	90 e0       	ldi	r25, 0x00	; 0
+ 2c4:	84 34       	cpi	r24, 0x44	; 68
+ 2c6:	91 05       	cpc	r25, r1
+ 2c8:	d9 f3       	breq	.-10     	; 0x2c0 <main+0x152>
+ 2ca:	27 c0       	rjmp	.+78     	; 0x31a <main+0x1ac>
+            }
+        }
+        
+        
+        //--------ZQI9--Fila2--
+        if (leer == 0b01000100)
+ 2cc:	84 34       	cpi	r24, 0x44	; 68
+ 2ce:	91 05       	cpc	r25, r1
+ 2d0:	d1 f5       	brne	.+116    	; 0x346 <main+0x1d8>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("I");
+ 2d2:	82 e8       	ldi	r24, 0x82	; 130
+ 2d4:	90 e0       	ldi	r25, 0x00	; 0
+ 2d6:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000100) {leer=PINA;}
+ 2da:	89 b3       	in	r24, 0x19	; 25
+ 2dc:	90 e0       	ldi	r25, 0x00	; 0
+ 2de:	84 34       	cpi	r24, 0x44	; 68
+ 2e0:	91 05       	cpc	r25, r1
+ 2e2:	d9 f3       	breq	.-10     	; 0x2da <main+0x16c>
+ 2e4:	30 c0       	rjmp	.+96     	; 0x346 <main+0x1d8>
+            }
+        }
+        
+        
+        //--------ZQI9--Fila2--
+        if (leer == 0b01000100)
+ 2e6:	84 34       	cpi	r24, 0x44	; 68
+ 2e8:	91 05       	cpc	r25, r1
+ 2ea:	d1 f5       	brne	.+116    	; 0x360 <main+0x1f2>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("Q");
+ 2ec:	84 e8       	ldi	r24, 0x84	; 132
+ 2ee:	90 e0       	ldi	r25, 0x00	; 0
+ 2f0:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000100) {leer=PINA;}
+ 2f4:	89 b3       	in	r24, 0x19	; 25
+ 2f6:	90 e0       	ldi	r25, 0x00	; 0
+ 2f8:	84 34       	cpi	r24, 0x44	; 68
+ 2fa:	91 05       	cpc	r25, r1
+ 2fc:	d9 f3       	breq	.-10     	; 0x2f4 <main+0x186>
+ 2fe:	30 c0       	rjmp	.+96     	; 0x360 <main+0x1f2>
+            }
+        }
+        
+        
+        //--------ZQI9--Fila2--
+        if (leer == 0b01000100)
+ 300:	84 34       	cpi	r24, 0x44	; 68
+ 302:	91 05       	cpc	r25, r1
+ 304:	d1 f5       	brne	.+116    	; 0x37a <main+0x20c>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("Z");
+ 306:	86 e8       	ldi	r24, 0x86	; 134
+ 308:	90 e0       	ldi	r25, 0x00	; 0
+ 30a:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000100) {leer=PINA;}
+ 30e:	89 b3       	in	r24, 0x19	; 25
+ 310:	90 e0       	ldi	r25, 0x00	; 0
+ 312:	84 34       	cpi	r24, 0x44	; 68
+ 314:	91 05       	cpc	r25, r1
+ 316:	d9 f3       	breq	.-10     	; 0x30e <main+0x1a0>
+ 318:	30 c0       	rjmp	.+96     	; 0x37a <main+0x20c>
+            }
+        }
+        
+        
+        //--------WÑF6--Fila3--
+        if (leer == 0b01000010)
+ 31a:	82 34       	cpi	r24, 0x42	; 66
+ 31c:	91 05       	cpc	r25, r1
+ 31e:	d1 f5       	brne	.+116    	; 0x394 <main+0x226>
+        {
+            switch (indicador)
+ 320:	c3 30       	cpi	r28, 0x03	; 3
+ 322:	d1 05       	cpc	r29, r1
+ 324:	01 f1       	breq	.+64     	; 0x366 <main+0x1f8>
+ 326:	c4 30       	cpi	r28, 0x04	; 4
+ 328:	d1 05       	cpc	r29, r1
+ 32a:	51 f1       	breq	.+84     	; 0x380 <main+0x212>
+ 32c:	c2 30       	cpi	r28, 0x02	; 2
+ 32e:	d1 05       	cpc	r29, r1
+ 330:	69 f0       	breq	.+26     	; 0x34c <main+0x1de>
+            {
+                case 1:
+                {
+                    LCD_write("6");
+ 332:	88 e8       	ldi	r24, 0x88	; 136
+ 334:	90 e0       	ldi	r25, 0x00	; 0
+ 336:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000010) {leer=PINA;}
+ 33a:	89 b3       	in	r24, 0x19	; 25
+ 33c:	90 e0       	ldi	r25, 0x00	; 0
+ 33e:	82 34       	cpi	r24, 0x42	; 66
+ 340:	91 05       	cpc	r25, r1
+ 342:	d9 f3       	breq	.-10     	; 0x33a <main+0x1cc>
+ 344:	27 c0       	rjmp	.+78     	; 0x394 <main+0x226>
+            }
+        }
+        
+        
+        //--------WÑF6--Fila3--
+        if (leer == 0b01000010)
+ 346:	82 34       	cpi	r24, 0x42	; 66
+ 348:	91 05       	cpc	r25, r1
+ 34a:	21 f5       	brne	.+72     	; 0x394 <main+0x226>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("F");
+ 34c:	8a e8       	ldi	r24, 0x8A	; 138
+ 34e:	90 e0       	ldi	r25, 0x00	; 0
+ 350:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000010) {leer=PINA;}
+ 354:	89 b3       	in	r24, 0x19	; 25
+ 356:	90 e0       	ldi	r25, 0x00	; 0
+ 358:	82 34       	cpi	r24, 0x42	; 66
+ 35a:	91 05       	cpc	r25, r1
+ 35c:	d9 f3       	breq	.-10     	; 0x354 <main+0x1e6>
+ 35e:	3a c0       	rjmp	.+116    	; 0x3d4 <main+0x266>
+            }
+        }
+        
+        
+        //--------WÑF6--Fila3--
+        if (leer == 0b01000010)
+ 360:	82 34       	cpi	r24, 0x42	; 66
+ 362:	91 05       	cpc	r25, r1
+ 364:	b9 f4       	brne	.+46     	; 0x394 <main+0x226>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("ENNE");
+ 366:	8c e8       	ldi	r24, 0x8C	; 140
+ 368:	90 e0       	ldi	r25, 0x00	; 0
+ 36a:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000010) {leer=PINA;}
+ 36e:	89 b3       	in	r24, 0x19	; 25
+ 370:	90 e0       	ldi	r25, 0x00	; 0
+ 372:	82 34       	cpi	r24, 0x42	; 66
+ 374:	91 05       	cpc	r25, r1
+ 376:	d9 f3       	breq	.-10     	; 0x36e <main+0x200>
+ 378:	38 c0       	rjmp	.+112    	; 0x3ea <main+0x27c>
+            }
+        }
+        
+        
+        //--------WÑF6--Fila3--
+        if (leer == 0b01000010)
+ 37a:	82 34       	cpi	r24, 0x42	; 66
+ 37c:	91 05       	cpc	r25, r1
+ 37e:	51 f4       	brne	.+20     	; 0x394 <main+0x226>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("W");
+ 380:	81 e9       	ldi	r24, 0x91	; 145
+ 382:	90 e0       	ldi	r25, 0x00	; 0
+ 384:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000010) {leer=PINA;}
+ 388:	89 b3       	in	r24, 0x19	; 25
+ 38a:	90 e0       	ldi	r25, 0x00	; 0
+ 38c:	82 34       	cpi	r24, 0x42	; 66
+ 38e:	91 05       	cpc	r25, r1
+ 390:	d9 f3       	breq	.-10     	; 0x388 <main+0x21a>
+ 392:	36 c0       	rjmp	.+108    	; 0x400 <main+0x292>
+                }
+            }
+        }
+        
+        //--------TLC3--Fila4--
+        if (leer == 0b01000001)
+ 394:	81 34       	cpi	r24, 0x41	; 65
+ 396:	91 05       	cpc	r25, r1
+ 398:	61 f0       	breq	.+24     	; 0x3b2 <main+0x244>
+        
+        
+        
+        
+        //Columna 3
+        PORTA = 0b00100000;
+ 39a:	fb ba       	out	0x1b, r15	; 27
+ 39c:	95 e3       	ldi	r25, 0x35	; 53
+ 39e:	9a 95       	dec	r25
+ 3a0:	f1 f7       	brne	.-4      	; 0x39e <main+0x230>
+ 3a2:	00 00       	nop
+        _delay_us(10);
+        leer = PINA;
+ 3a4:	89 b3       	in	r24, 0x19	; 25
+ 3a6:	90 e0       	ldi	r25, 0x00	; 0
+        
+        //--------0   --Fila1--
+        if (leer == 0b00101000)
+ 3a8:	88 32       	cpi	r24, 0x28	; 40
+ 3aa:	91 05       	cpc	r25, r1
+ 3ac:	09 f0       	breq	.+2      	; 0x3b0 <main+0x242>
+ 3ae:	64 c0       	rjmp	.+200    	; 0x478 <__stack+0x19>
+ 3b0:	32 c0       	rjmp	.+100    	; 0x416 <main+0x2a8>
+        }
+        
+        //--------TLC3--Fila4--
+        if (leer == 0b01000001)
+        {
+            switch (indicador)
+ 3b2:	c3 30       	cpi	r28, 0x03	; 3
+ 3b4:	d1 05       	cpc	r29, r1
+ 3b6:	e1 f0       	breq	.+56     	; 0x3f0 <main+0x282>
+ 3b8:	c4 30       	cpi	r28, 0x04	; 4
+ 3ba:	d1 05       	cpc	r29, r1
+ 3bc:	21 f1       	breq	.+72     	; 0x406 <main+0x298>
+ 3be:	c2 30       	cpi	r28, 0x02	; 2
+ 3c0:	d1 05       	cpc	r29, r1
+ 3c2:	59 f0       	breq	.+22     	; 0x3da <main+0x26c>
+            {
+                case 1:
+                {
+                    LCD_write("3");
+ 3c4:	83 e9       	ldi	r24, 0x93	; 147
+ 3c6:	90 e0       	ldi	r25, 0x00	; 0
+ 3c8:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000001) {leer=PINA;}
+ 3cc:	89 b3       	in	r24, 0x19	; 25
+ 3ce:	81 34       	cpi	r24, 0x41	; 65
+ 3d0:	e9 f3       	breq	.-6      	; 0x3cc <main+0x25e>
+ 3d2:	e3 cf       	rjmp	.-58     	; 0x39a <main+0x22c>
+                }
+            }
+        }
+        
+        //--------TLC3--Fila4--
+        if (leer == 0b01000001)
+ 3d4:	81 34       	cpi	r24, 0x41	; 65
+ 3d6:	91 05       	cpc	r25, r1
+ 3d8:	01 f7       	brne	.-64     	; 0x39a <main+0x22c>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("C");
+ 3da:	85 e9       	ldi	r24, 0x95	; 149
+ 3dc:	90 e0       	ldi	r25, 0x00	; 0
+ 3de:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000001) {leer=PINA;}
+ 3e2:	89 b3       	in	r24, 0x19	; 25
+ 3e4:	81 34       	cpi	r24, 0x41	; 65
+ 3e6:	e9 f3       	breq	.-6      	; 0x3e2 <main+0x274>
+ 3e8:	d8 cf       	rjmp	.-80     	; 0x39a <main+0x22c>
+                }
+            }
+        }
+        
+        //--------TLC3--Fila4--
+        if (leer == 0b01000001)
+ 3ea:	81 34       	cpi	r24, 0x41	; 65
+ 3ec:	91 05       	cpc	r25, r1
+ 3ee:	a9 f6       	brne	.-86     	; 0x39a <main+0x22c>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("L");
+ 3f0:	87 e9       	ldi	r24, 0x97	; 151
+ 3f2:	90 e0       	ldi	r25, 0x00	; 0
+ 3f4:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000001) {leer=PINA;}
+ 3f8:	89 b3       	in	r24, 0x19	; 25
+ 3fa:	81 34       	cpi	r24, 0x41	; 65
+ 3fc:	e9 f3       	breq	.-6      	; 0x3f8 <main+0x28a>
+ 3fe:	cd cf       	rjmp	.-102    	; 0x39a <main+0x22c>
+                }
+            }
+        }
+        
+        //--------TLC3--Fila4--
+        if (leer == 0b01000001)
+ 400:	81 34       	cpi	r24, 0x41	; 65
+ 402:	91 05       	cpc	r25, r1
+ 404:	51 f6       	brne	.-108    	; 0x39a <main+0x22c>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("T");
+ 406:	89 e9       	ldi	r24, 0x99	; 153
+ 408:	90 e0       	ldi	r25, 0x00	; 0
+ 40a:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b01000001) {leer=PINA;}
+ 40e:	89 b3       	in	r24, 0x19	; 25
+ 410:	81 34       	cpi	r24, 0x41	; 65
+ 412:	e9 f3       	breq	.-6      	; 0x40e <main+0x2a0>
+ 414:	c2 cf       	rjmp	.-124    	; 0x39a <main+0x22c>
+        leer = PINA;
+        
+        //--------0   --Fila1--
+        if (leer == 0b00101000)
+        {
+            switch (indicador)
+ 416:	c3 30       	cpi	r28, 0x03	; 3
+ 418:	d1 05       	cpc	r29, r1
+ 41a:	d1 f0       	breq	.+52     	; 0x450 <main+0x2e2>
+ 41c:	c4 30       	cpi	r28, 0x04	; 4
+ 41e:	d1 05       	cpc	r29, r1
+ 420:	09 f1       	breq	.+66     	; 0x464 <__stack+0x5>
+ 422:	c2 30       	cpi	r28, 0x02	; 2
+ 424:	d1 05       	cpc	r29, r1
+ 426:	51 f0       	breq	.+20     	; 0x43c <main+0x2ce>
+            {
+                case 1:
+                {
+                    LCD_write("0");
+ 428:	8b e9       	ldi	r24, 0x9B	; 155
+ 42a:	90 e0       	ldi	r25, 0x00	; 0
+ 42c:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00101000) {leer=PINA;}
+ 430:	89 b3       	in	r24, 0x19	; 25
+ 432:	90 e0       	ldi	r25, 0x00	; 0
+ 434:	88 32       	cpi	r24, 0x28	; 40
+ 436:	91 05       	cpc	r25, r1
+ 438:	d9 f3       	breq	.-10     	; 0x430 <main+0x2c2>
+ 43a:	1e c0       	rjmp	.+60     	; 0x478 <__stack+0x19>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write(" ");
+ 43c:	88 e7       	ldi	r24, 0x78	; 120
+ 43e:	90 e0       	ldi	r25, 0x00	; 0
+ 440:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00101000) {leer=PINA;}
+ 444:	89 b3       	in	r24, 0x19	; 25
+ 446:	90 e0       	ldi	r25, 0x00	; 0
+ 448:	88 32       	cpi	r24, 0x28	; 40
+ 44a:	91 05       	cpc	r25, r1
+ 44c:	d9 f3       	breq	.-10     	; 0x444 <main+0x2d6>
+ 44e:	2a c0       	rjmp	.+84     	; 0x4a4 <__stack+0x45>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write(" ");
+ 450:	88 e7       	ldi	r24, 0x78	; 120
+ 452:	90 e0       	ldi	r25, 0x00	; 0
+ 454:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00101000) {leer=PINA;}
+ 458:	89 b3       	in	r24, 0x19	; 25
+ 45a:	90 e0       	ldi	r25, 0x00	; 0
+ 45c:	88 32       	cpi	r24, 0x28	; 40
+ 45e:	91 05       	cpc	r25, r1
+ 460:	d9 f3       	breq	.-10     	; 0x458 <main+0x2ea>
+ 462:	2d c0       	rjmp	.+90     	; 0x4be <__stack+0x5f>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write(" ");
+ 464:	88 e7       	ldi	r24, 0x78	; 120
+ 466:	90 e0       	ldi	r25, 0x00	; 0
+ 468:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00101000) {leer=PINA;}
+ 46c:	89 b3       	in	r24, 0x19	; 25
+ 46e:	90 e0       	ldi	r25, 0x00	; 0
+ 470:	88 32       	cpi	r24, 0x28	; 40
+ 472:	91 05       	cpc	r25, r1
+ 474:	d9 f3       	breq	.-10     	; 0x46c <__stack+0xd>
+ 476:	30 c0       	rjmp	.+96     	; 0x4d8 <__stack+0x79>
+            }
+        }
+        
+        
+        //--------YPH8--Fila2--
+        if (leer == 0b00100100)
+ 478:	84 32       	cpi	r24, 0x24	; 36
+ 47a:	91 05       	cpc	r25, r1
+ 47c:	d1 f5       	brne	.+116    	; 0x4f2 <__stack+0x93>
+        {
+            switch (indicador)
+ 47e:	c3 30       	cpi	r28, 0x03	; 3
+ 480:	d1 05       	cpc	r29, r1
+ 482:	01 f1       	breq	.+64     	; 0x4c4 <__stack+0x65>
+ 484:	c4 30       	cpi	r28, 0x04	; 4
+ 486:	d1 05       	cpc	r29, r1
+ 488:	51 f1       	breq	.+84     	; 0x4de <__stack+0x7f>
+ 48a:	c2 30       	cpi	r28, 0x02	; 2
+ 48c:	d1 05       	cpc	r29, r1
+ 48e:	69 f0       	breq	.+26     	; 0x4aa <__stack+0x4b>
+            {
+                case 1:
+                {
+                    LCD_write("8");
+ 490:	8d e9       	ldi	r24, 0x9D	; 157
+ 492:	90 e0       	ldi	r25, 0x00	; 0
+ 494:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100100) {leer=PINA;}
+ 498:	89 b3       	in	r24, 0x19	; 25
+ 49a:	90 e0       	ldi	r25, 0x00	; 0
+ 49c:	84 32       	cpi	r24, 0x24	; 36
+ 49e:	91 05       	cpc	r25, r1
+ 4a0:	d9 f3       	breq	.-10     	; 0x498 <__stack+0x39>
+ 4a2:	27 c0       	rjmp	.+78     	; 0x4f2 <__stack+0x93>
+            }
+        }
+        
+        
+        //--------YPH8--Fila2--
+        if (leer == 0b00100100)
+ 4a4:	84 32       	cpi	r24, 0x24	; 36
+ 4a6:	91 05       	cpc	r25, r1
+ 4a8:	d1 f5       	brne	.+116    	; 0x51e <__stack+0xbf>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("H");
+ 4aa:	8f e9       	ldi	r24, 0x9F	; 159
+ 4ac:	90 e0       	ldi	r25, 0x00	; 0
+ 4ae:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100100) {leer=PINA;}
+ 4b2:	89 b3       	in	r24, 0x19	; 25
+ 4b4:	90 e0       	ldi	r25, 0x00	; 0
+ 4b6:	84 32       	cpi	r24, 0x24	; 36
+ 4b8:	91 05       	cpc	r25, r1
+ 4ba:	d9 f3       	breq	.-10     	; 0x4b2 <__stack+0x53>
+ 4bc:	30 c0       	rjmp	.+96     	; 0x51e <__stack+0xbf>
+            }
+        }
+        
+        
+        //--------YPH8--Fila2--
+        if (leer == 0b00100100)
+ 4be:	84 32       	cpi	r24, 0x24	; 36
+ 4c0:	91 05       	cpc	r25, r1
+ 4c2:	d1 f5       	brne	.+116    	; 0x538 <__stack+0xd9>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("P");
+ 4c4:	81 ea       	ldi	r24, 0xA1	; 161
+ 4c6:	90 e0       	ldi	r25, 0x00	; 0
+ 4c8:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100100) {leer=PINA;}
+ 4cc:	89 b3       	in	r24, 0x19	; 25
+ 4ce:	90 e0       	ldi	r25, 0x00	; 0
+ 4d0:	84 32       	cpi	r24, 0x24	; 36
+ 4d2:	91 05       	cpc	r25, r1
+ 4d4:	d9 f3       	breq	.-10     	; 0x4cc <__stack+0x6d>
+ 4d6:	30 c0       	rjmp	.+96     	; 0x538 <__stack+0xd9>
+            }
+        }
+        
+        
+        //--------YPH8--Fila2--
+        if (leer == 0b00100100)
+ 4d8:	84 32       	cpi	r24, 0x24	; 36
+ 4da:	91 05       	cpc	r25, r1
+ 4dc:	d1 f5       	brne	.+116    	; 0x552 <__stack+0xf3>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("Y");
+ 4de:	83 ea       	ldi	r24, 0xA3	; 163
+ 4e0:	90 e0       	ldi	r25, 0x00	; 0
+ 4e2:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100100) {leer=PINA;}
+ 4e6:	89 b3       	in	r24, 0x19	; 25
+ 4e8:	90 e0       	ldi	r25, 0x00	; 0
+ 4ea:	84 32       	cpi	r24, 0x24	; 36
+ 4ec:	91 05       	cpc	r25, r1
+ 4ee:	d9 f3       	breq	.-10     	; 0x4e6 <__stack+0x87>
+ 4f0:	30 c0       	rjmp	.+96     	; 0x552 <__stack+0xf3>
+            }
+        }
+        
+        
+        //--------VNE5--Fila3--
+        if (leer == 0b00100010)
+ 4f2:	82 32       	cpi	r24, 0x22	; 34
+ 4f4:	91 05       	cpc	r25, r1
+ 4f6:	d1 f5       	brne	.+116    	; 0x56c <__stack+0x10d>
+        {
+            switch (indicador)
+ 4f8:	c3 30       	cpi	r28, 0x03	; 3
+ 4fa:	d1 05       	cpc	r29, r1
+ 4fc:	01 f1       	breq	.+64     	; 0x53e <__stack+0xdf>
+ 4fe:	c4 30       	cpi	r28, 0x04	; 4
+ 500:	d1 05       	cpc	r29, r1
+ 502:	51 f1       	breq	.+84     	; 0x558 <__stack+0xf9>
+ 504:	c2 30       	cpi	r28, 0x02	; 2
+ 506:	d1 05       	cpc	r29, r1
+ 508:	69 f0       	breq	.+26     	; 0x524 <__stack+0xc5>
+            {
+                case 1:
+                {
+                    LCD_write("5");
+ 50a:	85 ea       	ldi	r24, 0xA5	; 165
+ 50c:	90 e0       	ldi	r25, 0x00	; 0
+ 50e:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100010) {leer=PINA;}
+ 512:	89 b3       	in	r24, 0x19	; 25
+ 514:	90 e0       	ldi	r25, 0x00	; 0
+ 516:	82 32       	cpi	r24, 0x22	; 34
+ 518:	91 05       	cpc	r25, r1
+ 51a:	d9 f3       	breq	.-10     	; 0x512 <__stack+0xb3>
+ 51c:	27 c0       	rjmp	.+78     	; 0x56c <__stack+0x10d>
+            }
+        }
+        
+        
+        //--------VNE5--Fila3--
+        if (leer == 0b00100010)
+ 51e:	82 32       	cpi	r24, 0x22	; 34
+ 520:	91 05       	cpc	r25, r1
+ 522:	21 f5       	brne	.+72     	; 0x56c <__stack+0x10d>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("E");
+ 524:	8f e8       	ldi	r24, 0x8F	; 143
+ 526:	90 e0       	ldi	r25, 0x00	; 0
+ 528:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100010) {leer=PINA;}
+ 52c:	89 b3       	in	r24, 0x19	; 25
+ 52e:	90 e0       	ldi	r25, 0x00	; 0
+ 530:	82 32       	cpi	r24, 0x22	; 34
+ 532:	91 05       	cpc	r25, r1
+ 534:	d9 f3       	breq	.-10     	; 0x52c <__stack+0xcd>
+ 536:	39 c0       	rjmp	.+114    	; 0x5aa <__stack+0x14b>
+            }
+        }
+        
+        
+        //--------VNE5--Fila3--
+        if (leer == 0b00100010)
+ 538:	82 32       	cpi	r24, 0x22	; 34
+ 53a:	91 05       	cpc	r25, r1
+ 53c:	b9 f4       	brne	.+46     	; 0x56c <__stack+0x10d>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("N");
+ 53e:	87 ea       	ldi	r24, 0xA7	; 167
+ 540:	90 e0       	ldi	r25, 0x00	; 0
+ 542:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100010) {leer=PINA;}
+ 546:	89 b3       	in	r24, 0x19	; 25
+ 548:	90 e0       	ldi	r25, 0x00	; 0
+ 54a:	82 32       	cpi	r24, 0x22	; 34
+ 54c:	91 05       	cpc	r25, r1
+ 54e:	d9 f3       	breq	.-10     	; 0x546 <__stack+0xe7>
+ 550:	36 c0       	rjmp	.+108    	; 0x5be <__stack+0x15f>
+            }
+        }
+        
+        
+        //--------VNE5--Fila3--
+        if (leer == 0b00100010)
+ 552:	82 32       	cpi	r24, 0x22	; 34
+ 554:	91 05       	cpc	r25, r1
+ 556:	51 f4       	brne	.+20     	; 0x56c <__stack+0x10d>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("V");
+ 558:	89 ea       	ldi	r24, 0xA9	; 169
+ 55a:	90 e0       	ldi	r25, 0x00	; 0
+ 55c:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100010) {leer=PINA;}
+ 560:	89 b3       	in	r24, 0x19	; 25
+ 562:	90 e0       	ldi	r25, 0x00	; 0
+ 564:	82 32       	cpi	r24, 0x22	; 34
+ 566:	91 05       	cpc	r25, r1
+ 568:	d9 f3       	breq	.-10     	; 0x560 <__stack+0x101>
+ 56a:	33 c0       	rjmp	.+102    	; 0x5d2 <__stack+0x173>
+                }
+            }
+        }
+        
+        //--------SKB2--Fila4--
+        if (leer == 0b00100001)
+ 56c:	81 97       	sbiw	r24, 0x21	; 33
+ 56e:	61 f0       	breq	.+24     	; 0x588 <__stack+0x129>
+            }
+        }
+        
+        
+        //Columna 4
+        PORTA = 0b00010000;
+ 570:	eb ba       	out	0x1b, r14	; 27
+ 572:	25 e3       	ldi	r18, 0x35	; 53
+ 574:	2a 95       	dec	r18
+ 576:	f1 f7       	brne	.-4      	; 0x574 <__stack+0x115>
+ 578:	00 00       	nop
+        _delay_us(10);
+        leer = PINA;
+ 57a:	89 b3       	in	r24, 0x19	; 25
+ 57c:	90 e0       	ldi	r25, 0x00	; 0
+        
+        //--------CLC---Fila1--
+        if (leer == 0b00011000)
+ 57e:	88 31       	cpi	r24, 0x18	; 24
+ 580:	91 05       	cpc	r25, r1
+ 582:	09 f0       	breq	.+2      	; 0x586 <__stack+0x127>
+ 584:	5e c0       	rjmp	.+188    	; 0x642 <__stack+0x1e3>
+ 586:	2f c0       	rjmp	.+94     	; 0x5e6 <__stack+0x187>
+        }
+        
+        //--------SKB2--Fila4--
+        if (leer == 0b00100001)
+        {
+            switch (indicador)
+ 588:	c3 30       	cpi	r28, 0x03	; 3
+ 58a:	d1 05       	cpc	r29, r1
+ 58c:	d1 f0       	breq	.+52     	; 0x5c2 <__stack+0x163>
+ 58e:	c4 30       	cpi	r28, 0x04	; 4
+ 590:	d1 05       	cpc	r29, r1
+ 592:	09 f1       	breq	.+66     	; 0x5d6 <__stack+0x177>
+ 594:	c2 30       	cpi	r28, 0x02	; 2
+ 596:	d1 05       	cpc	r29, r1
+ 598:	51 f0       	breq	.+20     	; 0x5ae <__stack+0x14f>
+            {
+                case 1:
+                {
+                    LCD_write("2");
+ 59a:	8b ea       	ldi	r24, 0xAB	; 171
+ 59c:	90 e0       	ldi	r25, 0x00	; 0
+ 59e:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100001) {leer=PINA;}
+ 5a2:	89 b3       	in	r24, 0x19	; 25
+ 5a4:	81 32       	cpi	r24, 0x21	; 33
+ 5a6:	e9 f3       	breq	.-6      	; 0x5a2 <__stack+0x143>
+ 5a8:	e3 cf       	rjmp	.-58     	; 0x570 <__stack+0x111>
+                }
+            }
+        }
+        
+        //--------SKB2--Fila4--
+        if (leer == 0b00100001)
+ 5aa:	81 97       	sbiw	r24, 0x21	; 33
+ 5ac:	09 f7       	brne	.-62     	; 0x570 <__stack+0x111>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("B");
+ 5ae:	8d ea       	ldi	r24, 0xAD	; 173
+ 5b0:	90 e0       	ldi	r25, 0x00	; 0
+ 5b2:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100001) {leer=PINA;}
+ 5b6:	89 b3       	in	r24, 0x19	; 25
+ 5b8:	81 32       	cpi	r24, 0x21	; 33
+ 5ba:	e9 f3       	breq	.-6      	; 0x5b6 <__stack+0x157>
+ 5bc:	d9 cf       	rjmp	.-78     	; 0x570 <__stack+0x111>
+                }
+            }
+        }
+        
+        //--------SKB2--Fila4--
+        if (leer == 0b00100001)
+ 5be:	81 97       	sbiw	r24, 0x21	; 33
+ 5c0:	b9 f6       	brne	.-82     	; 0x570 <__stack+0x111>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("K");
+ 5c2:	8f ea       	ldi	r24, 0xAF	; 175
+ 5c4:	90 e0       	ldi	r25, 0x00	; 0
+ 5c6:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100001) {leer=PINA;}
+ 5ca:	89 b3       	in	r24, 0x19	; 25
+ 5cc:	81 32       	cpi	r24, 0x21	; 33
+ 5ce:	e9 f3       	breq	.-6      	; 0x5ca <__stack+0x16b>
+ 5d0:	cf cf       	rjmp	.-98     	; 0x570 <__stack+0x111>
+                }
+            }
+        }
+        
+        //--------SKB2--Fila4--
+        if (leer == 0b00100001)
+ 5d2:	81 97       	sbiw	r24, 0x21	; 33
+ 5d4:	69 f6       	brne	.-102    	; 0x570 <__stack+0x111>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("S");
+ 5d6:	81 eb       	ldi	r24, 0xB1	; 177
+ 5d8:	90 e0       	ldi	r25, 0x00	; 0
+ 5da:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00100001) {leer=PINA;}
+ 5de:	89 b3       	in	r24, 0x19	; 25
+ 5e0:	81 32       	cpi	r24, 0x21	; 33
+ 5e2:	e9 f3       	breq	.-6      	; 0x5de <__stack+0x17f>
+ 5e4:	c5 cf       	rjmp	.-118    	; 0x570 <__stack+0x111>
+        leer = PINA;
+        
+        //--------CLC---Fila1--
+        if (leer == 0b00011000)
+        {
+            switch (indicador)
+ 5e6:	c3 30       	cpi	r28, 0x03	; 3
+ 5e8:	d1 05       	cpc	r29, r1
+ 5ea:	c9 f0       	breq	.+50     	; 0x61e <__stack+0x1bf>
+ 5ec:	c4 30       	cpi	r28, 0x04	; 4
+ 5ee:	d1 05       	cpc	r29, r1
+ 5f0:	f9 f0       	breq	.+62     	; 0x630 <__stack+0x1d1>
+ 5f2:	c2 30       	cpi	r28, 0x02	; 2
+ 5f4:	d1 05       	cpc	r29, r1
+ 5f6:	51 f0       	breq	.+20     	; 0x60c <__stack+0x1ad>
+            {
+                case 1:
+                {
+                    LCD_write("*");
+ 5f8:	83 eb       	ldi	r24, 0xB3	; 179
+ 5fa:	90 e0       	ldi	r25, 0x00	; 0
+ 5fc:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00011000) {leer=PINA;}
+ 600:	89 b3       	in	r24, 0x19	; 25
+ 602:	90 e0       	ldi	r25, 0x00	; 0
+ 604:	88 31       	cpi	r24, 0x18	; 24
+ 606:	91 05       	cpc	r25, r1
+ 608:	d9 f3       	breq	.-10     	; 0x600 <__stack+0x1a1>
+ 60a:	1b c0       	rjmp	.+54     	; 0x642 <__stack+0x1e3>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_command(0b00000001);
+ 60c:	81 e0       	ldi	r24, 0x01	; 1
+ 60e:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+                    while (leer==0b00011000) {leer=PINA;}
+ 612:	89 b3       	in	r24, 0x19	; 25
+ 614:	90 e0       	ldi	r25, 0x00	; 0
+ 616:	88 31       	cpi	r24, 0x18	; 24
+ 618:	91 05       	cpc	r25, r1
+ 61a:	d9 f3       	breq	.-10     	; 0x612 <__stack+0x1b3>
+ 61c:	28 c0       	rjmp	.+80     	; 0x66e <__stack+0x20f>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_command(0b00000001);
+ 61e:	81 e0       	ldi	r24, 0x01	; 1
+ 620:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+                    while (leer==0b00011000) {leer=PINA;}
+ 624:	89 b3       	in	r24, 0x19	; 25
+ 626:	90 e0       	ldi	r25, 0x00	; 0
+ 628:	88 31       	cpi	r24, 0x18	; 24
+ 62a:	91 05       	cpc	r25, r1
+ 62c:	d9 f3       	breq	.-10     	; 0x624 <__stack+0x1c5>
+ 62e:	2c c0       	rjmp	.+88     	; 0x688 <__stack+0x229>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_command(0b00000001);
+ 630:	81 e0       	ldi	r24, 0x01	; 1
+ 632:	0e 94 63 00 	call	0xc6	; 0xc6 <LCD_command>
+                    while (leer==0b00011000) {leer=PINA;}
+ 636:	89 b3       	in	r24, 0x19	; 25
+ 638:	90 e0       	ldi	r25, 0x00	; 0
+ 63a:	88 31       	cpi	r24, 0x18	; 24
+ 63c:	91 05       	cpc	r25, r1
+ 63e:	d9 f3       	breq	.-10     	; 0x636 <__stack+0x1d7>
+ 640:	30 c0       	rjmp	.+96     	; 0x6a2 <__stack+0x243>
+            }
+        }
+        
+        
+        //--------XOG7--Fila2--
+        if (leer == 0b00010100)
+ 642:	84 31       	cpi	r24, 0x14	; 20
+ 644:	91 05       	cpc	r25, r1
+ 646:	d1 f5       	brne	.+116    	; 0x6bc <__stack+0x25d>
+        {
+            switch (indicador)
+ 648:	c3 30       	cpi	r28, 0x03	; 3
+ 64a:	d1 05       	cpc	r29, r1
+ 64c:	01 f1       	breq	.+64     	; 0x68e <__stack+0x22f>
+ 64e:	c4 30       	cpi	r28, 0x04	; 4
+ 650:	d1 05       	cpc	r29, r1
+ 652:	51 f1       	breq	.+84     	; 0x6a8 <__stack+0x249>
+ 654:	c2 30       	cpi	r28, 0x02	; 2
+ 656:	d1 05       	cpc	r29, r1
+ 658:	69 f0       	breq	.+26     	; 0x674 <__stack+0x215>
+            {
+                case 1:
+                {
+                    LCD_write("7");
+ 65a:	85 eb       	ldi	r24, 0xB5	; 181
+ 65c:	90 e0       	ldi	r25, 0x00	; 0
+ 65e:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010100) {leer=PINA;}
+ 662:	89 b3       	in	r24, 0x19	; 25
+ 664:	90 e0       	ldi	r25, 0x00	; 0
+ 666:	84 31       	cpi	r24, 0x14	; 20
+ 668:	91 05       	cpc	r25, r1
+ 66a:	d9 f3       	breq	.-10     	; 0x662 <__stack+0x203>
+ 66c:	27 c0       	rjmp	.+78     	; 0x6bc <__stack+0x25d>
+            }
+        }
+        
+        
+        //--------XOG7--Fila2--
+        if (leer == 0b00010100)
+ 66e:	84 31       	cpi	r24, 0x14	; 20
+ 670:	91 05       	cpc	r25, r1
+ 672:	d1 f5       	brne	.+116    	; 0x6e8 <__stack+0x289>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("G");
+ 674:	87 eb       	ldi	r24, 0xB7	; 183
+ 676:	90 e0       	ldi	r25, 0x00	; 0
+ 678:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010100) {leer=PINA;}
+ 67c:	89 b3       	in	r24, 0x19	; 25
+ 67e:	90 e0       	ldi	r25, 0x00	; 0
+ 680:	84 31       	cpi	r24, 0x14	; 20
+ 682:	91 05       	cpc	r25, r1
+ 684:	d9 f3       	breq	.-10     	; 0x67c <__stack+0x21d>
+ 686:	30 c0       	rjmp	.+96     	; 0x6e8 <__stack+0x289>
+            }
+        }
+        
+        
+        //--------XOG7--Fila2--
+        if (leer == 0b00010100)
+ 688:	84 31       	cpi	r24, 0x14	; 20
+ 68a:	91 05       	cpc	r25, r1
+ 68c:	d1 f5       	brne	.+116    	; 0x702 <__stack+0x2a3>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("O");
+ 68e:	89 eb       	ldi	r24, 0xB9	; 185
+ 690:	90 e0       	ldi	r25, 0x00	; 0
+ 692:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010100) {leer=PINA;}
+ 696:	89 b3       	in	r24, 0x19	; 25
+ 698:	90 e0       	ldi	r25, 0x00	; 0
+ 69a:	84 31       	cpi	r24, 0x14	; 20
+ 69c:	91 05       	cpc	r25, r1
+ 69e:	d9 f3       	breq	.-10     	; 0x696 <__stack+0x237>
+ 6a0:	30 c0       	rjmp	.+96     	; 0x702 <__stack+0x2a3>
+            }
+        }
+        
+        
+        //--------XOG7--Fila2--
+        if (leer == 0b00010100)
+ 6a2:	84 31       	cpi	r24, 0x14	; 20
+ 6a4:	91 05       	cpc	r25, r1
+ 6a6:	d1 f5       	brne	.+116    	; 0x71c <__stack+0x2bd>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("X");
+ 6a8:	8b eb       	ldi	r24, 0xBB	; 187
+ 6aa:	90 e0       	ldi	r25, 0x00	; 0
+ 6ac:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010100) {leer=PINA;}
+ 6b0:	89 b3       	in	r24, 0x19	; 25
+ 6b2:	90 e0       	ldi	r25, 0x00	; 0
+ 6b4:	84 31       	cpi	r24, 0x14	; 20
+ 6b6:	91 05       	cpc	r25, r1
+ 6b8:	d9 f3       	breq	.-10     	; 0x6b0 <__stack+0x251>
+ 6ba:	30 c0       	rjmp	.+96     	; 0x71c <__stack+0x2bd>
+            }
+        }
+        
+        
+        //--------UMD4--Fila3--
+        if (leer == 0b00010010)
+ 6bc:	82 31       	cpi	r24, 0x12	; 18
+ 6be:	91 05       	cpc	r25, r1
+ 6c0:	d1 f5       	brne	.+116    	; 0x736 <__stack+0x2d7>
+        {
+            switch (indicador)
+ 6c2:	c3 30       	cpi	r28, 0x03	; 3
+ 6c4:	d1 05       	cpc	r29, r1
+ 6c6:	01 f1       	breq	.+64     	; 0x708 <__stack+0x2a9>
+ 6c8:	c4 30       	cpi	r28, 0x04	; 4
+ 6ca:	d1 05       	cpc	r29, r1
+ 6cc:	51 f1       	breq	.+84     	; 0x722 <__stack+0x2c3>
+ 6ce:	c2 30       	cpi	r28, 0x02	; 2
+ 6d0:	d1 05       	cpc	r29, r1
+ 6d2:	69 f0       	breq	.+26     	; 0x6ee <__stack+0x28f>
+            {
+                case 1:
+                {
+                    LCD_write("4");
+ 6d4:	8d eb       	ldi	r24, 0xBD	; 189
+ 6d6:	90 e0       	ldi	r25, 0x00	; 0
+ 6d8:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010010) {leer=PINA;}
+ 6dc:	89 b3       	in	r24, 0x19	; 25
+ 6de:	90 e0       	ldi	r25, 0x00	; 0
+ 6e0:	82 31       	cpi	r24, 0x12	; 18
+ 6e2:	91 05       	cpc	r25, r1
+ 6e4:	d9 f3       	breq	.-10     	; 0x6dc <__stack+0x27d>
+ 6e6:	27 c0       	rjmp	.+78     	; 0x736 <__stack+0x2d7>
+            }
+        }
+        
+        
+        //--------UMD4--Fila3--
+        if (leer == 0b00010010)
+ 6e8:	82 31       	cpi	r24, 0x12	; 18
+ 6ea:	91 05       	cpc	r25, r1
+ 6ec:	21 f5       	brne	.+72     	; 0x736 <__stack+0x2d7>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("D");
+ 6ee:	8f eb       	ldi	r24, 0xBF	; 191
+ 6f0:	90 e0       	ldi	r25, 0x00	; 0
+ 6f2:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010010) {leer=PINA;}
+ 6f6:	89 b3       	in	r24, 0x19	; 25
+ 6f8:	90 e0       	ldi	r25, 0x00	; 0
+ 6fa:	82 31       	cpi	r24, 0x12	; 18
+ 6fc:	91 05       	cpc	r25, r1
+ 6fe:	d9 f3       	breq	.-10     	; 0x6f6 <__stack+0x297>
+ 700:	2f c0       	rjmp	.+94     	; 0x760 <__stack+0x301>
+            }
+        }
+        
+        
+        //--------UMD4--Fila3--
+        if (leer == 0b00010010)
+ 702:	82 31       	cpi	r24, 0x12	; 18
+ 704:	91 05       	cpc	r25, r1
+ 706:	b9 f4       	brne	.+46     	; 0x736 <__stack+0x2d7>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("M");
+ 708:	81 ec       	ldi	r24, 0xC1	; 193
+ 70a:	90 e0       	ldi	r25, 0x00	; 0
+ 70c:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010010) {leer=PINA;}
+ 710:	89 b3       	in	r24, 0x19	; 25
+ 712:	90 e0       	ldi	r25, 0x00	; 0
+ 714:	82 31       	cpi	r24, 0x12	; 18
+ 716:	91 05       	cpc	r25, r1
+ 718:	d9 f3       	breq	.-10     	; 0x710 <__stack+0x2b1>
+ 71a:	2f c0       	rjmp	.+94     	; 0x77a <__stack+0x31b>
+            }
+        }
+        
+        
+        //--------UMD4--Fila3--
+        if (leer == 0b00010010)
+ 71c:	82 31       	cpi	r24, 0x12	; 18
+ 71e:	91 05       	cpc	r25, r1
+ 720:	51 f4       	brne	.+20     	; 0x736 <__stack+0x2d7>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("U");
+ 722:	83 ec       	ldi	r24, 0xC3	; 195
+ 724:	90 e0       	ldi	r25, 0x00	; 0
+ 726:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010010) {leer=PINA;}
+ 72a:	89 b3       	in	r24, 0x19	; 25
+ 72c:	90 e0       	ldi	r25, 0x00	; 0
+ 72e:	82 31       	cpi	r24, 0x12	; 18
+ 730:	91 05       	cpc	r25, r1
+ 732:	d9 f3       	breq	.-10     	; 0x72a <__stack+0x2cb>
+ 734:	2f c0       	rjmp	.+94     	; 0x794 <__stack+0x335>
+                }
+            }
+        }
+        
+        //--------RJA1--Fila4--
+        if (leer == 0b00010001)
+ 736:	41 97       	sbiw	r24, 0x11	; 17
+ 738:	09 f0       	breq	.+2      	; 0x73c <__stack+0x2dd>
+ 73a:	4a cd       	rjmp	.-1388   	; 0x1d0 <main+0x62>
+        {
+            switch (indicador)
+ 73c:	c3 30       	cpi	r28, 0x03	; 3
+ 73e:	d1 05       	cpc	r29, r1
+ 740:	f9 f0       	breq	.+62     	; 0x780 <__stack+0x321>
+ 742:	c4 30       	cpi	r28, 0x04	; 4
+ 744:	d1 05       	cpc	r29, r1
+ 746:	49 f1       	breq	.+82     	; 0x79a <__stack+0x33b>
+ 748:	22 97       	sbiw	r28, 0x02	; 2
+ 74a:	69 f0       	breq	.+26     	; 0x766 <__stack+0x307>
+            {
+                case 1:
+                {
+                    LCD_write("1");
+ 74c:	85 ec       	ldi	r24, 0xC5	; 197
+ 74e:	90 e0       	ldi	r25, 0x00	; 0
+ 750:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010001) {leer=PINA;}
+ 754:	89 b3       	in	r24, 0x19	; 25
+ 756:	81 31       	cpi	r24, 0x11	; 17
+ 758:	e9 f3       	breq	.-6      	; 0x754 <__stack+0x2f5>
+ 75a:	c1 e0       	ldi	r28, 0x01	; 1
+ 75c:	d0 e0       	ldi	r29, 0x00	; 0
+ 75e:	38 cd       	rjmp	.-1424   	; 0x1d0 <main+0x62>
+                }
+            }
+        }
+        
+        //--------RJA1--Fila4--
+        if (leer == 0b00010001)
+ 760:	41 97       	sbiw	r24, 0x11	; 17
+ 762:	09 f0       	breq	.+2      	; 0x766 <__stack+0x307>
+ 764:	35 cd       	rjmp	.-1430   	; 0x1d0 <main+0x62>
+                    break;
+                }
+                    
+                case 2:
+                {
+                    LCD_write("A");
+ 766:	87 ec       	ldi	r24, 0xC7	; 199
+ 768:	90 e0       	ldi	r25, 0x00	; 0
+ 76a:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010001) {leer=PINA;}
+ 76e:	89 b3       	in	r24, 0x19	; 25
+ 770:	81 31       	cpi	r24, 0x11	; 17
+ 772:	e9 f3       	breq	.-6      	; 0x76e <__stack+0x30f>
+ 774:	c2 e0       	ldi	r28, 0x02	; 2
+ 776:	d0 e0       	ldi	r29, 0x00	; 0
+ 778:	2b cd       	rjmp	.-1450   	; 0x1d0 <main+0x62>
+                }
+            }
+        }
+        
+        //--------RJA1--Fila4--
+        if (leer == 0b00010001)
+ 77a:	41 97       	sbiw	r24, 0x11	; 17
+ 77c:	09 f0       	breq	.+2      	; 0x780 <__stack+0x321>
+ 77e:	28 cd       	rjmp	.-1456   	; 0x1d0 <main+0x62>
+                    break;
+                }
+                    
+                case 3:
+                {
+                    LCD_write("J");
+ 780:	89 ec       	ldi	r24, 0xC9	; 201
+ 782:	90 e0       	ldi	r25, 0x00	; 0
+ 784:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010001) {leer=PINA;}
+ 788:	89 b3       	in	r24, 0x19	; 25
+ 78a:	81 31       	cpi	r24, 0x11	; 17
+ 78c:	e9 f3       	breq	.-6      	; 0x788 <__stack+0x329>
+ 78e:	c3 e0       	ldi	r28, 0x03	; 3
+ 790:	d0 e0       	ldi	r29, 0x00	; 0
+ 792:	1e cd       	rjmp	.-1476   	; 0x1d0 <main+0x62>
+                }
+            }
+        }
+        
+        //--------RJA1--Fila4--
+        if (leer == 0b00010001)
+ 794:	41 97       	sbiw	r24, 0x11	; 17
+ 796:	09 f0       	breq	.+2      	; 0x79a <__stack+0x33b>
+ 798:	1b cd       	rjmp	.-1482   	; 0x1d0 <main+0x62>
+                    break;
+                }
+                    
+                case 4:
+                {
+                    LCD_write("R");
+ 79a:	8b ec       	ldi	r24, 0xCB	; 203
+ 79c:	90 e0       	ldi	r25, 0x00	; 0
+ 79e:	0e 94 a0 00 	call	0x140	; 0x140 <LCD_write>
+                    while (leer==0b00010001) {leer=PINA;}
+ 7a2:	89 b3       	in	r24, 0x19	; 25
+ 7a4:	81 31       	cpi	r24, 0x11	; 17
+ 7a6:	e9 f3       	breq	.-6      	; 0x7a2 <__stack+0x343>
+ 7a8:	c4 e0       	ldi	r28, 0x04	; 4
+ 7aa:	d0 e0       	ldi	r29, 0x00	; 0
+ 7ac:	11 cd       	rjmp	.-1502   	; 0x1d0 <main+0x62>
+
+000007ae <_exit>:
+ 7ae:	f8 94       	cli
+
+000007b0 <__stop_program>:
+ 7b0:	ff cf       	rjmp	.-2      	; 0x7b0 <__stop_program>

@@ -1,0 +1,1898 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+ 119               	.global	LCD_putchar
+ 121               	LCD_putchar:
+ 123               	.Ltext1:
+   1:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //#include <avr/io.h>
+   2:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //#include <avr/delay.h>
+   3:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** #define LCD_RS 0
+   4:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** #define LCD_RW 1
+   5:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** #define LCD_E 2
+   6:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 
+   7:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //LCD_putchar writes a character to the LCD at the current address,
+   8:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //no busy flag check is done before or after
+   9:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //the character is written!
+  10:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //usage: LCD_putchar('A'); or LCD_putchar(0x55);
+  11:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** void LCD_putchar(char data)
+  12:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** {
+ 125               	.LM0:
+ 126               	.LFBB1:
+ 127               	/* prologue: function */
+ 128               	/* frame size = 0 */
+ 129               	/* stack size = 0 */
+ 130               	.L__stack_usage = 0
+  13:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//PortD is output
+  14:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	DDRD = 0xFF;
+ 132               	.LM1:
+ 133 0000 9FEF      		ldi r25,lo8(-1)
+ 134 0002 91BB      		out 0x11,r25
+  15:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//put data on bus
+  16:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTD = data;
+ 136               	.LM2:
+ 137 0004 82BB      		out 0x12,r24
+  17:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//RW low, E low
+  18:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+ 139               	.LM3:
+ 140 0006 85B3      		in r24,0x15
+ 141 0008 897F      		andi r24,lo8(-7)
+ 142 000a 85BB      		out 0x15,r24
+  19:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//RS high, strobe E
+  20:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC |= ((1<<LCD_RS)|(1<<LCD_E));
+ 144               	.LM4:
+ 145 000c 85B3      		in r24,0x15
+ 146 000e 8560      		ori r24,lo8(5)
+ 147 0010 85BB      		out 0x15,r24
+  21:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//the number of nops required varies with your clock frequency, try it out!
+  22:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 149               	.LM5:
+ 150               	/* #APP */
+ 151               	 ;  22 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 152 0012 0000      		nop
+ 153               	 ;  0 "" 2
+  23:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 155               	.LM6:
+ 156               	 ;  23 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 157 0014 0000      		nop
+ 158               	 ;  0 "" 2
+  24:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 160               	.LM7:
+ 161               	 ;  24 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 162 0016 0000      		nop
+ 163               	 ;  0 "" 2
+  25:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 165               	.LM8:
+ 166               	 ;  25 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 167 0018 0000      		nop
+ 168               	 ;  0 "" 2
+  26:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//RS low again, E low (belongs to strobe)
+  27:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC &= ~((1<<LCD_RS)|(1<<LCD_E));
+ 170               	.LM9:
+ 171               	/* #NOAPP */
+ 172 001a 85B3      		in r24,0x15
+ 173 001c 8A7F      		andi r24,lo8(-6)
+ 174 001e 85BB      		out 0x15,r24
+  28:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//release bus
+  29:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	DDRD = 0;
+ 176               	.LM10:
+ 177 0020 11BA      		out 0x11,__zero_reg__
+ 178 0022 0895      		ret
+ 180               	.Lscope1:
+ 182               	.global	LCD_getaddr
+ 184               	LCD_getaddr:
+  30:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** }
+  31:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 
+  32:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //LCD_getaddress reads the address counter and busy flag. For the address only,
+  33:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //mask off bit7 of the return value.
+  34:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** char LCD_getaddr(void)
+  35:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** {
+ 186               	.LM11:
+ 187               	.LFBB2:
+ 188               	/* prologue: function */
+ 189               	/* frame size = 0 */
+ 190               	/* stack size = 0 */
+ 191               	.L__stack_usage = 0
+  36:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//make var for the return value
+  37:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	char address;
+  38:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//PortD is input
+  39:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	DDRD = 0;
+ 193               	.LM12:
+ 194 0024 11BA      		out 0x11,__zero_reg__
+  40:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//RW high, strobe enable
+  41:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC |= ((1<<LCD_RW)|(1<<LCD_E));
+ 196               	.LM13:
+ 197 0026 85B3      		in r24,0x15
+ 198 0028 8660      		ori r24,lo8(6)
+ 199 002a 85BB      		out 0x15,r24
+  42:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 201               	.LM14:
+ 202               	/* #APP */
+ 203               	 ;  42 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 204 002c 0000      		nop
+ 205               	 ;  0 "" 2
+  43:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 207               	.LM15:
+ 208               	 ;  43 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 209 002e 0000      		nop
+ 210               	 ;  0 "" 2
+  44:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//while E is high, get data from LCD
+  45:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	address = PIND;
+ 212               	.LM16:
+ 213               	/* #NOAPP */
+ 214 0030 80B3      		in r24,0x10
+  46:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//reset RW to low, E low (for strobe)
+  47:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+ 216               	.LM17:
+ 217 0032 95B3      		in r25,0x15
+ 218 0034 997F      		andi r25,lo8(-7)
+ 219 0036 95BB      		out 0x15,r25
+  48:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//return address and busy flag
+  49:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	return address;
+  50:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** }
+ 221               	.LM18:
+ 222 0038 0895      		ret
+ 227               	.Lscope2:
+ 229               	.global	LCD_wait
+ 231               	LCD_wait:
+  51:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 
+  52:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //LCD_wait reads the address counter (which contains the busy flag) and loops until
+  53:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //the busy flag is cleared.
+  54:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** void LCD_wait(void)
+  55:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** {
+ 233               	.LM19:
+ 234               	.LFBB3:
+ 235               	/* prologue: function */
+ 236               	/* frame size = 0 */
+ 237               	/* stack size = 0 */
+ 238               	.L__stack_usage = 0
+ 239               	.L5:
+  56:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//get address and busy flag
+  57:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//and loop until busy flag cleared
+  58:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h ****     while((LCD_getaddr() & 0x80) == 0x80);
+ 241               	.LM20:
+ 242 003a 0E94 0000 		call LCD_getaddr
+ 243 003e 87FD      		sbrc r24,7
+ 244 0040 00C0      		rjmp .L5
+ 245               	/* epilogue start */
+  59:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** }
+ 247               	.LM21:
+ 248 0042 0895      		ret
+ 250               	.Lscope3:
+ 253               	.global	LCD_command
+ 255               	LCD_command:
+  60:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 
+  61:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //LCD_command works EXACTLY like LCD_putchar, but takes RS low for accessing the command reg
+  62:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //see LCD_putchar for details on the code
+  63:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** void LCD_command(char command)
+  64:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** {
+ 257               	.LM22:
+ 258               	.LFBB4:
+ 259               	/* prologue: function */
+ 260               	/* frame size = 0 */
+ 261               	/* stack size = 0 */
+ 262               	.L__stack_usage = 0
+  65:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	DDRD = 0xFF;
+ 264               	.LM23:
+ 265 0044 9FEF      		ldi r25,lo8(-1)
+ 266 0046 91BB      		out 0x11,r25
+  66:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTD = command;
+ 268               	.LM24:
+ 269 0048 82BB      		out 0x12,r24
+  67:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC &= ~((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+ 271               	.LM25:
+ 272 004a 85B3      		in r24,0x15
+ 273 004c 887F      		andi r24,lo8(-8)
+ 274 004e 85BB      		out 0x15,r24
+  68:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC |= (1<<LCD_E);
+ 276               	.LM26:
+ 277 0050 AA9A      		sbi 0x15,2
+  69:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 279               	.LM27:
+ 280               	/* #APP */
+ 281               	 ;  69 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 282 0052 0000      		nop
+ 283               	 ;  0 "" 2
+  70:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 285               	.LM28:
+ 286               	 ;  70 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 287 0054 0000      		nop
+ 288               	 ;  0 "" 2
+  71:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 290               	.LM29:
+ 291               	 ;  71 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 292 0056 0000      		nop
+ 293               	 ;  0 "" 2
+  72:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	asm volatile ("nop");
+ 295               	.LM30:
+ 296               	 ;  72 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h" 1
+ 297 0058 0000      		nop
+ 298               	 ;  0 "" 2
+  73:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC &= ~(1<<LCD_E);
+ 300               	.LM31:
+ 301               	/* #NOAPP */
+ 302 005a AA98      		cbi 0x15,2
+  74:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	DDRD = 0;
+ 304               	.LM32:
+ 305 005c 11BA      		out 0x11,__zero_reg__
+ 306 005e 0895      		ret
+ 308               	.Lscope4:
+ 310               	.global	LCD_init
+ 312               	LCD_init:
+  75:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** }
+  76:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 
+  77:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** /*LCD_init initialises the LCD with the following paramters:
+  78:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 8 bit mode, 5*7 font, 2 lines (also for 4 lines)
+  79:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** auto-inc cursor after write and read
+  80:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** cursor and didsplay on, cursor blinking.
+  81:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** */
+  82:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** void LCD_init(void)
+  83:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** {
+ 314               	.LM33:
+ 315               	.LFBB5:
+ 316               	/* prologue: function */
+ 317               	/* frame size = 0 */
+ 318               	/* stack size = 0 */
+ 319               	.L__stack_usage = 0
+  84:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//setup the LCD control signals on PortC
+  85:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	DDRC |= ((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+ 321               	.LM34:
+ 322 0060 84B3      		in r24,0x14
+ 323 0062 8760      		ori r24,lo8(7)
+ 324 0064 84BB      		out 0x14,r24
+  86:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	PORTC = 0x00;
+ 326               	.LM35:
+ 327 0066 15BA      		out 0x15,__zero_reg__
+ 328               	.LBB39:
+ 329               	.LBB40:
+ 331               	.Ltext2:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    Copyright (c) 2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    All rights reserved.
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    Redistribution and use in source and binary forms, with or without
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    modification, are permitted provided that the following conditions are met:
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Redistributions of source code must retain the above copyright
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer.
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Redistributions in binary form must reproduce the above copyright
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer in
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      the documentation and/or other materials provided with the
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      distribution.
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Neither the name of the copyright holders nor the names of
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      contributors may be used to endorse or promote products derived
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      from this software without specific prior written permission.
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /* $Id$ */
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #ifndef _UTIL_DELAY_BASIC_H_
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #define _UTIL_DELAY_BASIC_H_ 1
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #include <inttypes.h>
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #if !defined(__DOXYGEN__)
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** static inline void _delay_loop_1(uint8_t __count) __attribute__((always_inline));
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** static inline void _delay_loop_2(uint16_t __count) __attribute__((always_inline));
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #endif
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \file */
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \defgroup util_delay_basic <util/delay_basic.h>: Basic busy-wait delay loops
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     \code
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     #include <util/delay_basic.h>
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     \endcode
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     The functions in this header file implement simple delay loops
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     that perform a busy-waiting.  They are typically used to
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     facilitate short delays in the program execution.  They are
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     implemented as count-down loops with a well-known CPU cycle
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     count per loop iteration.  As such, no other processing can
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     occur simultaneously.  It should be kept in mind that the
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     functions described here do not disable interrupts.
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     In general, for long delays, the use of hardware timers is
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     much preferrable, as they free the CPU, and allow for
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     concurrent processing of other events while the timer is
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     running.  However, in particular for very short delays, the
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     overhead of setting up a hardware timer is too much compared
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     to the overall delay time.
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Two inline functions are provided for the actual delay algorithms.
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** */
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Delay loop using an 8-bit counter \c __count, so up to 256
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     iterations are possible.  (The value 256 would have to be passed
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     as 0.)  The loop executes three CPU cycles per iteration, not
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     including the overhead the compiler needs to setup the counter
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     register.
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to 768 microseconds
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     can be achieved.
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** */
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** void
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** _delay_loop_1(uint8_t __count)
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** {
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	__asm__ volatile (
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		"1: dec %0" "\n\t"
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		"brne 1b"
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		: "=r" (__count)
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		: "0" (__count)
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	);
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** }
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Delay loop using a 16-bit counter \c __count, so up to 65536
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     iterations are possible.  (The value 65536 would have to be
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     passed as 0.)  The loop executes four CPU cycles per iteration,
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     not including the overhead the compiler requires to setup the
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     counter register pair.
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to about 262.1
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     milliseconds can be achieved.
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****  */
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** void
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** _delay_loop_2(uint16_t __count)
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** {
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	__asm__ volatile (
+ 333               	.LM36:
+ 334 0068 8FEF      		ldi r24,lo8(-1)
+ 335 006a 9FEF      		ldi r25,lo8(-1)
+ 336               	/* #APP */
+ 337               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 338 006c 0197      		1: sbiw r24,1
+ 339 006e 01F4      		brne 1b
+ 340               	 ;  0 "" 2
+ 341               	/* #NOAPP */
+ 342               	.LBE40:
+ 343               	.LBE39:
+ 345               	.Ltext3:
+  87:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//if called right after power-up, we'll have to wait a bit (fine-tune for faster execution)
+  88:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  89:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//tell the LCD that it's used in 8-bit mode 3 times, each with a delay inbetween.
+  90:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_command(0x30);
+ 347               	.LM37:
+ 348 0070 80E3      		ldi r24,lo8(48)
+ 349 0072 0E94 0000 		call LCD_command
+ 350               	.LBB41:
+ 351               	.LBB42:
+ 353               	.Ltext4:
+ 355               	.LM38:
+ 356 0076 8FEF      		ldi r24,lo8(-1)
+ 357 0078 9FEF      		ldi r25,lo8(-1)
+ 358               	/* #APP */
+ 359               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 360 007a 0197      		1: sbiw r24,1
+ 361 007c 01F4      		brne 1b
+ 362               	 ;  0 "" 2
+ 363               	/* #NOAPP */
+ 364               	.LBE42:
+ 365               	.LBE41:
+ 367               	.Ltext5:
+  91:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  92:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_command(0x30);
+ 369               	.LM39:
+ 370 007e 80E3      		ldi r24,lo8(48)
+ 371 0080 0E94 0000 		call LCD_command
+ 372               	.LBB43:
+ 373               	.LBB44:
+ 375               	.Ltext6:
+ 377               	.LM40:
+ 378 0084 8FEF      		ldi r24,lo8(-1)
+ 379 0086 9FEF      		ldi r25,lo8(-1)
+ 380               	/* #APP */
+ 381               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 382 0088 0197      		1: sbiw r24,1
+ 383 008a 01F4      		brne 1b
+ 384               	 ;  0 "" 2
+ 385               	/* #NOAPP */
+ 386               	.LBE44:
+ 387               	.LBE43:
+ 389               	.Ltext7:
+  93:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  94:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_command(0x30);
+ 391               	.LM41:
+ 392 008c 80E3      		ldi r24,lo8(48)
+ 393 008e 0E94 0000 		call LCD_command
+ 394               	.LBB45:
+ 395               	.LBB46:
+ 397               	.Ltext8:
+ 399               	.LM42:
+ 400 0092 8FEF      		ldi r24,lo8(-1)
+ 401 0094 9FEF      		ldi r25,lo8(-1)
+ 402               	/* #APP */
+ 403               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 404 0096 0197      		1: sbiw r24,1
+ 405 0098 01F4      		brne 1b
+ 406               	 ;  0 "" 2
+ 407               	/* #NOAPP */
+ 408               	.LBE46:
+ 409               	.LBE45:
+ 411               	.Ltext9:
+  95:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  96:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//now: 8 bit interface, 5*7 font, 2 lines.
+  97:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_command(0x38);
+ 413               	.LM43:
+ 414 009a 88E3      		ldi r24,lo8(56)
+ 415 009c 0E94 0000 		call LCD_command
+  98:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//wait until command finished
+  99:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_wait();
+ 417               	.LM44:
+ 418 00a0 0E94 0000 		call LCD_wait
+ 100:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//display on, cursor on (blinking)
+ 101:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_command(0x0F);
+ 420               	.LM45:
+ 421 00a4 8FE0      		ldi r24,lo8(15)
+ 422 00a6 0E94 0000 		call LCD_command
+ 102:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_wait();
+ 424               	.LM46:
+ 425 00aa 0E94 0000 		call LCD_wait
+ 103:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//now clear the display, cursor home
+ 104:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_command(0x01);
+ 427               	.LM47:
+ 428 00ae 81E0      		ldi r24,lo8(1)
+ 429 00b0 0E94 0000 		call LCD_command
+ 105:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_wait();
+ 431               	.LM48:
+ 432 00b4 0E94 0000 		call LCD_wait
+ 106:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//cursor auto-inc
+ 107:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	LCD_command(0x06);
+ 434               	.LM49:
+ 435 00b8 86E0      		ldi r24,lo8(6)
+ 436 00ba 0C94 0000 		jmp LCD_command
+ 438               	.Lscope5:
+ 441               	.global	LCD_write
+ 443               	LCD_write:
+ 108:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** }
+ 109:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 
+ 110:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //now it's time for a simple function for showing strings on the LCD. It uses the low-level
+ 111:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //functions above. usage example: LCD_write("Hello World!");
+ 112:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** void LCD_write(char* dstring)
+ 113:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** {
+ 445               	.LM50:
+ 446               	.LFBB6:
+ 447 00be 0F93      		push r16
+ 448 00c0 1F93      		push r17
+ 449 00c2 CF93      		push r28
+ 450 00c4 DF93      		push r29
+ 451               	/* prologue: function */
+ 452               	/* frame size = 0 */
+ 453               	/* stack size = 4 */
+ 454               	.L__stack_usage = 4
+ 455 00c6 EC01      		movw r28,r24
+ 456               	.L10:
+ 457 00c8 8E01      		movw r16,r28
+ 114:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	//is the character pointed at by dstring a zero? If not, write character to LCD
+ 115:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	while(*dstring)
+ 459               	.LM51:
+ 460 00ca 8881      		ld r24,Y
+ 461 00cc 8823      		tst r24
+ 462 00ce 01F0      		breq .L12
+ 116:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	{
+ 117:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 		//if the LCD is bus, let it finish the current operation
+ 118:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 		LCD_wait();
+ 464               	.LM52:
+ 465 00d0 0E94 0000 		call LCD_wait
+ 466 00d4 2196      		adiw r28,1
+ 119:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 		//the write the character from dstring to the LCD, then post-inc the dstring is pointing at.
+ 120:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 		LCD_putchar(*dstring++);
+ 468               	.LM53:
+ 469 00d6 F801      		movw r30,r16
+ 470 00d8 8081      		ld r24,Z
+ 471 00da 0E94 0000 		call LCD_putchar
+ 472 00de 00C0      		rjmp .L10
+ 473               	.L12:
+ 474               	/* epilogue start */
+ 121:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 	}
+ 122:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** }
+ 476               	.LM54:
+ 477 00e0 DF91      		pop r29
+ 478 00e2 CF91      		pop r28
+ 479 00e4 1F91      		pop r17
+ 480 00e6 0F91      		pop r16
+ 481 00e8 0895      		ret
+ 483               	.Lscope6:
+ 487               	.global	LCD_goTo
+ 489               	LCD_goTo:
+ 123:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** 
+ 124:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** //LCD goTo defined position on screen
+ 125:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** char firstColumnPositionsForLCD[4] = {0, 64, 20, 84};
+ 126:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** void LCD_goTo(uint8_t x, uint8_t y)
+ 127:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h **** {
+ 491               	.LM55:
+ 492               	.LFBB7:
+ 493               	/* prologue: function */
+ 494               	/* frame size = 0 */
+ 495               	/* stack size = 0 */
+ 496               	.L__stack_usage = 0
+ 128:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/libLCD.h ****     LCD_command(0x80 + firstColumnPositionsForLCD[y-1] + (x-1));
+ 498               	.LM56:
+ 499 00ea 8158      		subi r24,lo8(-(127))
+ 500 00ec E62F      		mov r30,r22
+ 501 00ee F0E0      		ldi r31,0
+ 502 00f0 E050      		subi r30,lo8(-(firstColumnPositionsForLCD-1))
+ 503 00f2 F040      		sbci r31,hi8(-(firstColumnPositionsForLCD-1))
+ 504 00f4 9081      		ld r25,Z
+ 505 00f6 890F      		add r24,r25
+ 506 00f8 0C94 0000 		jmp LCD_command
+ 508               	.Lscope7:
+ 510               	.global	initIO
+ 512               	initIO:
+ 514               	.Ltext10:
+   1:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** #include <stdio.h>
+   2:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** #include <avr/io.h>
+   3:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** #include <avr/interrupt.h>
+   4:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** #include <util/delay.h>
+   5:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** #include "libLCD.h"
+   6:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** #include <stdlib.h>
+   7:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+   8:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** /*
+   9:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  
+  10:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  Created By:
+  11:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  
+  12:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  .------..------..------..------..------.
+  13:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  |M.--. ||A.--. ||G.--. ||I.--. ||C.--. |
+  14:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  | (\/) || (\/) || :/\: || (\/) || :/\: |
+  15:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  | :\/: || :\/: || :\/: || :\/: || :\/: |
+  16:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  | '--'M|| '--'A|| '--'G|| '--'I|| '--'C|
+  17:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  `------'`------'`------'`------'`------'
+  18:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  
+  19:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  
+  20:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  ADC Voltimetro
+  21:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  Valores 0-255, 0-5V
+  22:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  
+  23:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  LCD_Data ---> DDRD
+  24:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  LCD_RS-RW-EN ---> Pin0-Pin1-Pin2, DDRC
+  25:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  ADC_SensorIR ---> Pin0, DDRA
+  26:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  Resolucion ADC = 8bits
+  27:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****  */
+  28:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+  29:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** void initIO(void) {
+ 516               	.LM57:
+ 517               	.LFBB8:
+ 518               	/* prologue: function */
+ 519               	/* frame size = 0 */
+ 520               	/* stack size = 0 */
+ 521               	.L__stack_usage = 0
+ 522 00fc 0895      		ret
+ 524               	.Lscope8:
+ 525               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 526               	.LC0:
+ 527 0000 4372 6561 		.string	"Created by"
+ 527      7465 6420 
+ 527      6279 00
+ 528               	.LC1:
+ 529 000b 4D61 6769 		.string	"Magic"
+ 529      6300 
+ 530               	.LC2:
+ 531 0011 4361 7267 		.string	"Cargando Datos"
+ 531      616E 646F 
+ 531      2044 6174 
+ 531      6F73 00
+ 532               	.LC3:
+ 533 0020 2D00      		.string	"-"
+ 534               	.LC4:
+ 535 0022 4361 7267 		.string	"Carga Completa"
+ 535      6120 436F 
+ 535      6D70 6C65 
+ 535      7461 00
+ 536               	.LC5:
+ 537 0031 4C65 7965 		.string	"Leyendo:"
+ 537      6E64 6F3A 
+ 537      00
+ 538               		.section	.text.startup,"ax",@progbits
+ 540               	.global	main
+ 542               	main:
+  30:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  31:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** }
+  32:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+  33:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** int main(void)
+  34:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** {
+ 544               	.LM58:
+ 545               	.LFBB9:
+ 546               	/* prologue: function */
+ 547               	/* frame size = 0 */
+ 548               	/* stack size = 0 */
+ 549               	.L__stack_usage = 0
+  35:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_init();
+ 551               	.LM59:
+ 552 0000 0E94 0000 		call LCD_init
+  36:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_wait();
+ 554               	.LM60:
+ 555 0004 0E94 0000 		call LCD_wait
+  37:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write("Created by");
+ 557               	.LM61:
+ 558 0008 80E0      		ldi r24,lo8(.LC0)
+ 559 000a 90E0      		ldi r25,hi8(.LC0)
+ 560 000c 0E94 0000 		call LCD_write
+  38:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_wait();
+ 562               	.LM62:
+ 563 0010 0E94 0000 		call LCD_wait
+  39:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_command(0xC0);
+ 565               	.LM63:
+ 566 0014 80EC      		ldi r24,lo8(-64)
+ 567 0016 0E94 0000 		call LCD_command
+  40:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_wait();
+ 569               	.LM64:
+ 570 001a 0E94 0000 		call LCD_wait
+  41:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write("Magic");
+ 572               	.LM65:
+ 573 001e 80E0      		ldi r24,lo8(.LC1)
+ 574 0020 90E0      		ldi r25,hi8(.LC1)
+ 575 0022 0E94 0000 		call LCD_write
+ 576               	.LBB47:
+ 577               	.LBB48:
+ 579               	.Ltext11:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* $Id$ */
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /** \file */
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \code
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \endcode
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     used.
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** */
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /**
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 107:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 109:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 112:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 114:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 120:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 125:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 129:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 132:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 140:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****  */
+ 141:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** void
+ 142:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** {
+ 144:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	double __tmp ; 
+ 145:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 146:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 147:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 148:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 149:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 150:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 151:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 152:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 153:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 154:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 155:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 156:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 157:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 158:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#else
+ 159:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		//round up by default
+ 160:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 161:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#endif
+ 162:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 163:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 581               	.LM66:
+ 582 0026 2FEF      		ldi r18,lo8(3199999)
+ 583 0028 83ED      		ldi r24,hi8(3199999)
+ 584 002a 90E3      		ldi r25,hlo8(3199999)
+ 585 002c 2150      		1: subi r18,1
+ 586 002e 8040      		sbci r24,0
+ 587 0030 9040      		sbci r25,0
+ 588 0032 01F4      		brne 1b
+ 589 0034 00C0      		rjmp .
+ 590 0036 0000      		nop
+ 591               	.LBE48:
+ 592               	.LBE47:
+ 594               	.Ltext12:
+  42:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     _delay_ms(1000);
+  43:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_command(0b00000001);
+ 596               	.LM67:
+ 597 0038 81E0      		ldi r24,lo8(1)
+ 598 003a 0E94 0000 		call LCD_command
+  44:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_wait();
+ 600               	.LM68:
+ 601 003e 0E94 0000 		call LCD_wait
+  45:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write("Cargando Datos");
+ 603               	.LM69:
+ 604 0042 80E0      		ldi r24,lo8(.LC2)
+ 605 0044 90E0      		ldi r25,hi8(.LC2)
+ 606 0046 0E94 0000 		call LCD_write
+  46:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_wait();
+ 608               	.LM70:
+ 609 004a 0E94 0000 		call LCD_wait
+  47:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_command(0xC0);
+ 611               	.LM71:
+ 612 004e 80EC      		ldi r24,lo8(-64)
+ 613 0050 0E94 0000 		call LCD_command
+  48:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_wait();
+ 615               	.LM72:
+ 616 0054 0E94 0000 		call LCD_wait
+ 617               	.LBB49:
+  49:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     for (int load=1; load<=16; load++)
+ 619               	.LM73:
+ 620 0058 C1E0      		ldi r28,lo8(1)
+ 621 005a D0E0      		ldi r29,0
+ 622               	.L18:
+  50:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     {
+  51:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****         LCD_write("-");
+ 624               	.LM74:
+ 625 005c 80E0      		ldi r24,lo8(.LC3)
+ 626 005e 90E0      		ldi r25,hi8(.LC3)
+ 627 0060 0E94 0000 		call LCD_write
+ 628               	.LBB50:
+ 629               	.LBB51:
+ 631               	.Ltext13:
+ 633               	.LM75:
+ 634 0064 2FEF      		ldi r18,lo8(159999)
+ 635 0066 80E7      		ldi r24,hi8(159999)
+ 636 0068 92E0      		ldi r25,hlo8(159999)
+ 637 006a 2150      		1: subi r18,1
+ 638 006c 8040      		sbci r24,0
+ 639 006e 9040      		sbci r25,0
+ 640 0070 01F4      		brne 1b
+ 641 0072 00C0      		rjmp .
+ 642 0074 0000      		nop
+ 643               	.LBE51:
+ 644               	.LBE50:
+ 646               	.Ltext14:
+  52:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****         _delay_ms(50);
+  53:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****         if (load==16)
+ 648               	.LM76:
+ 649 0076 C031      		cpi r28,16
+ 650 0078 D105      		cpc r29,__zero_reg__
+ 651 007a 01F4      		brne .L16
+  54:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****         {
+  55:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****             LCD_command(0b00000001);
+ 653               	.LM77:
+ 654 007c 81E0      		ldi r24,lo8(1)
+ 655 007e 0E94 0000 		call LCD_command
+  56:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****             LCD_write("Carga Completa");
+ 657               	.LM78:
+ 658 0082 80E0      		ldi r24,lo8(.LC4)
+ 659 0084 90E0      		ldi r25,hi8(.LC4)
+ 660 0086 0E94 0000 		call LCD_write
+ 661               	.LBB52:
+ 662               	.LBB53:
+ 664               	.Ltext15:
+ 666               	.LM79:
+ 667 008a 2FEF      		ldi r18,lo8(3199999)
+ 668 008c 83ED      		ldi r24,hi8(3199999)
+ 669 008e 90E3      		ldi r25,hlo8(3199999)
+ 670 0090 2150      		1: subi r18,1
+ 671 0092 8040      		sbci r24,0
+ 672 0094 9040      		sbci r25,0
+ 673 0096 01F4      		brne 1b
+ 674 0098 00C0      		rjmp .
+ 675 009a 0000      		nop
+ 676               	.LBE53:
+ 677               	.LBE52:
+ 679               	.Ltext16:
+  57:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****             _delay_ms(1000);
+  58:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****             LCD_command(0b00000001);
+ 681               	.LM80:
+ 682 009c 81E0      		ldi r24,lo8(1)
+ 683 009e 0E94 0000 		call LCD_command
+  59:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****             LCD_wait();
+ 685               	.LM81:
+ 686 00a2 0E94 0000 		call LCD_wait
+ 687               	.L16:
+  49:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     for (int load=1; load<=16; load++)
+ 689               	.LM82:
+ 690 00a6 2196      		adiw r28,1
+ 691 00a8 C131      		cpi r28,17
+ 692 00aa D105      		cpc r29,__zero_reg__
+ 693 00ac 01F4      		brne .L18
+ 694               	.LBE49:
+  60:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****         }
+  61:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     }
+  62:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+  63:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write("Leyendo:");
+ 696               	.LM83:
+ 697 00ae 80E0      		ldi r24,lo8(.LC5)
+ 698 00b0 90E0      		ldi r25,hi8(.LC5)
+ 699 00b2 0E94 0000 		call LCD_write
+  64:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_wait();
+ 701               	.LM84:
+ 702 00b6 0E94 0000 		call LCD_wait
+  65:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  66:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  67:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     //Configure the ADC
+  68:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     ADCSRA |= 1 <<ADPS2;
+ 704               	.LM85:
+ 705 00ba 329A      		sbi 0x6,2
+  69:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     ADMUX |= 1 <<ADLAR;
+ 707               	.LM86:
+ 708 00bc 3D9A      		sbi 0x7,5
+  70:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     ADMUX |= 1 <<REFS0;
+ 710               	.LM87:
+ 711 00be 3E9A      		sbi 0x7,6
+  71:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     ADCSRA |= 1 <<ADIE;
+ 713               	.LM88:
+ 714 00c0 339A      		sbi 0x6,3
+  72:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     ADCSRA |= 1 <<ADEN;
+ 716               	.LM89:
+ 717 00c2 379A      		sbi 0x6,7
+  73:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  74:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     sei();
+ 719               	.LM90:
+ 720               	/* #APP */
+ 721               	 ;  74 "/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c" 1
+ 722 00c4 7894      		sei
+ 723               	 ;  0 "" 2
+ 724               	/* #NOAPP */
+ 725               	.L19:
+  75:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  76:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     while (1)
+  77:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     {
+  78:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****         ADCSRA |= 1 <<ADSC;
+ 727               	.LM91:
+ 728 00c6 369A      		sbi 0x6,6
+ 729 00c8 00C0      		rjmp .L19
+ 734               	.Lscope9:
+ 735               	.global	__fixsfsi
+ 736               	.global	__floatsisf
+ 737               	.global	__subsf3
+ 738               		.section	.rodata.str1.1
+ 739               	.LC6:
+ 740 003a 2E00      		.string	"."
+ 741               	.global	__mulsf3
+ 742               		.text
+ 746               	.global	printfloat
+ 748               	printfloat:
+  79:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     }
+  80:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  81:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  82:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** }
+  83:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+  84:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** void printfloat(float a , int precision)
+  85:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** {
+ 750               	.LM92:
+ 751               	.LFBB10:
+ 752 00fe 8F92      		push r8
+ 753 0100 9F92      		push r9
+ 754 0102 AF92      		push r10
+ 755 0104 BF92      		push r11
+ 756 0106 CF92      		push r12
+ 757 0108 DF92      		push r13
+ 758 010a EF92      		push r14
+ 759 010c FF92      		push r15
+ 760 010e 0F93      		push r16
+ 761 0110 1F93      		push r17
+ 762 0112 CF93      		push r28
+ 763 0114 DF93      		push r29
+ 764 0116 CDB7      		in r28,__SP_L__
+ 765 0118 DEB7      		in r29,__SP_H__
+ 766 011a 2C97      		sbiw r28,12
+ 767 011c 0FB6      		in __tmp_reg__,__SREG__
+ 768 011e F894      		cli
+ 769 0120 DEBF      		out __SP_H__,r29
+ 770 0122 0FBE      		out __SREG__,__tmp_reg__
+ 771 0124 CDBF      		out __SP_L__,r28
+ 772               	/* prologue: function */
+ 773               	/* frame size = 12 */
+ 774               	/* stack size = 24 */
+ 775               	.L__stack_usage = 24
+ 776 0126 4B01      		movw r8,r22
+ 777 0128 5C01      		movw r10,r24
+ 778 012a 8A01      		movw r16,r20
+  86:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_command(0b00000001);
+ 780               	.LM93:
+ 781 012c 81E0      		ldi r24,lo8(1)
+ 782 012e 0E94 0000 		call LCD_command
+  87:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     int roundoff = a;   // getting rounded integer
+ 784               	.LM94:
+ 785 0132 C501      		movw r24,r10
+ 786 0134 B401      		movw r22,r8
+ 787 0136 0E94 0000 		call __fixsfsi
+ 788 013a 6B01      		movw r12,r22
+ 789 013c 7C01      		movw r14,r24
+  88:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     float remainder = 0; // declaring the numbers to the right of the decimal point
+  89:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     int whole_remainder = 0; // declaring remainder variable
+  90:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     remainder = a - roundoff; // calculating remainder
+ 791               	.LM95:
+ 792 013e 8827      		clr r24
+ 793 0140 77FD      		sbrc r23,7
+ 794 0142 8095      		com r24
+ 795 0144 982F      		mov r25,r24
+ 796 0146 0E94 0000 		call __floatsisf
+ 797 014a 9B01      		movw r18,r22
+ 798 014c AC01      		movw r20,r24
+ 799 014e C501      		movw r24,r10
+ 800 0150 B401      		movw r22,r8
+ 801 0152 0E94 0000 		call __subsf3
+ 802 0156 4B01      		movw r8,r22
+ 803 0158 5C01      		movw r10,r24
+ 804               	.LBB54:
+ 805               	.LBB55:
+ 807               	.Ltext17:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    Copyright (c) 2004,2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    Portions of documentation Copyright (c) 1990, 1991, 1993, 1994
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    The Regents of the University of California.
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    All rights reserved.
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    Redistribution and use in source and binary forms, with or without
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    modification, are permitted provided that the following conditions are met:
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    * Redistributions of source code must retain the above copyright
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      notice, this list of conditions and the following disclaimer.
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    * Redistributions in binary form must reproduce the above copyright
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      notice, this list of conditions and the following disclaimer in
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      the documentation and/or other materials provided with the
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      distribution.
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    * Neither the name of the copyright holders nor the names of
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      contributors may be used to endorse or promote products derived
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      from this software without specific prior written permission.
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   POSSIBILITY OF SUCH DAMAGE.
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****   $Id$
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef _STDLIB_H_
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #define	_STDLIB_H_ 1
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __ASSEMBLER__
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #define __need_NULL
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #define __need_size_t
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #define __need_wchar_t
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #include <stddef.h>
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __ptr_t
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #define __ptr_t void *
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifdef __cplusplus
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern "C" {
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** \file */
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** \defgroup avr_stdlib <stdlib.h>: General utilities
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     \code #include <stdlib.h> \endcode
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     This file declares some basic C macros and functions as
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     defined by the ISO standard, plus some AVR-specific extensions.
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /*@{*/
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** Result type for function div(). */
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** typedef struct {
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	int quot;                   /**< The Quotient. */
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	int rem;                    /**< The Remainder. */
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** } div_t;
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** Result type for function ldiv(). */
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** typedef struct {
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	long quot;                  /**< The Quotient. */
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	long rem;                   /**< The Remainder. */
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** } ldiv_t;
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** Comparision function type for qsort(), just for convenience. */
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** typedef int (*__compar_fn_t)(const void *, const void *);
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __DOXYGEN__
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __ATTR_CONST__
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** # define __ATTR_CONST__ __attribute__((__const__))
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __ATTR_MALLOC__
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** # define __ATTR_MALLOC__ __attribute__((__malloc__))
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __ATTR_NORETURN__
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** # define __ATTR_NORETURN__ __attribute__((__noreturn__))
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __ATTR_PURE__
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** # define __ATTR_PURE__ __attribute__((__pure__))
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef	__ATTR_GNU_INLINE__
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** # ifdef  __GNUC_STDC_INLINE__
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #  define __ATTR_GNU_INLINE__   __attribute__((__gnu_inline__))
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** # else
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #  define __ATTR_GNU_INLINE__
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** # endif
+ 106:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+ 107:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 108:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+ 109:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 110:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** The abort() function causes abnormal program termination to occur.
+ 111:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     This realization disables interrupts and jumps to _exit() function
+ 112:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     with argument equal to 1. In the limited AVR environment, execution is
+ 113:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     effectively halted by entering an infinite loop. */
+ 114:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void abort(void) __ATTR_NORETURN__;
+ 115:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 116:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** The abs() function computes the absolute value of the integer \c i.
+ 117:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \note The abs() and labs() functions are builtins of gcc.
+ 118:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 119:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern int abs(int __i) __ATTR_CONST__;
+ 120:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __DOXYGEN__
+ 121:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #define	abs(__i) __builtin_abs(__i)
+ 122:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+ 123:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 124:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** The labs() function computes the absolute value of the long integer
+ 125:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     \c i.
+ 126:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \note The abs() and labs() functions are builtins of gcc.
+ 127:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 128:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern long labs(long __i) __ATTR_CONST__;
+ 129:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifndef __DOXYGEN__
+ 130:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #define labs(__i) __builtin_labs(__i)
+ 131:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #endif
+ 132:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 133:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 134:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The bsearch() function searches an array of \c nmemb objects, the
+ 135:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      initial member of which is pointed to by \c base, for a member
+ 136:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      that matches the object pointed to by \c key.  The size of each
+ 137:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      member of the array is specified by \c size.
+ 138:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 139:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The contents of the array should be in ascending sorted order
+ 140:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      according to the comparison function referenced by \c compar.
+ 141:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The \c compar routine is expected to have two arguments which
+ 142:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      point to the key object and to an array member, in that order,
+ 143:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      and should return an integer less than, equal to, or greater than
+ 144:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      zero if the key object is found, respectively, to be less than,
+ 145:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      to match, or be greater than the array member.
+ 146:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 147:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The bsearch() function returns a pointer to a matching member of
+ 148:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      the array, or a null pointer if no match is found.  If two
+ 149:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      members compare as equal, which member is matched is unspecified.
+ 150:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 151:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void *bsearch(const void *__key, const void *__base, size_t __nmemb,
+ 152:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 		     size_t __size, int (*__compar)(const void *, const void *));
+ 153:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 154:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /* __divmodhi4 and __divmodsi4 from libgcc.a */
+ 155:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 156:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The div() function computes the value \c num/denom and returns
+ 157:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      the quotient and remainder in a structure named \c div_t that
+ 158:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      contains two int members named \c quot and \c rem.
+ 159:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 160:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern div_t div(int __num, int __denom) __asm__("__divmodhi4") __ATTR_CONST__;
+ 161:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 162:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The ldiv() function computes the value \c num/denom and returns
+ 163:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      the quotient and remainder in a structure named \c ldiv_t that
+ 164:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      contains two long integer members named \c quot and \c rem.
+ 165:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 166:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern ldiv_t ldiv(long __num, long __denom) __asm__("__divmodsi4") __ATTR_CONST__;
+ 167:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 168:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 169:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The qsort() function is a modified partition-exchange sort, or
+ 170:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      quicksort.
+ 171:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 172:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The qsort() function sorts an array of \c nmemb objects, the
+ 173:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      initial member of which is pointed to by \c base.  The size of
+ 174:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      each object is specified by \c size.  The contents of the array
+ 175:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      base are sorted in ascending order according to a comparison
+ 176:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      function pointed to by \c compar, which requires two arguments
+ 177:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      pointing to the objects being compared.
+ 178:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 179:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The comparison function must return an integer less than, equal
+ 180:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      to, or greater than zero if the first argument is considered to
+ 181:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      be respectively less than, equal to, or greater than the second.
+ 182:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 183:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void qsort(void *__base, size_t __nmemb, size_t __size,
+ 184:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 		  __compar_fn_t __compar);
+ 185:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 186:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 187:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The strtol() function converts the string in \c nptr to a long
+ 188:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     value.  The conversion is done according to the given base, which
+ 189:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     must be between 2 and 36 inclusive, or be the special value 0.
+ 190:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 191:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The string may begin with an arbitrary amount of white space (as
+ 192:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     determined by isspace()) followed by a single optional \c '+' or \c '-'
+ 193:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     sign.  If \c base is zero or 16, the string may then include a
+ 194:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     \c "0x" prefix, and the number will be read in base 16; otherwise,
+ 195:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     a zero base is taken as 10 (decimal) unless the next character is
+ 196:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     \c '0', in which case it is taken as 8 (octal).
+ 197:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 198:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The remainder of the string is converted to a long value in the
+ 199:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     obvious manner, stopping at the first character which is not a
+ 200:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     valid digit in the given base.  (In bases above 10, the letter \c 'A'
+ 201:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     in either upper or lower case represents 10, \c 'B' represents 11,
+ 202:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     and so forth, with \c 'Z' representing 35.)
+ 203:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 204:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     If \c endptr is not NULL, strtol() stores the address of the first
+ 205:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     invalid character in \c *endptr.  If there were no digits at all,
+ 206:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     however, strtol() stores the original value of \c nptr in \c
+ 207:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     *endptr.  (Thus, if \c *nptr is not \c '\\0' but \c **endptr is \c '\\0'
+ 208:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     on return, the entire string was valid.)
+ 209:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 210:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The strtol() function returns the result of the conversion, unless
+ 211:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     the value would underflow or overflow.  If no conversion could be
+ 212:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     performed, 0 is returned.  If an overflow or underflow occurs, \c
+ 213:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     errno is set to \ref avr_errno "ERANGE" and the function return value
+ 214:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     is clamped to \c LONG_MIN or \c LONG_MAX, respectively.
+ 215:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 216:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern long strtol(const char *__nptr, char **__endptr, int __base);
+ 217:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 218:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 219:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The strtoul() function converts the string in \c nptr to an
+ 220:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     unsigned long value.  The conversion is done according to the
+ 221:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     given base, which must be between 2 and 36 inclusive, or be the
+ 222:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     special value 0.
+ 223:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 224:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The string may begin with an arbitrary amount of white space (as
+ 225:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     determined by isspace()) followed by a single optional \c '+' or \c '-'
+ 226:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     sign.  If \c base is zero or 16, the string may then include a
+ 227:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     \c "0x" prefix, and the number will be read in base 16; otherwise,
+ 228:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     a zero base is taken as 10 (decimal) unless the next character is
+ 229:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     \c '0', in which case it is taken as 8 (octal).
+ 230:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 231:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The remainder of the string is converted to an unsigned long value
+ 232:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     in the obvious manner, stopping at the first character which is
+ 233:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     not a valid digit in the given base.  (In bases above 10, the
+ 234:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     letter \c 'A' in either upper or lower case represents 10, \c 'B'
+ 235:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     represents 11, and so forth, with \c 'Z' representing 35.)
+ 236:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 237:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     If \c endptr is not NULL, strtoul() stores the address of the first
+ 238:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     invalid character in \c *endptr.  If there were no digits at all,
+ 239:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     however, strtoul() stores the original value of \c nptr in \c
+ 240:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     *endptr.  (Thus, if \c *nptr is not \c '\\0' but \c **endptr is \c '\\0'
+ 241:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     on return, the entire string was valid.)
+ 242:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 243:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The strtoul() function return either the result of the conversion
+ 244:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     or, if there was a leading minus sign, the negation of the result
+ 245:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     of the conversion, unless the original (non-negated) value would
+ 246:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     overflow; in the latter case, strtoul() returns ULONG_MAX, and \c
+ 247:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     errno is set to \ref avr_errno "ERANGE".  If no conversion could 
+ 248:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     be performed, 0 is returned.
+ 249:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 250:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern unsigned long strtoul(const char *__nptr, char **__endptr, int __base);
+ 251:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 252:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 253:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The atol() function converts the initial portion of the string
+ 254:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     pointed to by \p s to long integer representation. In contrast to
+ 255:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 256:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****         \code strtol(s, (char **)NULL, 10); \endcode
+ 257:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 258:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     this function does not detect overflow (\c errno is not changed and
+ 259:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     the result value is not predictable), uses smaller memory (flash and
+ 260:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     stack) and works more quickly.
+ 261:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 262:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern long atol(const char *__s) __ATTR_PURE__;
+ 263:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 264:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 265:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     The atoi() function converts the initial portion of the string
+ 266:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     pointed to by \p s to integer representation. In contrast to
+ 267:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 268:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****         \code (int)strtol(s, (char **)NULL, 10); \endcode
+ 269:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 270:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     this function does not detect overflow (\c errno is not changed and
+ 271:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     the result value is not predictable), uses smaller memory (flash and
+ 272:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     stack) and works more quickly.
+ 273:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 274:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern int atoi(const char *__s) __ATTR_PURE__;
+ 275:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 276:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 277:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    The exit() function terminates the application.  Since there is no
+ 278:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    environment to return to, \c status is ignored, and code execution
+ 279:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    will eventually reach an infinite loop, thereby effectively halting
+ 280:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    all code processing.  Before entering the infinite loop, interrupts
+ 281:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    are globally disabled.
+ 282:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 283:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    In a C++ context, global destructors will be called before halting
+ 284:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    execution.
+ 285:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 286:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void exit(int __status) __ATTR_NORETURN__;
+ 287:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 288:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 289:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    The malloc() function allocates \c size bytes of memory.
+ 290:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    If malloc() fails, a NULL pointer is returned.
+ 291:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 292:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    Note that malloc() does \e not initialize the returned memory to
+ 293:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    zero bytes.
+ 294:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 295:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    See the chapter about \ref malloc "malloc() usage" for implementation
+ 296:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    details.
+ 297:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 298:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void *malloc(size_t __size) __ATTR_MALLOC__;
+ 299:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 300:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 301:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    The free() function causes the allocated memory referenced by \c
+ 302:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    ptr to be made available for future allocations.  If \c ptr is
+ 303:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    NULL, no action occurs.
+ 304:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 305:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void free(void *__ptr);
+ 306:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 307:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 308:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \c malloc() \ref malloc_tunables "tunable".
+ 309:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 310:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern size_t __malloc_margin;
+ 311:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 312:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 313:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \c malloc() \ref malloc_tunables "tunable".
+ 314:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 315:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern char *__malloc_heap_start;
+ 316:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 317:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 318:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \c malloc() \ref malloc_tunables "tunable".
+ 319:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 320:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern char *__malloc_heap_end;
+ 321:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 322:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 323:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    Allocate \c nele elements of \c size each.  Identical to calling
+ 324:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \c malloc() using <tt>nele * size</tt> as argument, except the
+ 325:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    allocated memory will be cleared to zero.
+ 326:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 327:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void *calloc(size_t __nele, size_t __size) __ATTR_MALLOC__;
+ 328:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 329:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 330:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    The realloc() function tries to change the size of the region
+ 331:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    allocated at \c ptr to the new \c size value.  It returns a
+ 332:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    pointer to the new region.  The returned pointer might be the
+ 333:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    same as the old pointer, or a pointer to a completely different
+ 334:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    region.
+ 335:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 336:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    The contents of the returned region up to either the old or the new
+ 337:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    size value (whatever is less) will be identical to the contents of
+ 338:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    the old region, even in case a new region had to be allocated.
+ 339:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 340:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    It is acceptable to pass \c ptr as NULL, in which case realloc()
+ 341:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    will behave identical to malloc().
+ 342:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 343:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    If the new memory cannot be allocated, realloc() returns NULL, and
+ 344:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    the region at \c ptr will not be changed.
+ 345:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 346:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void *realloc(void *__ptr, size_t __size) __ATTR_MALLOC__;
+ 347:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 348:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern double strtod(const char *__nptr, char **__endptr);
+ 349:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 350:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern double atof(const char *__nptr);
+ 351:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 352:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** Highest number that can be generated by rand(). */
+ 353:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #define	RAND_MAX 0x7FFF
+ 354:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 355:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 356:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The rand() function computes a sequence of pseudo-random integers in the
+ 357:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      range of 0 to \c RAND_MAX (as defined by the header file <stdlib.h>).
+ 358:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 359:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      The srand() function sets its argument \c seed as the seed for a new
+ 360:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      sequence of pseudo-random numbers to be returned by rand().  These
+ 361:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      sequences are repeatable by calling srand() with the same seed value.
+ 362:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 363:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      If no seed value is provided, the functions are automatically seeded with
+ 364:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      a value of 1.
+ 365:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 366:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      In compliance with the C standard, these functions operate on
+ 367:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      \c int arguments.  Since the underlying algorithm already uses
+ 368:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      32-bit calculations, this causes a loss of precision.  See
+ 369:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      \c random() for an alternate set of functions that retains full
+ 370:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****      32-bit precision.
+ 371:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 372:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern int rand(void);
+ 373:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 374:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    Pseudo-random number generator seeding; see rand().
+ 375:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 376:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern void srand(unsigned int __seed);
+ 377:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 378:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 379:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    Variant of rand() that stores the context in the user-supplied
+ 380:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    variable located at \c ctx instead of a static library variable
+ 381:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    so the function becomes re-entrant.
+ 382:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 383:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern int rand_r(unsigned long *__ctx);
+ 384:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /*@}*/
+ 385:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 386:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /*@{*/
+ 387:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /** \name Non-standard (i.e. non-ISO C) functions.
+ 388:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****  \ingroup avr_stdlib
+ 389:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 390:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** /**
+ 391:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \brief Convert an integer to a string.
+ 392:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 393:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    The function itoa() converts the integer value from \c val into an
+ 394:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    ASCII representation that will be stored under \c s.  The caller
+ 395:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    is responsible for providing sufficient storage in \c s.
+ 396:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 397:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \note The minimal size of the buffer \c s depends on the choice of
+ 398:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    radix. For example, if the radix is 2 (binary), you need to supply a buffer
+ 399:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    with a minimal length of 8 * sizeof (int) + 1 characters, i.e. one
+ 400:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    character for each bit plus one for the string terminator. Using a larger
+ 401:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    radix will require a smaller minimal buffer size.
+ 402:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 403:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \warning If the buffer is too small, you risk a buffer overflow.
+ 404:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 405:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    Conversion is done using the \c radix as base, which may be a
+ 406:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    number between 2 (binary conversion) and up to 36.  If \c radix
+ 407:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    is greater than 10, the next digit after \c '9' will be the letter
+ 408:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    \c 'a'.
+ 409:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     
+ 410:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     If radix is 10 and val is negative, a minus sign will be prepended.
+ 411:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 
+ 412:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****    The itoa() function returns the pointer passed as \c s.
+ 413:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** */
+ 414:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #ifdef  __DOXYGEN__
+ 415:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern char *itoa(int val, char *s, int radix);
+ 416:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** #else
+ 417:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** extern __inline__ __ATTR_GNU_INLINE__
+ 418:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** char *itoa (int __val, char *__s, int __radix)
+ 419:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** {
+ 420:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     if (!__builtin_constant_p (__radix)) {
+ 421:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	extern char *__itoa (int, char *, int);
+ 422:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	return __itoa (__val, __s, __radix);
+ 423:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     } else if (__radix < 2 || __radix > 36) {
+ 424:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	*__s = 0;
+ 425:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	return __s;
+ 426:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h ****     } else {
+ 427:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	extern char *__itoa_ncheck (int, char *, unsigned char);
+ 428:/usr/local/CrossPack-AVR-20131216/avr/include/stdlib.h **** 	return __itoa_ncheck (__val, __s, __radix);
+ 809               	.LM96:
+ 810 015a 4AE0      		ldi r20,lo8(10)
+ 811 015c BE01      		movw r22,r28
+ 812 015e 695F      		subi r22,-7
+ 813 0160 7F4F      		sbci r23,-1
+ 814 0162 C601      		movw r24,r12
+ 815 0164 0E94 0000 		call __itoa_ncheck
+ 816               	.LBE55:
+ 817               	.LBE54:
+ 819               	.Ltext18:
+  91:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  92:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     char whole[6];
+  93:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     itoa(roundoff,whole,10);
+  94:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  95:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  96:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write(whole);  // writing numbers to the left of the decimal point to the lcd
+ 821               	.LM97:
+ 822 0168 CE01      		movw r24,r28
+ 823 016a 0796      		adiw r24,7
+ 824 016c 0E94 0000 		call LCD_write
+  97:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write(".");  // writing a dot
+ 826               	.LM98:
+ 827 0170 80E0      		ldi r24,lo8(.LC6)
+ 828 0172 90E0      		ldi r25,hi8(.LC6)
+ 829 0174 0E94 0000 		call LCD_write
+  98:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+  99:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     whole_remainder = remainder*(pow(10,precision)); // making the decimals into whole integers by 
+ 831               	.LM99:
+ 832 0178 B801      		movw r22,r16
+ 833 017a 8827      		clr r24
+ 834 017c 77FD      		sbrc r23,7
+ 835 017e 8095      		com r24
+ 836 0180 982F      		mov r25,r24
+ 837 0182 0E94 0000 		call __floatsisf
+ 838 0186 9B01      		movw r18,r22
+ 839 0188 AC01      		movw r20,r24
+ 840 018a 60E0      		ldi r22,0
+ 841 018c 70E0      		ldi r23,0
+ 842 018e 80E2      		ldi r24,lo8(32)
+ 843 0190 91E4      		ldi r25,lo8(65)
+ 844 0192 0E94 0000 		call pow
+ 845 0196 9B01      		movw r18,r22
+ 846 0198 AC01      		movw r20,r24
+ 847 019a C501      		movw r24,r10
+ 848 019c B401      		movw r22,r8
+ 849 019e 0E94 0000 		call __mulsf3
+ 850 01a2 0E94 0000 		call __fixsfsi
+ 851 01a6 DC01      		movw r26,r24
+ 852 01a8 CB01      		movw r24,r22
+ 853               	.LBB56:
+ 854               	.LBB57:
+ 856               	.Ltext19:
+ 858               	.LM100:
+ 859 01aa 4AE0      		ldi r20,lo8(10)
+ 860 01ac BE01      		movw r22,r28
+ 861 01ae 6F5F      		subi r22,-1
+ 862 01b0 7F4F      		sbci r23,-1
+ 863 01b2 0E94 0000 		call __itoa_ncheck
+ 864               	.LBE57:
+ 865               	.LBE56:
+ 867               	.Ltext20:
+ 100:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 101:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     char decimals[6];
+ 102:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     itoa(whole_remainder,decimals,10);
+ 103:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 104:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 105:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write(decimals);  // writing the decimals to the lcd
+ 869               	.LM101:
+ 870 01b6 CE01      		movw r24,r28
+ 871 01b8 0196      		adiw r24,1
+ 872 01ba 0E94 0000 		call LCD_write
+ 873               	/* epilogue start */
+ 106:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 107:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 108:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 109:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** }
+ 875               	.LM102:
+ 876 01be 2C96      		adiw r28,12
+ 877 01c0 0FB6      		in __tmp_reg__,__SREG__
+ 878 01c2 F894      		cli
+ 879 01c4 DEBF      		out __SP_H__,r29
+ 880 01c6 0FBE      		out __SREG__,__tmp_reg__
+ 881 01c8 CDBF      		out __SP_L__,r28
+ 882 01ca DF91      		pop r29
+ 883 01cc CF91      		pop r28
+ 884 01ce 1F91      		pop r17
+ 885 01d0 0F91      		pop r16
+ 886 01d2 FF90      		pop r15
+ 887 01d4 EF90      		pop r14
+ 888 01d6 DF90      		pop r13
+ 889 01d8 CF90      		pop r12
+ 890 01da BF90      		pop r11
+ 891 01dc AF90      		pop r10
+ 892 01de 9F90      		pop r9
+ 893 01e0 8F90      		pop r8
+ 894 01e2 0895      		ret
+ 900               	.Lscope10:
+ 901               	.global	__divsf3
+ 902               		.section	.rodata.str1.1
+ 903               	.LC7:
+ 904 003c 2000      		.string	" "
+ 905               	.LC8:
+ 906 003e 5664 6320 		.string	"Vdc "
+ 906      00
+ 907               	.LC9:
+ 908 0043 4144 4348 		.string	"ADCH "
+ 908      2000 
+ 909               	.LC10:
+ 910 0049 2020 2000 		.string	"   "
+ 911               		.text
+ 913               	.global	__vector_14
+ 915               	__vector_14:
+ 110:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+ 111:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+ 112:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+ 113:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+ 114:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** 
+ 115:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** ISR(ADC_vect)
+ 116:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** {
+ 917               	.LM103:
+ 918               	.LFBB11:
+ 919 01e4 1F92      		push r1
+ 920 01e6 0F92      		push r0
+ 921 01e8 0FB6      		in r0,__SREG__
+ 922 01ea 0F92      		push r0
+ 923 01ec 1124      		clr __zero_reg__
+ 924 01ee EF92      		push r14
+ 925 01f0 FF92      		push r15
+ 926 01f2 0F93      		push r16
+ 927 01f4 1F93      		push r17
+ 928 01f6 2F93      		push r18
+ 929 01f8 3F93      		push r19
+ 930 01fa 4F93      		push r20
+ 931 01fc 5F93      		push r21
+ 932 01fe 6F93      		push r22
+ 933 0200 7F93      		push r23
+ 934 0202 8F93      		push r24
+ 935 0204 9F93      		push r25
+ 936 0206 AF93      		push r26
+ 937 0208 BF93      		push r27
+ 938 020a EF93      		push r30
+ 939 020c FF93      		push r31
+ 940 020e CF93      		push r28
+ 941 0210 DF93      		push r29
+ 942 0212 CDB7      		in r28,__SP_L__
+ 943 0214 DEB7      		in r29,__SP_H__
+ 944 0216 2A97      		sbiw r28,10
+ 945 0218 DEBF      		out __SP_H__,r29
+ 946 021a CDBF      		out __SP_L__,r28
+ 947               	/* prologue: Signal */
+ 948               	/* frame size = 10 */
+ 949               	/* stack size = 31 */
+ 950               	.L__stack_usage = 31
+ 951               	.LBB58:
+ 952               	.LBB59:
+ 954               	.Ltext21:
+ 956               	.LM104:
+ 957 021c 2FEF      		ldi r18,lo8(319999)
+ 958 021e 81EE      		ldi r24,hi8(319999)
+ 959 0220 94E0      		ldi r25,hlo8(319999)
+ 960 0222 2150      		1: subi r18,1
+ 961 0224 8040      		sbci r24,0
+ 962 0226 9040      		sbci r25,0
+ 963 0228 01F4      		brne 1b
+ 964 022a 00C0      		rjmp .
+ 965 022c 0000      		nop
+ 966               	.LBE59:
+ 967               	.LBE58:
+ 969               	.Ltext22:
+ 117:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     _delay_ms(100);
+ 118:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     char adcResult[4];
+ 119:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     char voltiResult[4];
+ 120:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     itoa(ADCH, adcResult, 10);
+ 971               	.LM105:
+ 972 022e 85B1      		in r24,0x5
+ 973               	.LBB60:
+ 974               	.LBB61:
+ 976               	.Ltext23:
+ 978               	.LM106:
+ 979 0230 4AE0      		ldi r20,lo8(10)
+ 980 0232 BE01      		movw r22,r28
+ 981 0234 6F5F      		subi r22,-1
+ 982 0236 7F4F      		sbci r23,-1
+ 983 0238 90E0      		ldi r25,0
+ 984 023a 0E94 0000 		call __itoa_ncheck
+ 985               	.LBE61:
+ 986               	.LBE60:
+ 988               	.Ltext24:
+ 121:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 122:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     /*
+ 123:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     for (int volti = 0; volti<=255; volti=volti+ADCH)
+ 124:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     {
+ 125:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****         
+ 126:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     }
+ 127:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     */
+ 128:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 129:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     int Volti, Voltu;
+ 130:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     char num1[3], num2[3];
+ 131:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 132:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     Volti = 10*(ADCH*4.47)/255;
+ 990               	.LM107:
+ 991 023e 65B1      		in r22,0x5
+ 992 0240 70E0      		ldi r23,0
+ 993 0242 80E0      		ldi r24,0
+ 994 0244 90E0      		ldi r25,0
+ 995 0246 0E94 0000 		call __floatsisf
+ 996 024a 2DE3      		ldi r18,lo8(61)
+ 997 024c 3AE0      		ldi r19,lo8(10)
+ 998 024e 4FE8      		ldi r20,lo8(-113)
+ 999 0250 50E4      		ldi r21,lo8(64)
+ 1000 0252 0E94 0000 		call __mulsf3
+ 1001 0256 20E0      		ldi r18,0
+ 1002 0258 30E0      		ldi r19,0
+ 1003 025a 40E2      		ldi r20,lo8(32)
+ 1004 025c 51E4      		ldi r21,lo8(65)
+ 1005 025e 0E94 0000 		call __mulsf3
+ 1006 0262 20E0      		ldi r18,0
+ 1007 0264 30E0      		ldi r19,0
+ 1008 0266 4FE7      		ldi r20,lo8(127)
+ 1009 0268 53E4      		ldi r21,lo8(67)
+ 1010 026a 0E94 0000 		call __divsf3
+ 1011 026e 0E94 0000 		call __fixsfsi
+ 133:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     //Volti = 10*(ADCH-2.2)/57.5;
+ 134:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     //float e = 2.718281828459045235360287471352662497757247093699959574966967;
+ 135:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     //Volti = e(pow((250*ADCH-10317)/33030));
+ 136:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     Voltu = Volti/10;
+ 137:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 138:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     float Acoma = Volti%10;
+ 1013               	.LM108:
+ 1014 0272 0AE0      		ldi r16,lo8(10)
+ 1015 0274 10E0      		ldi r17,0
+ 1016 0276 CB01      		movw r24,r22
+ 1017 0278 B801      		movw r22,r16
+ 1018 027a 0E94 0000 		call __divmodhi4
+ 1019 027e 7B01      		movw r14,r22
+ 1020               	.LBB62:
+ 1021               	.LBB63:
+ 1023               	.Ltext25:
+ 1025               	.LM109:
+ 1026 0280 4AE0      		ldi r20,lo8(10)
+ 1027 0282 BE01      		movw r22,r28
+ 1028 0284 685F      		subi r22,-8
+ 1029 0286 7F4F      		sbci r23,-1
+ 1030 0288 0E94 0000 		call __itoa_ncheck
+ 1031               	.LBE63:
+ 1032               	.LBE62:
+ 1034               	.Ltext26:
+ 139:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     float Dcoma = Voltu%10;
+ 1036               	.LM110:
+ 1037 028c C701      		movw r24,r14
+ 1038 028e B801      		movw r22,r16
+ 1039 0290 0E94 0000 		call __divmodhi4
+ 1040               	.LBB64:
+ 1041               	.LBB65:
+ 1043               	.Ltext27:
+ 1045               	.LM111:
+ 1046 0294 4AE0      		ldi r20,lo8(10)
+ 1047 0296 BE01      		movw r22,r28
+ 1048 0298 6B5F      		subi r22,-5
+ 1049 029a 7F4F      		sbci r23,-1
+ 1050 029c 0E94 0000 		call __itoa_ncheck
+ 1051               	.LBE65:
+ 1052               	.LBE64:
+ 1054               	.Ltext28:
+ 140:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 141:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 142:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     itoa(Acoma, num1, 10);
+ 143:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     itoa(Dcoma, num2, 10);
+ 144:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 145:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 146:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 147:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_goTo(1, 2);
+ 1056               	.LM112:
+ 1057 02a0 62E0      		ldi r22,lo8(2)
+ 1058 02a2 81E0      		ldi r24,lo8(1)
+ 1059 02a4 0E94 0000 		call LCD_goTo
+ 148:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write(num2);
+ 1061               	.LM113:
+ 1062 02a8 CE01      		movw r24,r28
+ 1063 02aa 0596      		adiw r24,5
+ 1064 02ac 0E94 0000 		call LCD_write
+ 149:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_goTo(1, 2);
+ 1066               	.LM114:
+ 1067 02b0 62E0      		ldi r22,lo8(2)
+ 1068 02b2 81E0      		ldi r24,lo8(1)
+ 1069 02b4 0E94 0000 		call LCD_goTo
+ 150:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write(".");
+ 1071               	.LM115:
+ 1072 02b8 80E0      		ldi r24,lo8(.LC6)
+ 1073 02ba 90E0      		ldi r25,hi8(.LC6)
+ 1074 02bc 0E94 0000 		call LCD_write
+ 151:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_goTo(1, 2);
+ 1076               	.LM116:
+ 1077 02c0 62E0      		ldi r22,lo8(2)
+ 1078 02c2 81E0      		ldi r24,lo8(1)
+ 1079 02c4 0E94 0000 		call LCD_goTo
+ 152:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write(num1);
+ 1081               	.LM117:
+ 1082 02c8 CE01      		movw r24,r28
+ 1083 02ca 0896      		adiw r24,8
+ 1084 02cc 0E94 0000 		call LCD_write
+ 153:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_goTo(1, 2);
+ 1086               	.LM118:
+ 1087 02d0 62E0      		ldi r22,lo8(2)
+ 1088 02d2 81E0      		ldi r24,lo8(1)
+ 1089 02d4 0E94 0000 		call LCD_goTo
+ 154:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write(" ");
+ 1091               	.LM119:
+ 1092 02d8 80E0      		ldi r24,lo8(.LC7)
+ 1093 02da 90E0      		ldi r25,hi8(.LC7)
+ 1094 02dc 0E94 0000 		call LCD_write
+ 155:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_goTo(1, 2);
+ 1096               	.LM120:
+ 1097 02e0 62E0      		ldi r22,lo8(2)
+ 1098 02e2 81E0      		ldi r24,lo8(1)
+ 1099 02e4 0E94 0000 		call LCD_goTo
+ 156:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write("Vdc ");
+ 1101               	.LM121:
+ 1102 02e8 80E0      		ldi r24,lo8(.LC8)
+ 1103 02ea 90E0      		ldi r25,hi8(.LC8)
+ 1104 02ec 0E94 0000 		call LCD_write
+ 157:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 158:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_goTo(1, 2);
+ 1106               	.LM122:
+ 1107 02f0 62E0      		ldi r22,lo8(2)
+ 1108 02f2 81E0      		ldi r24,lo8(1)
+ 1109 02f4 0E94 0000 		call LCD_goTo
+ 159:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write("ADCH ");
+ 1111               	.LM123:
+ 1112 02f8 80E0      		ldi r24,lo8(.LC9)
+ 1113 02fa 90E0      		ldi r25,hi8(.LC9)
+ 1114 02fc 0E94 0000 		call LCD_write
+ 160:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_goTo(1, 2);
+ 1116               	.LM124:
+ 1117 0300 62E0      		ldi r22,lo8(2)
+ 1118 0302 81E0      		ldi r24,lo8(1)
+ 1119 0304 0E94 0000 		call LCD_goTo
+ 161:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write(adcResult);
+ 1121               	.LM125:
+ 1122 0308 CE01      		movw r24,r28
+ 1123 030a 0196      		adiw r24,1
+ 1124 030c 0E94 0000 		call LCD_write
+ 162:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_goTo(1, 2);
+ 1126               	.LM126:
+ 1127 0310 62E0      		ldi r22,lo8(2)
+ 1128 0312 81E0      		ldi r24,lo8(1)
+ 1129 0314 0E94 0000 		call LCD_goTo
+ 163:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     LCD_write("   ");
+ 1131               	.LM127:
+ 1132 0318 80E0      		ldi r24,lo8(.LC10)
+ 1133 031a 90E0      		ldi r25,hi8(.LC10)
+ 1134 031c 0E94 0000 		call LCD_write
+ 1135               	/* epilogue start */
+ 164:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 165:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c ****     
+ 166:/Users/Didi/Desktop/Quinto Semestre/Micros/ADC_Voltimetro/ADC_Voltimetro/main.c **** }
+ 1137               	.LM128:
+ 1138 0320 2A96      		adiw r28,10
+ 1139 0322 0FB6      		in __tmp_reg__,__SREG__
+ 1140 0324 F894      		cli
+ 1141 0326 DEBF      		out __SP_H__,r29
+ 1142 0328 0FBE      		out __SREG__,__tmp_reg__
+ 1143 032a CDBF      		out __SP_L__,r28
+ 1144 032c DF91      		pop r29
+ 1145 032e CF91      		pop r28
+ 1146 0330 FF91      		pop r31
+ 1147 0332 EF91      		pop r30
+ 1148 0334 BF91      		pop r27
+ 1149 0336 AF91      		pop r26
+ 1150 0338 9F91      		pop r25
+ 1151 033a 8F91      		pop r24
+ 1152 033c 7F91      		pop r23
+ 1153 033e 6F91      		pop r22
+ 1154 0340 5F91      		pop r21
+ 1155 0342 4F91      		pop r20
+ 1156 0344 3F91      		pop r19
+ 1157 0346 2F91      		pop r18
+ 1158 0348 1F91      		pop r17
+ 1159 034a 0F91      		pop r16
+ 1160 034c FF90      		pop r15
+ 1161 034e EF90      		pop r14
+ 1162 0350 0F90      		pop r0
+ 1163 0352 0FBE      		out __SREG__,r0
+ 1164 0354 0F90      		pop r0
+ 1165 0356 1F90      		pop r1
+ 1166 0358 1895      		reti
+ 1173               	.Lscope11:
+ 1174               	.global	firstColumnPositionsForLCD
+ 1175               		.data
+ 1178               	firstColumnPositionsForLCD:
+ 1179 0000 00        		.byte	0
+ 1180 0001 40        		.byte	64
+ 1181 0002 14        		.byte	20
+ 1182 0003 54        		.byte	84
+ 1184               		.text
+ 1186               	.Letext0:
+ 1187               		.ident	"GCC: (GNU) 4.8.1"
+ 1188               	.global __do_copy_data
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:2      *ABS*:0000003e __SP_H__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:3      *ABS*:0000003d __SP_L__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:4      *ABS*:0000003f __SREG__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:121    .text:00000000 LCD_putchar
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:184    .text:00000024 LCD_getaddr
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:231    .text:0000003a LCD_wait
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:255    .text:00000044 LCD_command
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:312    .text:00000060 LCD_init
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:443    .text:000000be LCD_write
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:489    .text:000000ea LCD_goTo
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:1178   .data:00000000 firstColumnPositionsForLCD
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:512    .text:000000fc initIO
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:542    .text.startup:00000000 main
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:748    .text:000000fe printfloat
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccj4v2iL.s:915    .text:000001e4 __vector_14
+
+UNDEFINED SYMBOLS
+__fixsfsi
+__floatsisf
+__subsf3
+__mulsf3
+__itoa_ncheck
+pow
+__divsf3
+__divmodhi4
+__do_copy_data
