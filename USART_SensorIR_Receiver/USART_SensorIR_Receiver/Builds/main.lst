@@ -1,0 +1,1115 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+ 111               	.global	LCD_putchar
+ 113               	LCD_putchar:
+ 115               	.Ltext1:
+   1:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //#include <avr/io.h>
+   2:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //#include <avr/delay.h>
+   3:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** #define LCD_RS 0
+   4:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** #define LCD_RW 1
+   5:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** #define LCD_E 2
+   6:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 
+   7:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //LCD_putchar writes a character to the LCD at the current address,
+   8:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //no busy flag check is done before or after
+   9:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //the character is written!
+  10:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //usage: LCD_putchar('A'); or LCD_putchar(0x55);
+  11:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** void LCD_putchar(char data)
+  12:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** {
+ 117               	.LM0:
+ 118               	.LFBB1:
+ 119               	/* prologue: function */
+ 120               	/* frame size = 0 */
+ 121               	/* stack size = 0 */
+ 122               	.L__stack_usage = 0
+  13:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//PORTA is output
+  14:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	DDRA = 0xFF;
+ 124               	.LM1:
+ 125 0000 9FEF      		ldi r25,lo8(-1)
+ 126 0002 9ABB      		out 0x1a,r25
+  15:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//put data on bus
+  16:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTA = data;
+ 128               	.LM2:
+ 129 0004 8BBB      		out 0x1b,r24
+  17:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//RW low, E low
+  18:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+ 131               	.LM3:
+ 132 0006 85B3      		in r24,0x15
+ 133 0008 897F      		andi r24,lo8(-7)
+ 134 000a 85BB      		out 0x15,r24
+  19:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//RS high, strobe E
+  20:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC |= ((1<<LCD_RS)|(1<<LCD_E));
+ 136               	.LM4:
+ 137 000c 85B3      		in r24,0x15
+ 138 000e 8560      		ori r24,lo8(5)
+ 139 0010 85BB      		out 0x15,r24
+  21:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//the number of nops required varies with your clock frequency, try it out!
+  22:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 141               	.LM5:
+ 142               	/* #APP */
+ 143               	 ;  22 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 144 0012 0000      		nop
+ 145               	 ;  0 "" 2
+  23:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 147               	.LM6:
+ 148               	 ;  23 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 149 0014 0000      		nop
+ 150               	 ;  0 "" 2
+  24:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 152               	.LM7:
+ 153               	 ;  24 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 154 0016 0000      		nop
+ 155               	 ;  0 "" 2
+  25:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 157               	.LM8:
+ 158               	 ;  25 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 159 0018 0000      		nop
+ 160               	 ;  0 "" 2
+  26:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//RS low again, E low (belongs to strobe)
+  27:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC &= ~((1<<LCD_RS)|(1<<LCD_E));
+ 162               	.LM9:
+ 163               	/* #NOAPP */
+ 164 001a 85B3      		in r24,0x15
+ 165 001c 8A7F      		andi r24,lo8(-6)
+ 166 001e 85BB      		out 0x15,r24
+  28:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//release bus
+  29:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	DDRA = 0;
+ 168               	.LM10:
+ 169 0020 1ABA      		out 0x1a,__zero_reg__
+ 170 0022 0895      		ret
+ 172               	.Lscope1:
+ 174               	.global	LCD_getaddr
+ 176               	LCD_getaddr:
+  30:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** }
+  31:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 
+  32:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //LCD_getaddress reads the address counter and busy flag. For the address only,
+  33:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //mask off bit7 of the return value.
+  34:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** char LCD_getaddr(void)
+  35:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** {
+ 178               	.LM11:
+ 179               	.LFBB2:
+ 180               	/* prologue: function */
+ 181               	/* frame size = 0 */
+ 182               	/* stack size = 0 */
+ 183               	.L__stack_usage = 0
+  36:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//make var for the return value
+  37:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	char address;
+  38:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//PORTA is input
+  39:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	DDRA = 0;
+ 185               	.LM12:
+ 186 0024 1ABA      		out 0x1a,__zero_reg__
+  40:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//RW high, strobe enable
+  41:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC |= ((1<<LCD_RW)|(1<<LCD_E));
+ 188               	.LM13:
+ 189 0026 85B3      		in r24,0x15
+ 190 0028 8660      		ori r24,lo8(6)
+ 191 002a 85BB      		out 0x15,r24
+  42:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 193               	.LM14:
+ 194               	/* #APP */
+ 195               	 ;  42 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 196 002c 0000      		nop
+ 197               	 ;  0 "" 2
+  43:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 199               	.LM15:
+ 200               	 ;  43 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 201 002e 0000      		nop
+ 202               	 ;  0 "" 2
+  44:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//while E is high, get data from LCD
+  45:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	address = PINA;
+ 204               	.LM16:
+ 205               	/* #NOAPP */
+ 206 0030 89B3      		in r24,0x19
+  46:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//reset RW to low, E low (for strobe)
+  47:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC &= ~((1<<LCD_RW)|(1<<LCD_E));
+ 208               	.LM17:
+ 209 0032 95B3      		in r25,0x15
+ 210 0034 997F      		andi r25,lo8(-7)
+ 211 0036 95BB      		out 0x15,r25
+  48:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//return address and busy flag
+  49:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	return address;
+  50:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** }
+ 213               	.LM18:
+ 214 0038 0895      		ret
+ 219               	.Lscope2:
+ 221               	.global	LCD_wait
+ 223               	LCD_wait:
+  51:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 
+  52:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //LCD_wait reads the address counter (which contains the busy flag) and loops until
+  53:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //the busy flag is cleared.
+  54:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** void LCD_wait(void)
+  55:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** {
+ 225               	.LM19:
+ 226               	.LFBB3:
+ 227               	/* prologue: function */
+ 228               	/* frame size = 0 */
+ 229               	/* stack size = 0 */
+ 230               	.L__stack_usage = 0
+ 231               	.L5:
+  56:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//get address and busy flag
+  57:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//and loop until busy flag cleared
+  58:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h ****     while((LCD_getaddr() & 0x80) == 0x80);
+ 233               	.LM20:
+ 234 003a 0E94 0000 		call LCD_getaddr
+ 235 003e 87FD      		sbrc r24,7
+ 236 0040 00C0      		rjmp .L5
+ 237               	/* epilogue start */
+  59:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** }
+ 239               	.LM21:
+ 240 0042 0895      		ret
+ 242               	.Lscope3:
+ 245               	.global	LCD_command
+ 247               	LCD_command:
+  60:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 
+  61:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //LCD_command works EXACTLY like LCD_putchar, but takes RS low for accessing the command reg
+  62:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //see LCD_putchar for details on the code
+  63:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** void LCD_command(char command)
+  64:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** {
+ 249               	.LM22:
+ 250               	.LFBB4:
+ 251               	/* prologue: function */
+ 252               	/* frame size = 0 */
+ 253               	/* stack size = 0 */
+ 254               	.L__stack_usage = 0
+  65:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	DDRA = 0xFF;
+ 256               	.LM23:
+ 257 0044 9FEF      		ldi r25,lo8(-1)
+ 258 0046 9ABB      		out 0x1a,r25
+  66:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTA = command;
+ 260               	.LM24:
+ 261 0048 8BBB      		out 0x1b,r24
+  67:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC &= ~((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+ 263               	.LM25:
+ 264 004a 85B3      		in r24,0x15
+ 265 004c 887F      		andi r24,lo8(-8)
+ 266 004e 85BB      		out 0x15,r24
+  68:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC |= (1<<LCD_E);
+ 268               	.LM26:
+ 269 0050 AA9A      		sbi 0x15,2
+  69:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 271               	.LM27:
+ 272               	/* #APP */
+ 273               	 ;  69 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 274 0052 0000      		nop
+ 275               	 ;  0 "" 2
+  70:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 277               	.LM28:
+ 278               	 ;  70 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 279 0054 0000      		nop
+ 280               	 ;  0 "" 2
+  71:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 282               	.LM29:
+ 283               	 ;  71 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 284 0056 0000      		nop
+ 285               	 ;  0 "" 2
+  72:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	asm volatile ("nop");
+ 287               	.LM30:
+ 288               	 ;  72 "/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h" 1
+ 289 0058 0000      		nop
+ 290               	 ;  0 "" 2
+  73:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC &= ~(1<<LCD_E);
+ 292               	.LM31:
+ 293               	/* #NOAPP */
+ 294 005a AA98      		cbi 0x15,2
+  74:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	DDRA = 0;
+ 296               	.LM32:
+ 297 005c 1ABA      		out 0x1a,__zero_reg__
+ 298 005e 0895      		ret
+ 300               	.Lscope4:
+ 302               	.global	LCD_init
+ 304               	LCD_init:
+  75:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** }
+  76:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 
+  77:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** /*LCD_init initialises the LCD with the following paramters:
+  78:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 8 bit mode, 5*7 font, 2 lines (also for 4 lines)
+  79:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** auto-inc cursor after write and read
+  80:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** cursor and didsplay on, cursor blinking.
+  81:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** */
+  82:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** void LCD_init(void)
+  83:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** {
+ 306               	.LM33:
+ 307               	.LFBB5:
+ 308               	/* prologue: function */
+ 309               	/* frame size = 0 */
+ 310               	/* stack size = 0 */
+ 311               	.L__stack_usage = 0
+  84:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//setup the LCD control signals on PortC
+  85:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	DDRC |= ((1<<LCD_RS)|(1<<LCD_RW)|(1<<LCD_E));
+ 313               	.LM34:
+ 314 0060 84B3      		in r24,0x14
+ 315 0062 8760      		ori r24,lo8(7)
+ 316 0064 84BB      		out 0x14,r24
+  86:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	PORTC = 0x00;
+ 318               	.LM35:
+ 319 0066 15BA      		out 0x15,__zero_reg__
+ 320               	.LBB23:
+ 321               	.LBB24:
+ 323               	.Ltext2:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    Copyright (c) 2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    All rights reserved.
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    Redistribution and use in source and binary forms, with or without
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    modification, are permitted provided that the following conditions are met:
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Redistributions of source code must retain the above copyright
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer.
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Redistributions in binary form must reproduce the above copyright
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer in
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      the documentation and/or other materials provided with the
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      distribution.
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****    * Neither the name of the copyright holders nor the names of
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      contributors may be used to endorse or promote products derived
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****      from this software without specific prior written permission.
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /* $Id$ */
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #ifndef _UTIL_DELAY_BASIC_H_
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #define _UTIL_DELAY_BASIC_H_ 1
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #include <inttypes.h>
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #if !defined(__DOXYGEN__)
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** static inline void _delay_loop_1(uint8_t __count) __attribute__((always_inline));
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** static inline void _delay_loop_2(uint16_t __count) __attribute__((always_inline));
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** #endif
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \file */
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \defgroup util_delay_basic <util/delay_basic.h>: Basic busy-wait delay loops
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     \code
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     #include <util/delay_basic.h>
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     \endcode
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     The functions in this header file implement simple delay loops
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     that perform a busy-waiting.  They are typically used to
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     facilitate short delays in the program execution.  They are
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     implemented as count-down loops with a well-known CPU cycle
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     count per loop iteration.  As such, no other processing can
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     occur simultaneously.  It should be kept in mind that the
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     functions described here do not disable interrupts.
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     In general, for long delays, the use of hardware timers is
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     much preferrable, as they free the CPU, and allow for
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     concurrent processing of other events while the timer is
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     running.  However, in particular for very short delays, the
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     overhead of setting up a hardware timer is too much compared
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     to the overall delay time.
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Two inline functions are provided for the actual delay algorithms.
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** */
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Delay loop using an 8-bit counter \c __count, so up to 256
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     iterations are possible.  (The value 256 would have to be passed
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     as 0.)  The loop executes three CPU cycles per iteration, not
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     including the overhead the compiler needs to setup the counter
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     register.
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to 768 microseconds
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     can be achieved.
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** */
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** void
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** _delay_loop_1(uint8_t __count)
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** {
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	__asm__ volatile (
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		"1: dec %0" "\n\t"
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		"brne 1b"
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		: "=r" (__count)
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 		: "0" (__count)
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	);
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** }
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Delay loop using a 16-bit counter \c __count, so up to 65536
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     iterations are possible.  (The value 65536 would have to be
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     passed as 0.)  The loop executes four CPU cycles per iteration,
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     not including the overhead the compiler requires to setup the
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     counter register pair.
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to about 262.1
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****     milliseconds can be achieved.
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h ****  */
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** void
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** _delay_loop_2(uint16_t __count)
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** {
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h **** 	__asm__ volatile (
+ 325               	.LM36:
+ 326 0068 8FEF      		ldi r24,lo8(-1)
+ 327 006a 9FEF      		ldi r25,lo8(-1)
+ 328               	/* #APP */
+ 329               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 330 006c 0197      		1: sbiw r24,1
+ 331 006e 01F4      		brne 1b
+ 332               	 ;  0 "" 2
+ 333               	/* #NOAPP */
+ 334               	.LBE24:
+ 335               	.LBE23:
+ 337               	.Ltext3:
+  87:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//if called right after power-up, we'll have to wait a bit (fine-tune for faster execution)
+  88:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  89:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//tell the LCD that it's used in 8-bit mode 3 times, each with a delay inbetween.
+  90:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_command(0x30);
+ 339               	.LM37:
+ 340 0070 80E3      		ldi r24,lo8(48)
+ 341 0072 0E94 0000 		call LCD_command
+ 342               	.LBB25:
+ 343               	.LBB26:
+ 345               	.Ltext4:
+ 347               	.LM38:
+ 348 0076 8FEF      		ldi r24,lo8(-1)
+ 349 0078 9FEF      		ldi r25,lo8(-1)
+ 350               	/* #APP */
+ 351               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 352 007a 0197      		1: sbiw r24,1
+ 353 007c 01F4      		brne 1b
+ 354               	 ;  0 "" 2
+ 355               	/* #NOAPP */
+ 356               	.LBE26:
+ 357               	.LBE25:
+ 359               	.Ltext5:
+  91:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  92:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_command(0x30);
+ 361               	.LM39:
+ 362 007e 80E3      		ldi r24,lo8(48)
+ 363 0080 0E94 0000 		call LCD_command
+ 364               	.LBB27:
+ 365               	.LBB28:
+ 367               	.Ltext6:
+ 369               	.LM40:
+ 370 0084 8FEF      		ldi r24,lo8(-1)
+ 371 0086 9FEF      		ldi r25,lo8(-1)
+ 372               	/* #APP */
+ 373               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 374 0088 0197      		1: sbiw r24,1
+ 375 008a 01F4      		brne 1b
+ 376               	 ;  0 "" 2
+ 377               	/* #NOAPP */
+ 378               	.LBE28:
+ 379               	.LBE27:
+ 381               	.Ltext7:
+  93:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  94:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_command(0x30);
+ 383               	.LM41:
+ 384 008c 80E3      		ldi r24,lo8(48)
+ 385 008e 0E94 0000 		call LCD_command
+ 386               	.LBB29:
+ 387               	.LBB30:
+ 389               	.Ltext8:
+ 391               	.LM42:
+ 392 0092 8FEF      		ldi r24,lo8(-1)
+ 393 0094 9FEF      		ldi r25,lo8(-1)
+ 394               	/* #APP */
+ 395               	 ;  105 "/usr/local/CrossPack-AVR-20131216/avr/include/util/delay_basic.h" 1
+ 396 0096 0197      		1: sbiw r24,1
+ 397 0098 01F4      		brne 1b
+ 398               	 ;  0 "" 2
+ 399               	/* #NOAPP */
+ 400               	.LBE30:
+ 401               	.LBE29:
+ 403               	.Ltext9:
+  95:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	_delay_loop_2(0xFFFF);
+  96:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//now: 8 bit interface, 5*7 font, 2 lines.
+  97:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_command(0x38);
+ 405               	.LM43:
+ 406 009a 88E3      		ldi r24,lo8(56)
+ 407 009c 0E94 0000 		call LCD_command
+  98:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//wait until command finished
+  99:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_wait();
+ 409               	.LM44:
+ 410 00a0 0E94 0000 		call LCD_wait
+ 100:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//display on, cursor on (blinking)
+ 101:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_command(0x0F);
+ 412               	.LM45:
+ 413 00a4 8FE0      		ldi r24,lo8(15)
+ 414 00a6 0E94 0000 		call LCD_command
+ 102:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_wait();
+ 416               	.LM46:
+ 417 00aa 0E94 0000 		call LCD_wait
+ 103:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//now clear the display, cursor home
+ 104:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_command(0x01);
+ 419               	.LM47:
+ 420 00ae 81E0      		ldi r24,lo8(1)
+ 421 00b0 0E94 0000 		call LCD_command
+ 105:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_wait();
+ 423               	.LM48:
+ 424 00b4 0E94 0000 		call LCD_wait
+ 106:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//cursor auto-inc
+ 107:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	LCD_command(0x06);
+ 426               	.LM49:
+ 427 00b8 86E0      		ldi r24,lo8(6)
+ 428 00ba 0C94 0000 		jmp LCD_command
+ 430               	.Lscope5:
+ 433               	.global	LCD_write
+ 435               	LCD_write:
+ 108:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** }
+ 109:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 
+ 110:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //now it's time for a simple function for showing strings on the LCD. It uses the low-level
+ 111:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //functions above. usage example: LCD_write("Hello World!");
+ 112:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** void LCD_write(char* dstring)
+ 113:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** {
+ 437               	.LM50:
+ 438               	.LFBB6:
+ 439 00be 0F93      		push r16
+ 440 00c0 1F93      		push r17
+ 441 00c2 CF93      		push r28
+ 442 00c4 DF93      		push r29
+ 443               	/* prologue: function */
+ 444               	/* frame size = 0 */
+ 445               	/* stack size = 4 */
+ 446               	.L__stack_usage = 4
+ 447 00c6 EC01      		movw r28,r24
+ 448               	.L10:
+ 449 00c8 8E01      		movw r16,r28
+ 114:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	//is the character pointed at by dstring a zero? If not, write character to LCD
+ 115:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	while(*dstring)
+ 451               	.LM51:
+ 452 00ca 8881      		ld r24,Y
+ 453 00cc 8823      		tst r24
+ 454 00ce 01F0      		breq .L12
+ 116:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	{
+ 117:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 		//if the LCD is bus, let it finish the current operation
+ 118:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 		LCD_wait();
+ 456               	.LM52:
+ 457 00d0 0E94 0000 		call LCD_wait
+ 458 00d4 2196      		adiw r28,1
+ 119:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 		//the write the character from dstring to the LCD, then post-inc the dstring is pointing at.
+ 120:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 		LCD_putchar(*dstring++);
+ 460               	.LM53:
+ 461 00d6 F801      		movw r30,r16
+ 462 00d8 8081      		ld r24,Z
+ 463 00da 0E94 0000 		call LCD_putchar
+ 464 00de 00C0      		rjmp .L10
+ 465               	.L12:
+ 466               	/* epilogue start */
+ 121:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 	}
+ 122:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** }
+ 468               	.LM54:
+ 469 00e0 DF91      		pop r29
+ 470 00e2 CF91      		pop r28
+ 471 00e4 1F91      		pop r17
+ 472 00e6 0F91      		pop r16
+ 473 00e8 0895      		ret
+ 475               	.Lscope6:
+ 479               	.global	LCD_goTo
+ 481               	LCD_goTo:
+ 123:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** 
+ 124:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** //LCD goTo defined position on screen
+ 125:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** char firstColumnPositionsForLCD[4] = {0, 64, 20, 84};
+ 126:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** void LCD_goTo(uint8_t x, uint8_t y)
+ 127:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h **** {
+ 483               	.LM55:
+ 484               	.LFBB7:
+ 485               	/* prologue: function */
+ 486               	/* frame size = 0 */
+ 487               	/* stack size = 0 */
+ 488               	.L__stack_usage = 0
+ 128:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/libLCD.h ****     LCD_command(0x80 + firstColumnPositionsForLCD[y-1] + (x-1));
+ 490               	.LM56:
+ 491 00ea 8158      		subi r24,lo8(-(127))
+ 492 00ec E62F      		mov r30,r22
+ 493 00ee F0E0      		ldi r31,0
+ 494 00f0 E050      		subi r30,lo8(-(firstColumnPositionsForLCD-1))
+ 495 00f2 F040      		sbci r31,hi8(-(firstColumnPositionsForLCD-1))
+ 496 00f4 9081      		ld r25,Z
+ 497 00f6 890F      		add r24,r25
+ 498 00f8 0C94 0000 		jmp LCD_command
+ 500               	.Lscope7:
+ 502               	.global	initIO
+ 504               	initIO:
+ 506               	.Ltext10:
+   1:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #include <stdio.h>
+   2:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #include <avr/io.h>
+   3:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #include <avr/interrupt.h>
+   4:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #include <util/delay.h>
+   5:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #include "libLCD.h"
+   6:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+   7:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** void initIO(void) {
+ 508               	.LM57:
+ 509               	.LFBB8:
+ 510               	/* prologue: function */
+ 511               	/* frame size = 0 */
+ 512               	/* stack size = 0 */
+ 513               	.L__stack_usage = 0
+ 514 00fc 0895      		ret
+ 516               	.Lscope8:
+ 518               	.global	uart_init
+ 520               	uart_init:
+   8:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     
+   9:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** }
+  10:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  11:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** /*
+  12:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  
+  13:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Created By:
+  14:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  
+  15:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  .------..------..------..------..------.
+  16:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  |M.--. ||A.--. ||G.--. ||I.--. ||C.--. |
+  17:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  | (\/) || (\/) || :/\: || (\/) || :/\: |
+  18:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  | :\/: || :\/: || :\/: || :\/: || :\/: |
+  19:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  | '--'M|| '--'A|| '--'G|| '--'I|| '--'C|
+  20:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  `------'`------'`------'`------'`------'
+  21:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  
+  22:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  
+  23:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  ADC Sensor IR
+  24:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Calibracion Manual
+  25:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Datos Calibracion y Curva .xls en la
+  26:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  carpeta de este archivo
+  27:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  
+  28:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  LCD_Data ---> DDRD
+  29:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  LCD_RS-RW-EN ---> Pin0-Pin1-Pin2, DDRC
+  30:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  ADC_SensorIR ---> Pin0, DDRA
+  31:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Resolucion ADC = 8bits
+  32:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  
+  33:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  MCU Receiver Code
+  34:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Receives data from master
+  35:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Prints on LCD, Moves DC Motor
+  36:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  30cm ---> DCM Stand by
+  37:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  30cm + -> DCM Moves CW
+  38:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  30cm - -> DCM Moves CCW
+  39:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  */
+  40:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  41:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  42:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** /*
+  43:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Inicializacion USART
+  44:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  */
+  45:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  46:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** // define some macros
+  47:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #ifndef F_CPU
+  48:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #define F_CPU 16000000UL                            // set the CPU clock
+  49:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #endif
+  50:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #define BAUD 9600                                   // define baud
+  51:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** #define BAUDRATE ((F_CPU)/(BAUD*16UL)-1)            // set baud rate value for UBRR
+  52:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  53:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** // function to initialize UART
+  54:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** void uart_init (void)
+  55:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** {
+ 522               	.LM58:
+ 523               	.LFBB9:
+ 524               	/* prologue: function */
+ 525               	/* frame size = 0 */
+ 526               	/* stack size = 0 */
+ 527               	.L__stack_usage = 0
+  56:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     UBRRH = (BAUDRATE>>8);                      // shift the register right by 8 bits
+ 529               	.LM59:
+ 530 00fe 10BC      		out 0x20,__zero_reg__
+  57:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     UBRRL = BAUDRATE;                           // set baud rate
+ 532               	.LM60:
+ 533 0100 87E6      		ldi r24,lo8(103)
+ 534 0102 89B9      		out 0x9,r24
+  58:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     UCSRB|= (1<<TXEN)|(1<<RXEN);                // enable receiver and transmitter
+ 536               	.LM61:
+ 537 0104 8AB1      		in r24,0xa
+ 538 0106 8861      		ori r24,lo8(24)
+ 539 0108 8AB9      		out 0xa,r24
+  59:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     UCSRC|= (1<<URSEL)|(1<<UCSZ0)|(1<<UCSZ1);   // 8bit data format
+ 541               	.LM62:
+ 542 010a 80B5      		in r24,0x20
+ 543 010c 8668      		ori r24,lo8(-122)
+ 544 010e 80BD      		out 0x20,r24
+ 545 0110 0895      		ret
+ 547               	.Lscope9:
+ 549               	.global	uart_recieve
+ 551               	uart_recieve:
+  60:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** }
+  61:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  62:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  63:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  64:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** /*
+  65:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Funcion Para Enviar Datos -- NOT USE HERE
+  66:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  
+  67:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  68:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** void uart_transmit (unsigned char data)
+  69:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** {
+  70:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     while (!( UCSRA & (1<<UDRE)));                // wait while register is free
+  71:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     UDR = data;                                   // load data in the register
+  72:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** }
+  73:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** */
+  74:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  75:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** /*
+  76:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Funcion Para Recibir Datos
+  77:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** */
+  78:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  unsigned char uart_recieve (void)
+  79:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  {
+ 553               	.LM63:
+ 554               	.LFBB10:
+ 555               	/* prologue: function */
+ 556               	/* frame size = 0 */
+ 557               	/* stack size = 0 */
+ 558               	.L__stack_usage = 0
+  80:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  while(!(UCSRA) & (1<<RXC));                   // wait while data is being received
+ 560               	.LM64:
+ 561 0112 8BB1      		in r24,0xb
+  81:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  return UDR;                                   // return 8-bit data
+ 563               	.LM65:
+ 564 0114 8CB1      		in r24,0xc
+  82:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  }
+ 566               	.LM66:
+ 567 0116 0895      		ret
+ 569               	.Lscope10:
+ 570               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 571               	.LC0:
+ 572 0000 4372 6561 		.string	"Created by"
+ 572      7465 6420 
+ 572      6279 00
+ 573               	.LC1:
+ 574 000b 4D61 6769 		.string	"Magic"
+ 574      6300 
+ 575               	.LC2:
+ 576 0011 4361 7267 		.string	"Cargando Sensor"
+ 576      616E 646F 
+ 576      2053 656E 
+ 576      736F 7200 
+ 577               	.LC3:
+ 578 0021 2D00      		.string	"-"
+ 579               	.LC4:
+ 580 0023 4361 7267 		.string	"Carga Completa"
+ 580      6120 436F 
+ 580      6D70 6C65 
+ 580      7461 00
+ 581               		.section	.text.startup,"ax",@progbits
+ 583               	.global	main
+ 585               	main:
+  83:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  84:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  85:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** /*
+  86:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  Fin Inicializaciones
+  87:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** */
+  88:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  89:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  90:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  91:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** 
+  92:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c **** int main(void) {
+ 587               	.LM67:
+ 588               	.LFBB11:
+ 589               	/* prologue: function */
+ 590               	/* frame size = 0 */
+ 591               	/* stack size = 0 */
+ 592               	.L__stack_usage = 0
+  93:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     initIO();
+  94:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     
+  95:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     uart_init();
+ 594               	.LM68:
+ 595 0000 0E94 0000 		call uart_init
+  96:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_init();
+ 597               	.LM69:
+ 598 0004 0E94 0000 		call LCD_init
+  97:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     
+  98:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     
+  99:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     
+ 100:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_wait();
+ 600               	.LM70:
+ 601 0008 0E94 0000 		call LCD_wait
+ 101:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_write("Created by");
+ 603               	.LM71:
+ 604 000c 80E0      		ldi r24,lo8(.LC0)
+ 605 000e 90E0      		ldi r25,hi8(.LC0)
+ 606 0010 0E94 0000 		call LCD_write
+ 102:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_wait();
+ 608               	.LM72:
+ 609 0014 0E94 0000 		call LCD_wait
+ 103:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_command(0xC0);
+ 611               	.LM73:
+ 612 0018 80EC      		ldi r24,lo8(-64)
+ 613 001a 0E94 0000 		call LCD_command
+ 104:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_wait();
+ 615               	.LM74:
+ 616 001e 0E94 0000 		call LCD_wait
+ 105:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_write("Magic");
+ 618               	.LM75:
+ 619 0022 80E0      		ldi r24,lo8(.LC1)
+ 620 0024 90E0      		ldi r25,hi8(.LC1)
+ 621 0026 0E94 0000 		call LCD_write
+ 622               	.LBB31:
+ 623               	.LBB32:
+ 625               	.Ltext11:
+   1:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+   6:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+   9:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  12:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  17:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  21:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  33:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* $Id$ */
+  34:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  35:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  38:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  41:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  42:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #include <math.h>
+  45:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  46:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /** \file */
+  47:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \code
+  49:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \endcode
+  53:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  54:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     used.
+  58:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  59:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  68:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  77:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  81:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** */
+  82:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  83:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  87:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  88:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  93:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  94:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+  97:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+  98:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #endif
+ 103:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 104:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** /**
+ 105:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 107:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 109:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 112:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 114:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 120:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 125:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 129:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 132:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 140:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****  */
+ 141:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** void
+ 142:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** {
+ 144:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	double __tmp ; 
+ 145:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 146:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 147:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 148:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 149:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 150:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 151:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 152:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 153:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 154:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 155:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 156:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 157:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 158:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#else
+ 159:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		//round up by default
+ 160:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 161:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	#endif
+ 162:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 
+ 163:/usr/local/CrossPack-AVR-20131216/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 627               	.LM76:
+ 628 002a 2FEF      		ldi r18,lo8(3199999)
+ 629 002c 83ED      		ldi r24,hi8(3199999)
+ 630 002e 90E3      		ldi r25,hlo8(3199999)
+ 631 0030 2150      		1: subi r18,1
+ 632 0032 8040      		sbci r24,0
+ 633 0034 9040      		sbci r25,0
+ 634 0036 01F4      		brne 1b
+ 635 0038 00C0      		rjmp .
+ 636 003a 0000      		nop
+ 637               	.LBE32:
+ 638               	.LBE31:
+ 640               	.Ltext12:
+ 106:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     _delay_ms(1000);
+ 107:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_command(0b00000001);
+ 642               	.LM77:
+ 643 003c 81E0      		ldi r24,lo8(1)
+ 644 003e 0E94 0000 		call LCD_command
+ 108:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_wait();
+ 646               	.LM78:
+ 647 0042 0E94 0000 		call LCD_wait
+ 109:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_write("Cargando Sensor");
+ 649               	.LM79:
+ 650 0046 80E0      		ldi r24,lo8(.LC2)
+ 651 0048 90E0      		ldi r25,hi8(.LC2)
+ 652 004a 0E94 0000 		call LCD_write
+ 110:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_wait();
+ 654               	.LM80:
+ 655 004e 0E94 0000 		call LCD_wait
+ 111:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_command(0xC0);
+ 657               	.LM81:
+ 658 0052 80EC      		ldi r24,lo8(-64)
+ 659 0054 0E94 0000 		call LCD_command
+ 112:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_wait();
+ 661               	.LM82:
+ 662 0058 0E94 0000 		call LCD_wait
+ 663               	.LBB33:
+ 113:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     for (int load=1; load<=16; load++)
+ 665               	.LM83:
+ 666 005c C1E0      		ldi r28,lo8(1)
+ 667 005e D0E0      		ldi r29,0
+ 668               	.L20:
+ 114:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     {
+ 115:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         LCD_write("-");
+ 670               	.LM84:
+ 671 0060 80E0      		ldi r24,lo8(.LC3)
+ 672 0062 90E0      		ldi r25,hi8(.LC3)
+ 673 0064 0E94 0000 		call LCD_write
+ 674               	.LBB34:
+ 675               	.LBB35:
+ 677               	.Ltext13:
+ 679               	.LM85:
+ 680 0068 2FEF      		ldi r18,lo8(319999)
+ 681 006a 81EE      		ldi r24,hi8(319999)
+ 682 006c 94E0      		ldi r25,hlo8(319999)
+ 683 006e 2150      		1: subi r18,1
+ 684 0070 8040      		sbci r24,0
+ 685 0072 9040      		sbci r25,0
+ 686 0074 01F4      		brne 1b
+ 687 0076 00C0      		rjmp .
+ 688 0078 0000      		nop
+ 689               	.LBE35:
+ 690               	.LBE34:
+ 692               	.Ltext14:
+ 116:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         _delay_ms(100);
+ 117:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         if (load==16)
+ 694               	.LM86:
+ 695 007a C031      		cpi r28,16
+ 696 007c D105      		cpc r29,__zero_reg__
+ 697 007e 01F4      		brne .L18
+ 118:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         {
+ 119:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****             LCD_command(0b00000001);
+ 699               	.LM87:
+ 700 0080 81E0      		ldi r24,lo8(1)
+ 701 0082 0E94 0000 		call LCD_command
+ 120:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****             LCD_write("Carga Completa");
+ 703               	.LM88:
+ 704 0086 80E0      		ldi r24,lo8(.LC4)
+ 705 0088 90E0      		ldi r25,hi8(.LC4)
+ 706 008a 0E94 0000 		call LCD_write
+ 707               	.LBB36:
+ 708               	.LBB37:
+ 710               	.Ltext15:
+ 712               	.LM89:
+ 713 008e 2FEF      		ldi r18,lo8(3199999)
+ 714 0090 83ED      		ldi r24,hi8(3199999)
+ 715 0092 90E3      		ldi r25,hlo8(3199999)
+ 716 0094 2150      		1: subi r18,1
+ 717 0096 8040      		sbci r24,0
+ 718 0098 9040      		sbci r25,0
+ 719 009a 01F4      		brne 1b
+ 720 009c 00C0      		rjmp .
+ 721 009e 0000      		nop
+ 722               	.LBE37:
+ 723               	.LBE36:
+ 725               	.Ltext16:
+ 121:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****             _delay_ms(1000);
+ 122:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****             LCD_command(0b00000001);
+ 727               	.LM90:
+ 728 00a0 81E0      		ldi r24,lo8(1)
+ 729 00a2 0E94 0000 		call LCD_command
+ 123:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****             LCD_wait();
+ 731               	.LM91:
+ 732 00a6 0E94 0000 		call LCD_wait
+ 733               	.L18:
+ 113:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     for (int load=1; load<=16; load++)
+ 735               	.LM92:
+ 736 00aa 2196      		adiw r28,1
+ 737 00ac C131      		cpi r28,17
+ 738 00ae D105      		cpc r29,__zero_reg__
+ 739 00b0 01F4      		brne .L20
+ 740               	.L22:
+ 741               	.LBE33:
+ 124:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         }
+ 125:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     }
+ 126:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     //LCD_write("Leyendo:");
+ 127:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     LCD_wait();
+ 743               	.LM93:
+ 744 00b2 0E94 0000 		call LCD_wait
+ 745               	.LBB38:
+ 746               	.LBB39:
+  80:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  while(!(UCSRA) & (1<<RXC));                   // wait while data is being received
+ 748               	.LM94:
+ 749 00b6 8BB1      		in r24,0xb
+  81:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****  return UDR;                                   // return 8-bit data
+ 751               	.LM95:
+ 752 00b8 CCB1      		in r28,0xc
+ 753               	.LBE39:
+ 754               	.LBE38:
+ 755               	.LBB40:
+ 756               	.LBB41:
+ 758               	.Ltext17:
+ 760               	.LM96:
+ 761 00ba 2FEF      		ldi r18,lo8(319999)
+ 762 00bc 81EE      		ldi r24,hi8(319999)
+ 763 00be 94E0      		ldi r25,hlo8(319999)
+ 764 00c0 2150      		1: subi r18,1
+ 765 00c2 8040      		sbci r24,0
+ 766 00c4 9040      		sbci r25,0
+ 767 00c6 01F4      		brne 1b
+ 768 00c8 00C0      		rjmp .
+ 769 00ca 0000      		nop
+ 770               	.LBE41:
+ 771               	.LBE40:
+ 773               	.Ltext18:
+ 128:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****      
+ 129:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     
+ 130:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     
+ 131:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     unsigned char a;
+ 132:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     char buffer[10];
+ 133:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     
+ 134:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     while (1)
+ 135:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****     {
+ 136:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         a=uart_recieve();                   // save the received data in a variable
+ 137:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         
+ 138:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         
+ 139:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         _delay_ms(100);
+ 140:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         //char buffer[4];
+ 141:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         //itoa(a, buffer, 10);
+ 142:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         LCD_goTo(1, 2);
+ 775               	.LM97:
+ 776 00cc 62E0      		ldi r22,lo8(2)
+ 777 00ce 81E0      		ldi r24,lo8(1)
+ 778 00d0 0E94 0000 		call LCD_goTo
+ 143:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         LCD_wait();
+ 780               	.LM98:
+ 781 00d4 0E94 0000 		call LCD_wait
+ 144:/Users/Didi/Desktop/USART_SensorIR_Receiver/USART_SensorIR_Receiver/main.c ****         LCD_write(a);
+ 783               	.LM99:
+ 784 00d8 8C2F      		mov r24,r28
+ 785 00da 90E0      		ldi r25,0
+ 786 00dc 0E94 0000 		call LCD_write
+ 787 00e0 00C0      		rjmp .L22
+ 792               	.Lscope11:
+ 793               	.global	firstColumnPositionsForLCD
+ 794               		.data
+ 797               	firstColumnPositionsForLCD:
+ 798 0000 00        		.byte	0
+ 799 0001 40        		.byte	64
+ 800 0002 14        		.byte	20
+ 801 0003 54        		.byte	84
+ 803               		.text
+ 805               	.Letext0:
+ 806               		.ident	"GCC: (GNU) 4.8.1"
+ 807               	.global __do_copy_data
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:2      *ABS*:0000003e __SP_H__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:3      *ABS*:0000003d __SP_L__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:4      *ABS*:0000003f __SREG__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:113    .text:00000000 LCD_putchar
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:176    .text:00000024 LCD_getaddr
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:223    .text:0000003a LCD_wait
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:247    .text:00000044 LCD_command
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:304    .text:00000060 LCD_init
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:435    .text:000000be LCD_write
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:481    .text:000000ea LCD_goTo
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:797    .data:00000000 firstColumnPositionsForLCD
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:504    .text:000000fc initIO
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:520    .text:000000fe uart_init
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:551    .text:00000112 uart_recieve
+/var/folders/yr/91gvm84j38g9s989qv2v5ks40000gn/T//ccnXrufa.s:585    .text.startup:00000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
